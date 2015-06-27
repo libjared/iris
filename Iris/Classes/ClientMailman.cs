@@ -1,14 +1,10 @@
 using Lidgren.Network;
 using SFML.System;
-using SFML.Window;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Iris
 {
-    class ClientMailman
+    public class ClientMailman
     {
         private NetClient client;
         private Deathmatch dm;
@@ -96,9 +92,9 @@ namespace Iris
                     break;
 
                 case "POS": //Update a player's position
-                    var UID_POS = msg.ReadInt64();
-                    var xPos = msg.ReadInt32();
-                    var yPos = msg.ReadInt32();
+                    long UID_POS = msg.ReadInt64();
+                    float xPos = msg.ReadFloat();
+                    float yPos = msg.ReadFloat();
                     HandlePosMessage(UID_POS, xPos, yPos);
                     break;
 
@@ -137,12 +133,12 @@ namespace Iris
             dm.GetPlayerWithUID(uid).Name = newName;
         }
 
-        private void HandlePosMessage(long uid, int x, int y)
+        private void HandlePosMessage(long uid, float x, float y)
         {
             Player plr = dm.GetPlayerWithUID(uid);
             if (plr != null) //stale POS message, player is already gone?
             {
-                plr.Position = new Vector2i(x, y);
+                plr.Position = new Vector2f(x, y);
             }
         }
 

@@ -1,31 +1,40 @@
-using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Iris
 {
     public class Deathmatch
     {
+        public static ClientMailman Mailman { get; set; }
         public List<Player> Players { get; set; }
 
         public Deathmatch()
         {
             Players = new List<Player>();
+            Mailman = new ClientMailman(this);
+            Mailman.Connect();
+            Players.Add(new ClientPlayer());
         }
 
         public void Update()
         {
-            throw new NotImplementedException();
+            Mailman.HandleMessages();
+            Players.ForEach(p => { p.Update(); });
         }
 
         public void Draw()
         {
-            throw new NotImplementedException();
+            Players.ForEach(p => { p.Draw(); } );
         }
 
         public Player GetPlayerWithUID(long id)
         {
             return Players.FirstOrDefault(p => p.UID == id);
+        }
+
+        public void Close()
+        {
+            Mailman.Disconnect();
         }
     }
 }

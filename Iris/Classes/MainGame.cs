@@ -13,7 +13,6 @@ namespace Iris
         public static DateTime startTime;
         public static Vector2f windowSize;
         public static Random rand;
-        public static ClientMailman mailman;
 
         public static Deathmatch dm;
 
@@ -31,46 +30,32 @@ namespace Iris
         private static void PreRun()
         {
             startTime = DateTime.Now;
-        }
-
-        static void window_LostFocus(object sender, EventArgs e)
-        {
-            Input.isActive = false;
-        }
-
-        static void window_GainedFocus(object sender, EventArgs e)
-        {
-            Input.isActive = true;
+            rand = new Random();
         }
 
         private static void LoadContentInitialize()
         {
-            mailman = new ClientMailman(dm);
-
             window = new RenderWindow(
                 new VideoMode(800, 600), "Project Iris", Styles.Titlebar);
 
             windowSize = new Vector2f(800, 600);
             window.SetFramerateLimit(60);
 
-            window.Closed += (a, b) =>
+            window.Closed += (o, e) =>
             {
-                mailman.Disconnect();
+                dm.Close();
                 window.Close();
             };
 
-            window.GainedFocus += new EventHandler(window_GainedFocus);
-            window.LostFocus += new EventHandler(window_LostFocus);
-            
-            dm = new Deathmatch();
+            window.GainedFocus += (o, e) => { Input.isActive = true; };
+            window.LostFocus += (o, e) => { Input.isActive = false; };
 
-            mailman.Connect();
+            dm = new Deathmatch();
         }
 
         private static void UpdateDraw(RenderWindow window)
         {
             window.Clear(Color.Black);
-            mailman.HandleMessages();
             window.DispatchEvents();
             Input.Update();
             dm.Update();
