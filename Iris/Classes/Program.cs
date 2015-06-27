@@ -11,11 +11,11 @@ namespace Iris
             {
                 Server s = new Server();
                 s.Start();
-                return;
             }
-
-            using (var game = new MainGame())
-                game.Run();
+            else
+            {
+                MainGame.StartGame();
+            }
         }
     }
 }
