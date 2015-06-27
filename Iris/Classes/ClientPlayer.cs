@@ -1,25 +1,32 @@
 using SFML.Window;
 using SFML.System;
+using SFML.Graphics;
 
 namespace Iris
 {
     class ClientPlayer : Player
     {
-        public ClientPlayer()
-            : base()
+        public ClientPlayer(Deathmatch dm)
+            : base(dm)
         {
-
         }
 
         public override void Update()
         {
-            if (Input.isKeyDown(Keyboard.Key.S))
+            Vector2f pos = Position;
+            if (Keyboard.IsKeyPressed(Keyboard.Key.W)) { pos.Y--; }
+            if (Keyboard.IsKeyPressed(Keyboard.Key.S)) { pos.Y++; }
+            if (Keyboard.IsKeyPressed(Keyboard.Key.A)) { pos.X--; }
+            if (Keyboard.IsKeyPressed(Keyboard.Key.D)) { pos.X++; }
+            Position = pos;
+
+            if (dm.MapCollide((int)Position.X, (int)Position.Y))
             {
-                Position = new Vector2f(20, 20);
+                Color = Color.Green;
             }
             else
             {
-                Position = new Vector2f(0, 0);
+                Color = Color.White;
             }
 
             base.Update();

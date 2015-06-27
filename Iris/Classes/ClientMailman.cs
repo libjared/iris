@@ -150,7 +150,7 @@ namespace Iris
 
         private void HandleJoinMessage(long uid)
         {
-            dm.Players.Add(new NetPlayer(uid));
+            dm.Players.Add(new NetPlayer(dm, uid));
         }
 
         private void HandlePartMessage(long uid)

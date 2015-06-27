@@ -55,7 +55,7 @@ namespace Iris
 
         private static void UpdateDraw(RenderWindow window)
         {
-            window.Clear(Color.Black);
+            window.Clear(Color.Blue);
             window.DispatchEvents();
             Input.Update();
             dm.Update();
