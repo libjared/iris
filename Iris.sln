@@ -7,6 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Iris", "Iris\Iris.csproj", 
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug Server|x86 = Debug Server|x86
 		Debug|x86 = Debug|x86
 		Release|x86 = Release|x86
 	EndGlobalSection
