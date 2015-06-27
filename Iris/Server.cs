@@ -6,10 +6,11 @@ namespace Iris
 {
     class Server
     {
-        const int MS_BETWEEN = 16000;
+        const int MS_BETWEEN = 1600;
         const int QUIT_DELAY = 100;
         private NetServer server;
         private bool quit = false;
+        private Timer timer;
 
         public Server()
         {
@@ -22,7 +23,7 @@ namespace Iris
         {
             server.Start();
 
-            Timer t = new Timer(EveryFrame, null, MS_BETWEEN, Timeout.Infinite);
+            timer = new Timer(EveryFrame, null, MS_BETWEEN, Timeout.Infinite);
 
             //block until quit
             while (!quit)
@@ -36,6 +37,11 @@ namespace Iris
         public void EveryFrame(object state)
         {
             Console.WriteLine("Every frame");
+
+            if (!quit)
+            {
+                timer.Change(MS_BETWEEN, Timeout.Infinite);
+            }
         }
     }
 }
