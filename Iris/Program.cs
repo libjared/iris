@@ -2,21 +2,20 @@ using System;
 
 namespace Iris
 {
-#if WINDOWS || LINUX
-    /// <summary>
-    /// The main class.
-    /// </summary>
     public static class Program
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
+            if (args.Length >= 1 && args[0] == "server")
+            {
+                Server s = new Server();
+                s.Start();
+                return;
+            }
+
             using (var game = new MainGame())
                 game.Run();
         }
     }
-#endif
 }
