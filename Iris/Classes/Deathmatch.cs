@@ -9,7 +9,6 @@ namespace Iris
     {
         public ClientMailman Mailman { get; set; }
         public List<Player> Players { get; set; }
-        public ClientPlayer ClientPlayer { get; set; }
         private Sprite mapSprite;
         private byte[] mapBytes;
         private int mapWidth;
