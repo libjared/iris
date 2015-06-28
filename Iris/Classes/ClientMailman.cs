@@ -25,7 +25,7 @@ namespace Iris
             config.EnableMessageType(NetIncomingMessageType.ConnectionLatencyUpdated);
             config.EnableMessageType(NetIncomingMessageType.ConnectionApproval);
             string ip = "giga.krash.net"; //Jared's IP
-            int port = 12345;
+            int port = 5635;
             client = new NetClient(config);
             client.Start();
 
