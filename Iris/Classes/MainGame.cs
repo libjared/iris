@@ -65,6 +65,10 @@ namespace Iris
 
             if (Input.isKeyDown(Keyboard.Key.Escape))
             {
+                if (dm.Mailman != null)
+                {
+                    dm.Mailman.Disconnect();
+                }
                 window.Close();
             }
         }
