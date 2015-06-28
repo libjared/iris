@@ -149,6 +149,8 @@ namespace Iris.Server
         {
             float newX = msg.ReadFloat();
             float newY = msg.ReadFloat();
+            int facing = msg.ReadInt32();
+            float angle = msg.ReadFloat();
 
             //inform ALL clients about position change
             NetOutgoingMessage outMsg = server.CreateMessage();
@@ -156,6 +158,8 @@ namespace Iris.Server
             outMsg.Write(msg.SenderConnection.RemoteUniqueIdentifier);
             outMsg.Write(newX);
             outMsg.Write(newY);
+            outMsg.Write(facing);
+            outMsg.Write(angle);
             server.SendToAll(outMsg, null, NetDeliveryMethod.ReliableUnordered, 0);
         }
 
