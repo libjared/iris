@@ -11,8 +11,9 @@ namespace Iris
 {
     class NetPlayer : Actor
     {
-        Animation idle, running, jumpUp, jumpDown;
+        Animation idle, running, jumpUp, jumpDown, backpedal;
         public Vector2f oldPosition;
+        public int animPadding; //Wait a slight bit before changing animations since position may be unreliable
 
         public NetPlayer(Deathmatch dm, long UID)
             : base(dm)
@@ -20,6 +21,7 @@ namespace Iris
             this.UID = UID;
             idle = new Animation(Content.GetTexture("idle.png"), 4, 120, 1);
             running = new Animation(Content.GetTexture("run.png"), 6, 60, 2);
+            backpedal = new Animation(Content.GetTexture("run.png"), 6, 60, 2, false);
             jumpUp = new Animation(Content.GetTexture("jumpUp.png"), 1, 60, 0);
             jumpDown = new Animation(Content.GetTexture("jumpDown.png"), 3, 60, -5);
             animation = idle;
@@ -31,12 +33,16 @@ namespace Iris
         {
             base.Update();
             animation.Update();
+            handleAnimationSetting();
             oldPosition = Pos;
         }
 
         public override void Draw()
         {
+            Core = Pos - new Vector2f(-1, 35);
             this.Texture = animation.Texture;
+            Render.Draw(Content.GetTexture("pistolHand.png"), Core, Color.White, new Vector2f(2, 4), 1, AimAngle, 1, Facing == -1);
+            Render.Draw(Content.GetTexture("revolver.png"), Core, Color.White, new Vector2f(2, 4), 1, AimAngle, 1, Facing == -1);
             Render.DrawAnimation(Texture, this.Pos, Color.White, new Vector2f(Texture.Size.X / (animation.Count * 4),
                 Texture.Size.Y - animation.YOffset), Facing, animation.Count, animation.Frame, 1);
             base.Draw();
@@ -47,22 +53,57 @@ namespace Iris
             OnGround = false;
             if (dm.MapCollide((int)this.Pos.X, (int)this.Pos.Y + (int)dm.gravity))
                 OnGround = true;
-            if (OnGround) //On Ground
+            animPadding--;
+            
+
+            if (animPadding <= -0)
             {
-                if (Math.Abs(oldPosition.X - Pos.X) > .2f)
-                    animation = running;
-                else
-                    animation = idle;
-            }
-            if (!OnGround) // Not on Ground
-            {
-                if ((oldPosition.Y - Pos.Y) < 2)
+                //if (Helper.Distance(oldPosition,Pos) < 2)
+                 animation = idle;
+                if (OnGround) //On Ground
                 {
-                    animation = jumpUp;
+                    if (Facing == 1)
+                    {
+                        if (oldPosition.X - Pos.X < -.2f)
+                        {
+                            animation = running;
+                            animPadding = 5;
+                        }
+                        if (oldPosition.X - Pos.X > .2f)
+                        {
+                            animation = backpedal;
+                            animPadding = 5;
+                        }
+
+                    }
+                    if (Facing == -1)
+                    {
+                        if (oldPosition.X - Pos.X < -.2f)
+                        { 
+                            animation = running;
+                            animPadding = 5;
+                        }
+                        if (oldPosition.X - Pos.X > .2f)
+                        {
+                            animation = backpedal;
+                            animPadding = 5;
+                        }
+
+
+                    }
                 }
-                if ((oldPosition.Y - Pos.Y) > 2)
+                if (!OnGround) // Not on Ground
                 {
-                    animation = jumpDown;
+                    if ((oldPosition.Y - Pos.Y) > 2)
+                    {
+                        animation = jumpUp;
+                        animPadding = 5;
+                    }
+                    if ((oldPosition.Y - Pos.Y) < 2)
+                    {
+                        animation = jumpDown;
+                        animPadding = 5;
+                    }
                 }
             }
         }

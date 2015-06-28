@@ -50,5 +50,25 @@ namespace Iris
         {
             return rad * (180f / (float)Math.PI);
         }
+
+        public static void MoveCameraTo(View camera, Vector2f focus, float speed)
+        {
+            if (camera.Center.X > focus.X)
+            {
+                camera.Center -= new Vector2f((Math.Abs(camera.Center.X - focus.X) * speed), 0);
+            }
+            if (camera.Center.X < focus.X)
+            {
+                camera.Center += new Vector2f((Math.Abs(camera.Center.X - focus.X) * speed),0);
+            }
+            if (camera.Center.Y > focus.Y)
+            {
+                camera.Center -= new Vector2f(0,(Math.Abs(camera.Center.Y - focus.Y) * speed));
+            }
+            if (camera.Center.Y < focus.Y)
+            {
+                camera.Center += new Vector2f(0,(Math.Abs(camera.Center.Y - focus.Y) * speed));
+            }
+        }
     }
 }

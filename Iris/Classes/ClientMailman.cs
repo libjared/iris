@@ -95,7 +95,9 @@ namespace Iris
                     long UID_POS = msg.ReadInt64();
                     float xPos = msg.ReadFloat();
                     float yPos = msg.ReadFloat();
-                    HandlePosMessage(UID_POS, xPos, yPos);
+                    //int facing = msg.ReadInt32();
+                    //float aimAngle = msg.ReadFloat();
+                    HandlePosMessage(UID_POS, xPos, yPos, 1, 0);
                     break;
 
                 case "JOIN": //Add a player
@@ -133,12 +135,14 @@ namespace Iris
             dm.GetPlayerWithUID(uid).Name = newName;
         }
 
-        private void HandlePosMessage(long uid, float x, float y)
+        private void HandlePosMessage(long uid, float x, float y, int facing, float aimAngle)
         {
             Actor plr = dm.GetPlayerWithUID(uid);
             if (plr != null) //stale POS message, player is already gone?
             {
                 plr.Pos = new Vector2f(x, y);
+                plr.Facing = facing;
+                plr.AimAngle = aimAngle;
             }
         }
 
@@ -158,12 +162,14 @@ namespace Iris
             dm.Players.Remove(dm.GetPlayerWithUID(uid));
         }
 
-        public void SendPlayerPosMessage(long uid, Vector2f pos)
+        public void SendPlayerPosMessage(long uid, Vector2f pos, int facing, float aimAngle)
         {
             NetOutgoingMessage outGoingMessage = client.CreateMessage();
             outGoingMessage.Write("POS");
             outGoingMessage.Write(pos.X);
             outGoingMessage.Write(pos.Y);
+            outGoingMessage.Write(facing);
+            outGoingMessage.Write(aimAngle);
             client.SendMessage(outGoingMessage, NetDeliveryMethod.ReliableOrdered);
         }
     }

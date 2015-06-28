@@ -17,7 +17,7 @@ namespace Iris
         {
             Pos = new Vector2f(10, 10);
             Speed = .35f;
-            MaxJumps = 200;
+            MaxJumps = 2;
             JumpsLeft = MaxJumps;
 
             idle = new Animation(Content.GetTexture("idle.png"), 4, 120, 1, true);
@@ -36,7 +36,7 @@ namespace Iris
             handleControls();
             handleAnimationSetting();
             UpdatePosition();
-            dm.Mailman.SendPlayerPosMessage(UID, Pos);
+            dm.Mailman.SendPlayerPosMessage(UID, Pos, Facing, AimAngle);
 
             //frameDelta += (float)MainGame.deltaTime.TotalMilliseconds;
 
@@ -51,12 +51,10 @@ namespace Iris
             //Render.Draw(animation.Texture, this.Pos, Color.White, new Vector2f(0,0), 1, 0,1);
             Core = Pos - new Vector2f(-1, 35);
             this.Texture = animation.Texture;
-            Render.Draw(Content.GetTexture("pistolHand.png"), Core, Color.White, new Vector2f(2, 4), 1, AimAngle, 1, MainGame.worldMousePos.X < Core.X);
-            Render.Draw(Content.GetTexture("revolver.png"), Core, Color.White, new Vector2f(2, 4), 1, AimAngle, 1, MainGame.worldMousePos.X < Core.X);
+            Render.Draw(Content.GetTexture("pistolHand.png"), Core, Color.White, new Vector2f(2, 4), 1, AimAngle, 1, Facing == -1);
+            Render.Draw(Content.GetTexture("revolver.png"), Core, Color.White, new Vector2f(2, 4), 1, AimAngle, 1, Facing == -1);
             Render.DrawAnimation(Texture, this.Pos, Color.White, new Vector2f(Texture.Size.X / (animation.Count * 4),
                 Texture.Size.Y - animation.YOffset), Facing, animation.Count, animation.Frame, 1);
-
-
             //Sprite s = new Sprite(idleTest);
 
             //s.TextureRect = new IntRect(
@@ -85,6 +83,7 @@ namespace Iris
             {
                 //Console.WriteLine("Bang");
                 dm.Projectiles.Add(new Bullet(AimAngle, Core + Helper.PolarToVector2(28, AimAngle, 1, 1), 6, 0));
+                MainGame.Camera.Center += Helper.PolarToVector2(5 * MainGame.rand.Next(2,5), AimAngle + (float)Math.PI, 1, 1);
             }
 
             if (Input.isKeyTap(Keyboard.Key.W))
@@ -92,7 +91,7 @@ namespace Iris
                 if (OnGround || (JumpsLeft > 0 && Velocity.Y > 2))
                 {
                     JumpsLeft--;
-                    Vector2f nextVec = new Vector2f(0, -24f);
+                    Vector2f nextVec = new Vector2f(0, -24f - JumpsLeft);
                     this.Velocity = nextVec;
                 }
             }
@@ -154,7 +153,7 @@ namespace Iris
 
         private void UpdatePosition()
         {
-            Console.WriteLine(OnGround);
+            //Console.WriteLine(OnGround);
             //Sprite.Color = Color.White;
             //increase velocity by gravity, up to a maximum
             Velocity.Y += dm.gravity;

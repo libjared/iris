@@ -30,7 +30,6 @@ namespace Iris
 
         public void Update()
         {
-            Console.WriteLine();
             timer += 700f;// (float)MainGame.deltaTime.TotalMinutes;
 
             //Console.WriteLine(frame);

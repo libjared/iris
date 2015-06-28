@@ -15,19 +15,21 @@ namespace Iris
         public List<Projectile> Projectiles { get; set; }
         public List<Sprite> BackgroundImages { get; set; }
         public List<Sprite> BackgroundImagesFar { get; set; }
+        public List<Sprite> BackgroundTracks { get; set; }
         private Sprite mapSprite;
         private Sprite Sky;
         private byte[] mapBytes;
         private int mapWidth;
         private int mapHeight;
 
-        public float gravity = 1.3f;
+        public float gravity = 1.1f;
 
         public Deathmatch()
         {
             Projectiles = new List<Projectile>();
             BackgroundImages = new List<Sprite>();
             BackgroundImagesFar = new List<Sprite>();
+            BackgroundTracks = new List<Sprite>();
             Players = new List<Actor>();
             Mailman = new ClientMailman(this);
             Mailman.Connect();
@@ -52,19 +54,30 @@ namespace Iris
             Mailman.HandleMessages();
             Players.ForEach(p => { p.Update(); });
             Projectiles.ForEach(p => { p.Update(); });
-            HandleBackground();
-
             
         }
 
         public void Draw()
         {
-            MainGame.Camera.Center = player.Pos;
-            
+            //MainGame.Camera.Center = player.Pos;
+            Vector2f focus = player.Core +
+                new Vector2f(Input.screenMousePos.X - MainGame.window.Size.X / 2,
+                Input.screenMousePos.Y - MainGame.window.Size.Y /2) / 2;
+            if (Helper.Distance(player.Core, focus) > 100)
+                focus = player.Core + Helper.PolarToVector2(100, player.AimAngle, 1, 1);//player.Core + Helper.normalize(focus) * 100;
+            Helper.MoveCameraTo(MainGame.Camera, focus, .04f);
+
+            //Camera2D.returnCamera(player.ActorCenter +
+            //            new Vector2(Main.screenMousePos.X - Main.graphics.PreferredBackBufferWidth / 2,
+            //                Main.screenMousePos.Y - Main.graphics.PreferredBackBufferHeight / 2) *
+            //                Main.graphics.GraphicsDevice.Viewport.AspectRatio / player.currentWeapon.viewDistance);
+
             MainGame.window.SetView(MainGame.Camera);
             Sky.Draw(MainGame.window, RenderStates.Default);
+            HandleBackground();
             BackgroundImagesFar.ForEach(p => { p.Draw(MainGame.window, RenderStates.Default); });
             BackgroundImages.ForEach(p => { p.Draw(MainGame.window, RenderStates.Default); });
+            BackgroundTracks.ForEach(p => { p.Draw(MainGame.window, RenderStates.Default); });
             Players.ForEach(p => { p.Draw(); } );
             Projectiles.ForEach(p => { p.Draw(); });
             
@@ -115,23 +128,39 @@ namespace Iris
                 if (BackgroundImagesFar.Count < i)
                 {
                     Sprite s = new Sprite(Content.GetTexture("background1Far.png"));
-                    s.Position = new Vector2f((float)(s.Texture.Size.X * (i - 1)), 75);
+                    s.Position = new Vector2f((float)(s.Texture.Size.X * (i - 1)), 150);
                     BackgroundImagesFar.Add(s);
                 }
             }
-            for (int i = 0; i < BackgroundImages.Count; i++)
+            for (int i = 0; i < 25; i++)
+            {
+                if (BackgroundTracks.Count < i)
+                {
+                    Sprite s = new Sprite(Content.GetTexture("tracksBlur.png"));
+                    s.Position = new Vector2f((float)(s.Texture.Size.X * (i - 1)), 515);
+                    BackgroundTracks.Add(s);
+                }
+            }
+            for (int i = 0; i < BackgroundImages.Count; i++) //Main Background
             {
                 BackgroundImages[i].Position -= new Vector2f(2f, 0);
                 if (BackgroundImages[i].Position.X < -BackgroundImages[i].Texture.Size.X)
                     BackgroundImages.RemoveAt(i);
 
             }
-            for (int i = 0; i < BackgroundImagesFar.Count; i++)
+            for (int i = 0; i < BackgroundImagesFar.Count; i++) //Far Background
             {
-                BackgroundImagesFar[i].Position -= new Vector2f(1.5f, 0);
+                BackgroundImagesFar[i].Position -= new Vector2f(.8f, 0);
                 if (BackgroundImagesFar[i].Position.X < -BackgroundImagesFar[i].Texture.Size.X)
                     BackgroundImagesFar.RemoveAt(i);
             }
+            for (int i = 0; i < BackgroundTracks.Count; i++) //Tracks
+            {
+                BackgroundTracks[i].Position -= new Vector2f(8, 0);
+                if (BackgroundTracks[i].Position.X < -BackgroundTracks[i].Texture.Size.X)
+                    BackgroundTracks.RemoveAt(i);
+            }
+
         }
     }
 }
