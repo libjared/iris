@@ -72,7 +72,7 @@ namespace Iris
             {
                 if (dm.Mailman != null)
                 {
-                    dm.Mailman.Disconnect();
+                    dm.Close();
                 }
                 window.Close();
             }
