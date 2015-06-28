@@ -11,7 +11,6 @@ namespace Iris
     {
         public static RenderWindow window;
         public static DateTime startTime;
-        public static Vector2f windowSize;
         public static Random rand;
         public static View Camera;
         public static Deathmatch dm;
@@ -39,7 +38,6 @@ namespace Iris
             window = new RenderWindow(
                 new VideoMode(800, 600), "Project Iris", Styles.Titlebar);
 
-            windowSize = new Vector2f(1920, 1080);
             window.SetFramerateLimit(60);
             window.SetMouseCursorVisible(false);
             window.Closed += (o, e) =>
@@ -50,8 +48,9 @@ namespace Iris
 
             window.GainedFocus += (o, e) => { Input.isActive = true; };
             window.LostFocus += (o, e) => { Input.isActive = false; };
-            Camera = new View();
-            Camera.Zoom(.25f); //Adjust as needed
+            Camera = new View(window.DefaultView);
+            Camera.Size = new Vector2f(800/2, 600/2);
+            //Camera.Zoom(.25f); //Adjust as needed
             dm = new Deathmatch();
         }
 
