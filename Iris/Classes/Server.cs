@@ -87,11 +87,31 @@ namespace Iris.Server
                 case "NAME":
                     HandleNAME(msg);
                     break;
+                case "BULLET":
+                    HandleBULLET(msg);
+                    break;
                 default:
                     Console.WriteLine(string.Format("Bad message type {0} from player {1}",
                         type, msg.SenderConnection.RemoteUniqueIdentifier));
                     break;
             }
+        }
+
+        private void HandleBULLET(NetIncomingMessage msg)
+        {
+            long owner = msg.SenderConnection.RemoteUniqueIdentifier;
+            float x = msg.ReadFloat();
+            float y = msg.ReadFloat();
+            float dx = msg.ReadFloat();
+            float dy = msg.ReadFloat();
+
+            NetOutgoingMessage outMsg = server.CreateMessage();
+            outMsg.Write(owner);
+            outMsg.Write(x);
+            outMsg.Write(y);
+            outMsg.Write(dx);
+            outMsg.Write(dy);
+            server.SendToAll(outMsg, msg.SenderConnection, NetDeliveryMethod.ReliableOrdered, 0);
         }
 
         private void HandleNAME(NetIncomingMessage msg)
