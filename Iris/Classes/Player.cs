@@ -13,6 +13,7 @@ namespace Iris
         public float Speed;
         public Vector2f Velocity;
         public Vector2f Pos;
+        public Animation animation;
 
         public int Health { get; set; }
         public string Name { get; set; }
@@ -37,8 +38,6 @@ namespace Iris
         {
             base.Position = Pos;
         }
-
-
 
         public virtual void Draw()
         {
