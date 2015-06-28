@@ -17,7 +17,7 @@ namespace Iris
         public bool Forward;
 
         private float timer;
-        
+
 
         public Animation(Texture t, int count, int duration, int yOffset, bool forward = true)
         {
@@ -25,7 +25,7 @@ namespace Iris
             this.Texture = t;
             this.Duration = duration * 100;
             this.YOffset = yOffset;
-                Forward = forward;
+            this.Forward = forward;
         }
 
         public void Update()
@@ -36,9 +36,23 @@ namespace Iris
             //Console.WriteLine(frame);
             if (timer > Duration)
             {
-                Frame++;
-                if (Frame >= Count)
-                    Frame = 0;
+                if (Forward)
+                {
+                    Frame++;
+                    if (Frame >= Count)
+                        Frame = 0;
+                }
+                else
+                {
+                    Frame--;
+                    if (Frame < 0)
+                        Frame = Count - 1;
+                }
+
+                
+
+                    
+                
                 timer = 0;
             }
             //Console.WriteLine(intRect.Width);
@@ -49,7 +63,7 @@ namespace Iris
 
         public void Display()
         {
-           
+
         }
     }
 }

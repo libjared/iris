@@ -10,7 +10,7 @@ namespace Iris
 {
     public class ClientPlayer : Actor
     {
-        Animation idle, running, jumpUp, jumpDown;
+        Animation idle, running, jumpUp, jumpDown, backpedal;
 
         public ClientPlayer(Deathmatch dm)
             : base(dm)
@@ -20,10 +20,11 @@ namespace Iris
             MaxJumps = 200;
             JumpsLeft = MaxJumps;
 
-            idle = new Animation(Content.GetTexture("idle.png"), 4, 120,1);
-            running = new Animation(Content.GetTexture("run.png"), 6, 60,2);
-            jumpUp = new Animation(Content.GetTexture("jumpUp.png"), 1, 60, 0);
-            jumpDown = new Animation(Content.GetTexture("jumpDown.png"), 3, 60, -5);
+            idle = new Animation(Content.GetTexture("idle.png"), 4, 120, 1, true);
+            running = new Animation(Content.GetTexture("run.png"), 6, 60, 2, true);
+            backpedal = new Animation(Content.GetTexture("run.png"), 6, 60, 2, false);
+            jumpUp = new Animation(Content.GetTexture("jumpUp.png"), 1, 60, 0, true);
+            jumpDown = new Animation(Content.GetTexture("jumpDown.png"), 3, 60, -5, true);
             animation = idle;
             Texture = Content.GetTexture("idle.png");
         }
@@ -38,7 +39,7 @@ namespace Iris
             dm.Mailman.SendPlayerPosMessage(UID, Pos);
 
             //frameDelta += (float)MainGame.deltaTime.TotalMilliseconds;
-            
+
         }
 
         public override void Draw()
@@ -52,10 +53,10 @@ namespace Iris
             this.Texture = animation.Texture;
             Render.Draw(Content.GetTexture("pistolHand.png"), Core, Color.White, new Vector2f(2, 4), 1, AimAngle, 1, MainGame.worldMousePos.X < Core.X);
             Render.Draw(Content.GetTexture("revolver.png"), Core, Color.White, new Vector2f(2, 4), 1, AimAngle, 1, MainGame.worldMousePos.X < Core.X);
-            Render.DrawAnimation(Texture, this.Pos, Color.White, new Vector2f(Texture.Size.X / (animation.Count * 4), 
+            Render.DrawAnimation(Texture, this.Pos, Color.White, new Vector2f(Texture.Size.X / (animation.Count * 4),
                 Texture.Size.Y - animation.YOffset), Facing, animation.Count, animation.Frame, 1);
 
-           
+
             //Sprite s = new Sprite(idleTest);
 
             //s.TextureRect = new IntRect(
@@ -78,12 +79,12 @@ namespace Iris
 
         public void handleControls()
         {
-            
+
             AimAngle = Helper.angleBetween(MainGame.worldMousePos, Core);
             if (Input.isMouseButtonTap(Mouse.Button.Left))
             {
                 //Console.WriteLine("Bang");
-                dm.Projectiles.Add(new Bullet(AimAngle, Core + Helper.PolarToVector2(28, AimAngle,1,1), 4, 0));
+                dm.Projectiles.Add(new Bullet(AimAngle, Core + Helper.PolarToVector2(28, AimAngle, 1, 1), 6, 0));
             }
 
             if (Input.isKeyTap(Keyboard.Key.W))
@@ -119,10 +120,22 @@ namespace Iris
 
             if (OnGround) //On Ground
             {
-                if (Math.Abs(Velocity.X) > .2f)
-                    animation = running;
-                else
-                    animation = idle;
+                animation = idle;
+                if (Facing == 1)
+                {
+                    if (Velocity.X > .2f)
+                        animation = running;
+                    if (Velocity.X < -.2f)
+                        animation = backpedal;
+                }
+                if (Facing == -1)
+                {
+                    if (Velocity.X < -.2f)
+                        animation = running;
+                    if (Velocity.X > .2f)
+                        animation = backpedal;
+                }
+
                 if (Math.Abs(Velocity.X) == 2)
                     animation = idle;
             }
@@ -160,9 +173,9 @@ namespace Iris
             if (!dm.MapCollide((int)dest.X, (int)dest.Y))
             {
                 OnGround = false;
-               // return;
+                // return;
             }
-            
+
             //Color = Color.Green;
 
             //we do the horizontal and vertical separately. one of them is blocking us
@@ -176,7 +189,7 @@ namespace Iris
             Velocity.X *= .75f;
             Pos += Velocity * Speed;
             //horizontal decay
-            
+
         }
 
         private void SolveVert()
@@ -243,6 +256,6 @@ namespace Iris
             }
         }
 
-        
+
     }
 }
