@@ -15,6 +15,15 @@ namespace Iris
         public static View Camera;
         public static Deathmatch dm;
         public static Vector2f worldMousePos;
+        public static DateTime oldDateTime;
+        const double expectedTicks = (1000.0 / 63.0) * 10000.0;
+        public static TimeSpan deltaTime
+        {
+            get
+            {
+                return DateTime.Now - oldDateTime;
+            }
+        }
 
         public static void StartGame()
         {
@@ -30,6 +39,7 @@ namespace Iris
         private static void PreRun()
         {
             startTime = DateTime.Now;
+            oldDateTime = DateTime.Now - new TimeSpan((long)expectedTicks);
             rand = new Random();
         }
 

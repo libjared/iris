@@ -30,7 +30,8 @@ namespace Iris
 
         public void Update()
         {
-            timer += MainGame.startTime.Millisecond;
+            Console.WriteLine();
+            timer += 700f;// (float)MainGame.deltaTime.TotalMinutes;
 
             //Console.WriteLine(frame);
             if (timer > Duration)
