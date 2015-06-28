@@ -17,6 +17,9 @@ namespace Iris
             this.Speed = speed;
             this.Damage = damage;
             Texture = Content.GetTexture("flint_right.png");
+
+            this.Position = Pos;
+            this.Rotation = Rot;
         }
 
         public override void Update()
