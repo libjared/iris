@@ -21,7 +21,7 @@ namespace Iris.Server
             NetPeerConfiguration cfg = new NetPeerConfiguration("bandit");
             cfg.Port = 5635;
             server = new NetServer(cfg);
-            server.RegisterReceivedCallback(new SendOrPostCallback(GotLidgrenMessage));
+            server.RegisterReceivedCallback(new SendOrPostCallback(GotLidgrenMessage), new SynchronizationContext());
         }
 
         public void Start()
