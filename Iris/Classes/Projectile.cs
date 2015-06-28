@@ -25,11 +25,12 @@ namespace Iris
         public virtual void Update()
         {
             this.Position = Pos;
+            this.Rotation = Rot;
         }
 
         public virtual void Draw()
         {
-
+            MainGame.window.Draw(this);
         }
     }
 }

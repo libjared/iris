@@ -15,6 +15,7 @@ namespace Iris
         public static Random rand;
         public static View Camera;
         public static Deathmatch dm;
+        public static Vector2f worldMousePos;
 
         public static void StartGame()
         {
@@ -50,7 +51,7 @@ namespace Iris
             window.GainedFocus += (o, e) => { Input.isActive = true; };
             window.LostFocus += (o, e) => { Input.isActive = false; };
             Camera = new View();
-            Camera.Zoom(.4f);
+            Camera.Zoom(.4f); //Adjust as needed
             dm = new Deathmatch();
         }
 
@@ -75,6 +76,11 @@ namespace Iris
                 }
                 window.Close();
             }
+        }
+
+        private void updateWorldMousePos()
+        {
+            worldMousePos = window.MapPixelToCoords(Mouse.GetPosition(window), Camera); //Mouse.GetPosition(Game.window).ToF() / 2 + new Vector2f(Game.window.Size.X / 4, Game.window.Size.Y / 4);
         }
     }
 }

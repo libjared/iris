@@ -16,10 +16,15 @@ namespace Iris
             this.Pos = position;
             this.Speed = speed;
             this.Damage = damage;
+            Texture = Content.GetTexture("flint_right.png");
         }
 
         public override void Update()
-        { 
+        {
+            Rot = Helper.angleBetween(this.Pos, this.Pos + Velocity);
+            Velocity = Helper.normalize((new Vector2f((float)Math.Cos(Angle), (float)Math.Sin(Angle))));
+
+            this.Pos += Velocity * Speed;
             base.Update();
         }
 

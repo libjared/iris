@@ -1,5 +1,7 @@
 using SFML.Graphics;
 using SFML.System;
+using SFML.Window;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,6 +12,7 @@ namespace Iris
         public ClientMailman Mailman { get; set; }
         public ClientPlayer player;
         public List<Player> Players { get; set; }
+        public List<Projectile> Projectiles { get; set; }
         private Sprite mapSprite;
         private byte[] mapBytes;
         private int mapWidth;
@@ -19,6 +22,7 @@ namespace Iris
 
         public Deathmatch()
         {
+            Projectiles = new List<Projectile>();
             Players = new List<Player>();
             Mailman = new ClientMailman(this);
             Mailman.Connect();
@@ -38,6 +42,14 @@ namespace Iris
         {
             Mailman.HandleMessages();
             Players.ForEach(p => { p.Update(); });
+            Projectiles.ForEach(p => { p.Update(); });
+
+            Console.WriteLine("");
+            if (Input.isMouseButtonTap(Mouse.Button.Left))
+            {
+                Console.WriteLine("Bang");
+                Projectiles.Add(new Bullet(Helper.angleBetween(MainGame.worldMousePos, player.Pos), player.Pos, 1, 0));
+            }
         }
 
         public void Draw()
@@ -46,6 +58,7 @@ namespace Iris
             
             MainGame.window.SetView(MainGame.Camera);
             Players.ForEach(p => { p.Draw(); } );
+            Projectiles.ForEach(p => { p.Draw(); });
             MainGame.window.Draw(mapSprite);
         }
 
