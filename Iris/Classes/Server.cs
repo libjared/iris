@@ -102,15 +102,13 @@ namespace Iris.Server
             long owner = msg.SenderConnection.RemoteUniqueIdentifier;
             float x = msg.ReadFloat();
             float y = msg.ReadFloat();
-            float dx = msg.ReadFloat();
-            float dy = msg.ReadFloat();
+            float angle = msg.ReadFloat();
 
             NetOutgoingMessage outMsg = server.CreateMessage();
             outMsg.Write(owner);
             outMsg.Write(x);
             outMsg.Write(y);
-            outMsg.Write(dx);
-            outMsg.Write(dy);
+            outMsg.Write(angle);
             server.SendToAll(outMsg, msg.SenderConnection, NetDeliveryMethod.ReliableOrdered, 0);
         }
 
