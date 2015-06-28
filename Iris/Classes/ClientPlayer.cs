@@ -25,7 +25,6 @@ namespace Iris
             jumpUp = new Animation(Content.GetTexture("jumpUp.png"), 1, 60, 0);
             jumpDown = new Animation(Content.GetTexture("jumpDown.png"), 3, 60, 0);
             animation = idle;
-            //Sprite.Texture = animation.getTexture();
             Texture = Content.GetTexture("idle.png");
         }
 
