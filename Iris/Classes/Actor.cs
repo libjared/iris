@@ -11,7 +11,7 @@ namespace Iris
     public abstract class Actor
     {
         public float Speed;
-        public Sprite Sprite;
+        public Texture Texture;
         public Vector2f Velocity;
         public Vector2f Pos;
         public Animation animation;
@@ -30,6 +30,7 @@ namespace Iris
             Name = "Cactus Fantastico";
             Pos = new Vector2f(0, 0);
             UID = 0;
+            Texture = null;//new Texture();
             //Texture = Content.GetTexture("flint_right.png");
             //Origin = new Vector2f(Texture.Size.X /2 , Texture.Size.Y);
             this.dm = dm;
@@ -44,7 +45,7 @@ namespace Iris
         public virtual void Draw()
         {
            // this.TextureRect = new IntRect(0, 0, 64, 55);
-            MainGame.window.Draw(this.Sprite);
+            //MainGame.window.Draw(this.Sprite);
         }
     }
 }

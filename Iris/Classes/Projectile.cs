@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Iris
 {
-    public abstract class Projectile : Sprite
+    public abstract class Projectile : GameObject
     {
         public float Angle;
         public float Rot;
@@ -22,15 +22,13 @@ namespace Iris
         {
         }
 
-        public virtual void Update()
+        public override void Update()
         {
-            this.Position = Pos;
-            this.Rotation = Rot;
         }
 
-        public virtual void Draw()
+        public override void Draw()
         {
-            MainGame.window.Draw(this);
+            
         }
     }
 }

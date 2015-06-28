@@ -12,7 +12,7 @@ namespace Iris
             : base(dm)
         {
             this.UID = UID;
-            Sprite.Color = Color.Red;
+            //.Color = Color.Red;
         }
 
         public override void Draw()

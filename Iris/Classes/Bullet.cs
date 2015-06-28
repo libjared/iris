@@ -16,16 +16,13 @@ namespace Iris
             this.Pos = position;
             this.Speed = speed;
             this.Damage = damage;
-            Texture = Content.GetTexture("flint_right.png");
-
-            this.Position = Pos;
-            this.Rotation = Rot;
+            this.Texture = Content.GetTexture("bullet.png");
         }
 
         public override void Update()
         {
-            Rot = Helper.angleBetween(this.Pos, this.Pos + Velocity);
             Velocity = Helper.normalize((new Vector2f((float)Math.Cos(Angle), (float)Math.Sin(Angle))));
+            this.Rot = Helper.angleBetween(this.Pos, this.Pos + Velocity);
 
             this.Pos += Velocity * Speed;
             base.Update();
@@ -33,6 +30,7 @@ namespace Iris
 
         public override void Draw()
         {
+            Render.Draw(Texture, this.Pos, Color.White, new Vector2f(Texture.Size.X/2, Texture.Size.Y/2), 1, Rot, 1);
             base.Draw();
         }
     }

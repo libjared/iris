@@ -30,5 +30,15 @@ namespace Iris
         {
             return (float)Math.Sqrt(vector.X * vector.X + vector.Y * vector.Y);
         }
+
+        public static float DegToRad(float degree)
+        {
+            return degree * ((float)Math.PI / 180f);
+        }
+
+        public static float RadToDeg(float rad)
+        {
+            return rad * (180f / (float)Math.PI);
+        }
     }
 }

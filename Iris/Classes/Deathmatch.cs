@@ -43,21 +43,8 @@ namespace Iris
             player.Pos = new Vector2f(46, 62);
             Players.Add(player);
 
-
-            for (int i = 0; i < 3; i++)
-            {
-                Sprite s = new Sprite(Content.GetTexture("background1.png"));
-                s.Position = new Vector2f((float)(s.Texture.Size.X * (i - 1)), 0);
-                //Console.WriteLine(s.Position);
-                BackgroundImages.Add(s);
-            }
-            for (int i = 0; i < 3; i++ )
-            {
-                Sprite s = new Sprite(Content.GetTexture("background1Far.png"));
-                s.Position = new Vector2f((float)(s.Texture.Size.X * (i - 1)), 75);
-                //Console.WriteLine(s.Texture.Size.X);
-                BackgroundImagesFar.Add(s);
-            }
+            
+            
         }
 
         public void Update()
@@ -66,20 +53,37 @@ namespace Iris
             Players.ForEach(p => { p.Update(); });
             Projectiles.ForEach(p => { p.Update(); });
 
-            Console.WriteLine("");
-            if (Input.isMouseButtonTap(Mouse.Button.Left))
-            {
-                Console.WriteLine("Bang");
-                Projectiles.Add(new Bullet(Helper.angleBetween(MainGame.worldMousePos, player.Pos), player.Pos, 1, 0));
-            }
 
+            for (int i = 0; i < 4; i++)
+            {
+                if (BackgroundImages.Count < i)
+                {
+                    Sprite s = new Sprite(Content.GetTexture("background1.png"));
+                    s.Position = new Vector2f((float)(s.Texture.Size.X * (i - 1)), 0);
+                    BackgroundImages.Add(s);
+                }
+            }
+            for (int i = 0; i < 4; i++)
+            {
+                if (BackgroundImagesFar.Count < i)
+                {
+                    Sprite s = new Sprite(Content.GetTexture("background1Far.png"));
+                    s.Position = new Vector2f((float)(s.Texture.Size.X * (i - 1)), 75);
+                    BackgroundImagesFar.Add(s);
+                }
+            }
             for (int i = 0 ; i < BackgroundImages.Count; i++)
             {
                 BackgroundImages[i].Position -= new Vector2f(2f, 0);
+                if (BackgroundImages[i].Position.X < -BackgroundImages[i].Texture.Size.X)
+                    BackgroundImages.RemoveAt(i);
+
             }
             for (int i = 0; i < BackgroundImagesFar.Count; i++)
             {
                 BackgroundImagesFar[i].Position -= new Vector2f(1.5f, 0);
+                if (BackgroundImagesFar[i].Position.X < -BackgroundImagesFar[i].Texture.Size.X)
+                    BackgroundImagesFar.RemoveAt(i);
             }
         }
 

@@ -39,7 +39,7 @@ namespace Iris
             window = new RenderWindow(
                 new VideoMode(800, 600), "Project Iris", Styles.Titlebar);
 
-            windowSize = new Vector2f(800, 600);
+            windowSize = new Vector2f(1920, 1080);
             window.SetFramerateLimit(60);
 
             window.Closed += (o, e) =>
@@ -51,7 +51,7 @@ namespace Iris
             window.GainedFocus += (o, e) => { Input.isActive = true; };
             window.LostFocus += (o, e) => { Input.isActive = false; };
             Camera = new View();
-            Camera.Zoom(.4f); //Adjust as needed
+            Camera.Zoom(.3f); //Adjust as needed
             dm = new Deathmatch();
         }
 

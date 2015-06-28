@@ -11,6 +11,8 @@ namespace Iris
     public class ClientPlayer : Actor
     {
         Animation idle, running, jumpUp, jumpDown;
+        int frame = 0;
+        float timer = 0;
 
         public ClientPlayer(Deathmatch dm)
             : base(dm)
@@ -20,18 +22,30 @@ namespace Iris
             MaxJumps = 200;
             JumpsLeft = MaxJumps;
 
-            idle = new Animation(new Sprite(Content.GetTexture("idle.png")), 4, 120);
+            idle = new Animation(Content.GetTexture("idle.png"), 4, 120);
             animation = idle;
-            Sprite.Texture = animation.getTexture();
+            //Sprite.Texture = animation.getTexture();
+            Texture = Content.GetTexture("idle.png");
         }
 
         public override void Update()
         {
             base.Update();
+            animation.Update();
             handleControls();
             UpdatePosition();
             dm.Mailman.SendPlayerPosMessage(UID, Pos);
 
+            //frameDelta += (float)MainGame.deltaTime.TotalMilliseconds;
+            timer += MainGame.startTime.Millisecond;
+            if (timer > 350f)
+            {
+                timer = 0;
+                frame++;
+                if (frame >= 3)
+                    frame = 0;
+                //frame %= 3; //total frames
+            }
             
         }
 
@@ -41,7 +55,7 @@ namespace Iris
             if (Input.isMouseButtonTap(Mouse.Button.Left))
             {
                 //Console.WriteLine("Bang");
-                dm.Projectiles.Add(new Bullet(Helper.angleBetween(MainGame.worldMousePos, Pos), Pos, 1, 0));
+                dm.Projectiles.Add(new Bullet(Helper.angleBetween(MainGame.worldMousePos, Pos - new Vector2f(0, 35)), Pos - new Vector2f(0, 35), 4, 0));
             }
 
             if (Input.isKeyTap(Keyboard.Key.W))
@@ -68,7 +82,7 @@ namespace Iris
 
         private void UpdatePosition()
         {
-            Sprite.Color = Color.White;
+            //Sprite.Color = Color.White;
             //increase velocity by gravity, up to a maximum
             Velocity.Y += dm.gravity;
             if (Velocity.Y > dm.gravity * 15)
@@ -171,6 +185,25 @@ namespace Iris
         public override void Draw()
         {
             base.Draw();
+
+            //if (frame == 1)
+            //Console.Write(frame);
+            //Render.Draw(animation.getTexture(), this.Pos, Color.White, new Vector2f(0,0), 1, 0,1);
+
+            Texture idleTest = Content.GetTexture("idle.png");
+            Render.DrawAnimation(idleTest, this.Pos, Color.White, new Vector2f(idleTest.Size.X/16, idleTest.Size.Y), 1, 4, animation.Frame, 1);
+            //Sprite s = new Sprite(idleTest);
+
+            //s.TextureRect = new IntRect(
+            //    64 * frame,
+            //    0,
+            //    64,
+            //    55
+            //);
+
+            //MainGame.window.Draw(s);
+            //Render.Draw(s.Texture, this.Pos, Color.White, new Vector2f(0, 0), 1, 0, 1);
+
             RectangleShape rect = new RectangleShape();
             rect.Position = new Vector2f((int)Pos.X, (int)Pos.Y);
             rect.Size = new Vector2f(1, 1);
