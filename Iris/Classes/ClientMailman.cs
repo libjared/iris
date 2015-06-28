@@ -138,7 +138,7 @@ namespace Iris
             Player plr = dm.GetPlayerWithUID(uid);
             if (plr != null) //stale POS message, player is already gone?
             {
-                plr.Position = new Vector2f(x, y);
+                plr.Pos = new Vector2f(x, y);
             }
         }
 

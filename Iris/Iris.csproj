@@ -45,6 +45,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Classes\Animation.cs" />
+    <Compile Include="Classes\Bullet.cs" />
     <Compile Include="Classes\ClientMailman.cs" />
     <Compile Include="Classes\ClientPlayer.cs" />
     <Compile Include="Classes\Content.cs" />
