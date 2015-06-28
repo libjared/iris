@@ -13,7 +13,7 @@ namespace Iris
         public static DateTime startTime;
         public static Vector2f windowSize;
         public static Random rand;
-
+        public static View Camera;
         public static Deathmatch dm;
 
         public static void StartGame()
@@ -49,7 +49,8 @@ namespace Iris
 
             window.GainedFocus += (o, e) => { Input.isActive = true; };
             window.LostFocus += (o, e) => { Input.isActive = false; };
-
+            Camera = new View();
+            Camera.Zoom(.4f);
             dm = new Deathmatch();
         }
 

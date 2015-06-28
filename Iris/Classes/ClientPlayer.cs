@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Iris
 {
-    class ClientPlayer : Player
+    public class ClientPlayer : Player
     {
         public ClientPlayer(Deathmatch dm)
             : base(dm)

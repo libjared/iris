@@ -8,6 +8,7 @@ namespace Iris
     public class Deathmatch
     {
         public ClientMailman Mailman { get; set; }
+        public ClientPlayer player;
         public List<Player> Players { get; set; }
         private Sprite mapSprite;
         private byte[] mapBytes;
@@ -28,9 +29,9 @@ namespace Iris
             mapWidth = (int)mapImg.Size.X;
             mapHeight = (int)mapImg.Size.Y;
 
-            ClientPlayer plr = new ClientPlayer(this);
-            plr.Position = new Vector2f(46, 62);
-            Players.Add(plr);
+            player = new ClientPlayer(this);
+            player.Pos = new Vector2f(46, 62);
+            Players.Add(player);
         }
 
         public void Update()
@@ -41,6 +42,9 @@ namespace Iris
 
         public void Draw()
         {
+            MainGame.Camera.Center = player.Pos;
+            
+            MainGame.window.SetView(MainGame.Camera);
             Players.ForEach(p => { p.Draw(); } );
             MainGame.window.Draw(mapSprite);
         }
