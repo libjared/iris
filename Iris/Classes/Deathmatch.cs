@@ -14,6 +14,8 @@ namespace Iris
         private int mapWidth;
         private int mapHeight;
 
+        public float gravity = 1f;
+
         public Deathmatch()
         {
             Players = new List<Player>();

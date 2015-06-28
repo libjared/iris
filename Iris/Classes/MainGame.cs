@@ -61,6 +61,7 @@ namespace Iris
             dm.Update();
             dm.Draw();
             window.Display();
+            Input.refreshState(); //Always call last
 
             if (Input.isKeyDown(Keyboard.Key.Escape))
             {

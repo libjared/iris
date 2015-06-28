@@ -11,8 +11,14 @@ namespace Iris
     public abstract class Player : Sprite
     {
         public int Health { get; set; }
+        public float Speed { get; set; }
+        public Vector2f Velocity { get; set; }
+        new public Vector2f Position { get; set; }
         public string Name { get; set; }
         public long UID { get; set; }
+        public bool OnGround { get; set; }
+        public int JumpsLeft { get; set; }
+        public int MaxJumps { get; set; }
         protected Deathmatch dm;
 
         public Player(Deathmatch dm)
@@ -28,7 +34,10 @@ namespace Iris
 
         public virtual void Update()
         {
+            base.Position = this.Position;
         }
+
+
 
         public virtual void Draw()
         {

@@ -157,5 +157,14 @@ namespace Iris
         {
             dm.Players.Remove(dm.GetPlayerWithUID(uid));
         }
+
+        public void SendPlayerPosMessage(long uid, Vector2f pos)
+        {
+            NetOutgoingMessage outGoingMessage = client.CreateMessage();
+            outGoingMessage.Write("POS");
+            outGoingMessage.Write(pos.X);
+            outGoingMessage.Write(pos.Y);
+            client.SendMessage(outGoingMessage, NetDeliveryMethod.ReliableOrdered);
+        }
     }
 }
