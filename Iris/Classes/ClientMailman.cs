@@ -95,9 +95,9 @@ namespace Iris
                     long UID_POS = msg.ReadInt64();
                     float xPos = msg.ReadFloat();
                     float yPos = msg.ReadFloat();
-                    //int facing = msg.ReadInt32();
-                    //float aimAngle = msg.ReadFloat();
-                    HandlePosMessage(UID_POS, xPos, yPos, 1, 0);
+                    int facing = msg.ReadInt32();
+                    float aimAngle = msg.ReadFloat();
+                    HandlePosMessage(UID_POS, xPos, yPos, facing, aimAngle);
                     break;
 
                 case "JOIN": //Add a player
@@ -117,6 +117,13 @@ namespace Iris
                     break;
 
                 case "INFO": //Recieved when server has completed sending all newbie initialization
+                    break;
+                case "BULLET": //Recieved when server has completed sending all newbie initialization
+                     long UID_BULLET = msg.ReadInt64();
+                    float xBULLET = msg.ReadFloat();
+                    float yBULLET = msg.ReadFloat();
+                    float BULLETangle = msg.ReadFloat();
+                    MainGame.dm.Projectiles.Add(new Bullet(BULLETangle, new Vector2f(xBULLET, yBULLET), 6, 0)); //No damage yet
                     break;
 
                 default:
@@ -170,6 +177,16 @@ namespace Iris
             outGoingMessage.Write(pos.Y);
             outGoingMessage.Write(facing);
             outGoingMessage.Write(aimAngle);
+            client.SendMessage(outGoingMessage, NetDeliveryMethod.ReliableOrdered);
+        }
+
+        public void SendBulletCreate(Bullet b)
+        {
+            NetOutgoingMessage outGoingMessage = client.CreateMessage();
+            outGoingMessage.Write("BULLET");
+            outGoingMessage.Write(b.Pos.X);
+            outGoingMessage.Write(b.Pos.Y);
+            outGoingMessage.Write(b.Angle);
             client.SendMessage(outGoingMessage, NetDeliveryMethod.ReliableOrdered);
         }
     }

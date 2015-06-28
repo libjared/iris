@@ -82,8 +82,10 @@ namespace Iris
             if (Input.isMouseButtonTap(Mouse.Button.Left))
             {
                 //Console.WriteLine("Bang");
-                dm.Projectiles.Add(new Bullet(AimAngle, Core + Helper.PolarToVector2(28, AimAngle, 1, 1), 6, 0));
+                Bullet b = new Bullet(AimAngle, Core + Helper.PolarToVector2(28, AimAngle, 1, 1), 6, 0);
+                dm.Projectiles.Add(b);
                 MainGame.Camera.Center += Helper.PolarToVector2(5 * MainGame.rand.Next(2,5), AimAngle + (float)Math.PI, 1, 1);
+                dm.Mailman.SendBulletCreate(b);
             }
 
             if (Input.isKeyTap(Keyboard.Key.W))
