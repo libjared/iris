@@ -97,6 +97,12 @@ namespace Iris
         public override void Draw()
         {
             base.Draw();
+            RectangleShape rect = new RectangleShape();
+            rect.Position = new Vector2f((int)Pos.X, (int)Pos.Y);
+            rect.Size = new Vector2f(1, 1);
+            rect.FillColor = Color.White;
+            rect.OutlineColor = Color.White;
+            MainGame.window.Draw(rect);
         }
     }
 }
