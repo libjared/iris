@@ -11,8 +11,6 @@ namespace Iris
     public class ClientPlayer : Actor
     {
         Animation idle, running, jumpUp, jumpDown;
-        int frame = 0;
-        float timer = 0;
 
         public ClientPlayer(Deathmatch dm)
             : base(dm)
@@ -22,7 +20,10 @@ namespace Iris
             MaxJumps = 200;
             JumpsLeft = MaxJumps;
 
-            idle = new Animation(Content.GetTexture("idle.png"), 4, 120);
+            idle = new Animation(Content.GetTexture("idle.png"), 4, 120,1);
+            running = new Animation(Content.GetTexture("run.png"), 6, 60,2);
+            jumpUp = new Animation(Content.GetTexture("jumpUp.png"), 1, 60, 0);
+            jumpDown = new Animation(Content.GetTexture("jumpDown.png"), 3, 60, 0);
             animation = idle;
             //Sprite.Texture = animation.getTexture();
             Texture = Content.GetTexture("idle.png");
@@ -33,20 +34,43 @@ namespace Iris
             base.Update();
             animation.Update();
             handleControls();
+            handleAnimationSetting();
             UpdatePosition();
             dm.Mailman.SendPlayerPosMessage(UID, Pos);
 
             //frameDelta += (float)MainGame.deltaTime.TotalMilliseconds;
-            timer += MainGame.startTime.Millisecond;
-            if (timer > 350f)
-            {
-                timer = 0;
-                frame++;
-                if (frame >= 3)
-                    frame = 0;
-                //frame %= 3; //total frames
-            }
             
+        }
+
+        public override void Draw()
+        {
+            base.Draw();
+
+            //if (frame == 1)
+            //Console.Write(frame);
+            //Render.Draw(animation.Texture, this.Pos, Color.White, new Vector2f(0,0), 1, 0,1);
+            this.Texture = animation.Texture;
+            Render.DrawAnimation(Texture, this.Pos, Color.White, new Vector2f(Texture.Size.X / (animation.Count * 4), 
+                Texture.Size.Y - animation.YOffset), Facing, animation.Count, animation.Frame, 1);
+
+            //Sprite s = new Sprite(idleTest);
+
+            //s.TextureRect = new IntRect(
+            //    64 * frame,
+            //    0,
+            //    64,
+            //    55
+            //);
+
+            //MainGame.window.Draw(s);
+            //Render.Draw(s.Texture, this.Pos, Color.White, new Vector2f(0, 0), 1, 0, 1);
+
+            RectangleShape rect = new RectangleShape();
+            rect.Position = new Vector2f((int)Pos.X, (int)Pos.Y);
+            rect.Size = new Vector2f(1, 1);
+            rect.FillColor = Color.White;
+            rect.OutlineColor = Color.White;
+            MainGame.window.Draw(rect);
         }
 
         public void handleControls()
@@ -60,7 +84,7 @@ namespace Iris
 
             if (Input.isKeyTap(Keyboard.Key.W))
             {
-                if (OnGround || JumpsLeft > 0)
+                if (OnGround || (JumpsLeft > 0 && Velocity.Y > 3))
                 {
                     JumpsLeft--;
                     Vector2f nextVec = new Vector2f(0, -24f);
@@ -78,10 +102,42 @@ namespace Iris
             {
                 this.Velocity.X += 2;
             }
+
+            Facing = 1;
+            if (MainGame.worldMousePos.X < this.Pos.X)
+            {
+                Facing = -1;
+            }
+        }
+
+        public void handleAnimationSetting()
+        {
+
+            if (OnGround) //On Ground
+            {
+                if (Math.Abs(Velocity.X) > .2f)
+                    animation = running;
+                else
+                    animation = idle;
+                if (Math.Abs(Velocity.X) == 2)
+                    animation = idle;
+            }
+            if (!OnGround) // Not on Ground
+            {
+                if (Velocity.Y < 2)
+                {
+                    animation = jumpUp;
+                }
+                if (Velocity.Y > 2)
+                {
+                    animation = jumpDown;
+                }
+            }
         }
 
         private void UpdatePosition()
         {
+            Console.WriteLine(OnGround);
             //Sprite.Color = Color.White;
             //increase velocity by gravity, up to a maximum
             Velocity.Y += dm.gravity;
@@ -94,13 +150,14 @@ namespace Iris
             {
                 JumpsLeft = MaxJumps;
             }
-            //if destination is all clear, just set Pos and we're done //Nope, dont do this
-            //Vector2f dest = Velocity + Pos;
-            //if (!dm.MapCollide((int)dest.X, (int)dest.Y))
-            //{
-            //    Pos = dest;
-            //    return;
-            //}
+            //if destination is all clear, just set Pos and we're done //Nope, dont do this.
+            Vector2f dest = Velocity + Pos;
+            OnGround = true;
+            if (!dm.MapCollide((int)dest.X, (int)dest.Y))
+            {
+                OnGround = false;
+               // return;
+            }
             
             //Color = Color.Green;
 
@@ -182,34 +239,6 @@ namespace Iris
             }
         }
 
-        public override void Draw()
-        {
-            base.Draw();
-
-            //if (frame == 1)
-            //Console.Write(frame);
-            //Render.Draw(animation.getTexture(), this.Pos, Color.White, new Vector2f(0,0), 1, 0,1);
-
-            Texture idleTest = Content.GetTexture("idle.png");
-            Render.DrawAnimation(idleTest, this.Pos, Color.White, new Vector2f(idleTest.Size.X/16, idleTest.Size.Y), 1, 4, animation.Frame, 1);
-            //Sprite s = new Sprite(idleTest);
-
-            //s.TextureRect = new IntRect(
-            //    64 * frame,
-            //    0,
-            //    64,
-            //    55
-            //);
-
-            //MainGame.window.Draw(s);
-            //Render.Draw(s.Texture, this.Pos, Color.White, new Vector2f(0, 0), 1, 0, 1);
-
-            RectangleShape rect = new RectangleShape();
-            rect.Position = new Vector2f((int)Pos.X, (int)Pos.Y);
-            rect.Size = new Vector2f(1, 1);
-            rect.FillColor = Color.White;
-            rect.OutlineColor = Color.White;
-            MainGame.window.Draw(rect);
-        }
+        
     }
 }

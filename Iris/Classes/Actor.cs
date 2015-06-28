@@ -15,6 +15,7 @@ namespace Iris
         public Vector2f Velocity;
         public Vector2f Pos;
         public Animation animation;
+        public int Facing = 1;
 
         public int Health { get; set; }
         public string Name { get; set; }

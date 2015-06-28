@@ -41,7 +41,7 @@ namespace Iris
 
             windowSize = new Vector2f(1920, 1080);
             window.SetFramerateLimit(60);
-
+            window.SetMouseCursorVisible(false);
             window.Closed += (o, e) =>
             {
                 dm.Close();
@@ -51,7 +51,7 @@ namespace Iris
             window.GainedFocus += (o, e) => { Input.isActive = true; };
             window.LostFocus += (o, e) => { Input.isActive = false; };
             Camera = new View();
-            Camera.Zoom(.3f); //Adjust as needed
+            Camera.Zoom(.25f); //Adjust as needed
             dm = new Deathmatch();
         }
 
@@ -62,6 +62,7 @@ namespace Iris
             Input.Update();
             dm.Update();
             dm.Draw();
+            Render.Draw(Content.GetTexture("crosshair.png"), worldMousePos, Color.White, new Vector2f(11, 11), 1, 0, 1);
             window.Display();
             updateWorldMousePos();
 
