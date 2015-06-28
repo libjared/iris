@@ -6,13 +6,13 @@ using SFML.Graphics;
 
 namespace Iris
 {
-    class NetPlayer : Player
+    class NetPlayer : Actor
     {
         public NetPlayer(Deathmatch dm, long UID)
             : base(dm)
         {
             this.UID = UID;
-            Color = Color.Red;
+            Sprite.Color = Color.Red;
         }
 
         public override void Draw()

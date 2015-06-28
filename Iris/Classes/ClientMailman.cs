@@ -135,7 +135,7 @@ namespace Iris
 
         private void HandlePosMessage(long uid, float x, float y)
         {
-            Player plr = dm.GetPlayerWithUID(uid);
+            Actor plr = dm.GetPlayerWithUID(uid);
             if (plr != null) //stale POS message, player is already gone?
             {
                 plr.Pos = new Vector2f(x, y);
@@ -145,7 +145,7 @@ namespace Iris
         private void HandleChatMessage(long uid, string message)
         {
             //TODO: add gui chat
-            Player p = dm.GetPlayerWithUID(uid);
+            Actor p = dm.GetPlayerWithUID(uid);
         }
 
         private void HandleJoinMessage(long uid)

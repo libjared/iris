@@ -11,23 +11,29 @@ namespace Iris
     {
         public ClientMailman Mailman { get; set; }
         public ClientPlayer player;
-        public List<Player> Players { get; set; }
+        public List<Actor> Players { get; set; }
         public List<Projectile> Projectiles { get; set; }
+        public List<Sprite> BackgroundImages { get; set; }
+        public List<Sprite> BackgroundImagesFar { get; set; }
         private Sprite mapSprite;
+        private Sprite Sky;
         private byte[] mapBytes;
         private int mapWidth;
         private int mapHeight;
 
-        public float gravity = 1f;
+        public float gravity = 1.3f;
 
         public Deathmatch()
         {
             Projectiles = new List<Projectile>();
-            Players = new List<Player>();
+            BackgroundImages = new List<Sprite>();
+            BackgroundImagesFar = new List<Sprite>();
+            Players = new List<Actor>();
             Mailman = new ClientMailman(this);
             Mailman.Connect();
 
             Image mapImg = new Image("Content/map.png");
+            Sky = new Sprite(Content.GetTexture("sky.png"));
             mapBytes = mapImg.Pixels;
             mapSprite = new Sprite(new Texture(mapImg));
             mapWidth = (int)mapImg.Size.X;
@@ -36,6 +42,22 @@ namespace Iris
             player = new ClientPlayer(this);
             player.Pos = new Vector2f(46, 62);
             Players.Add(player);
+
+
+            for (int i = 0; i < 3; i++)
+            {
+                Sprite s = new Sprite(Content.GetTexture("background1.png"));
+                s.Position = new Vector2f((float)(s.Texture.Size.X * (i - 1)), 0);
+                //Console.WriteLine(s.Position);
+                BackgroundImages.Add(s);
+            }
+            for (int i = 0; i < 3; i++ )
+            {
+                Sprite s = new Sprite(Content.GetTexture("background1Far.png"));
+                s.Position = new Vector2f((float)(s.Texture.Size.X * (i - 1)), 75);
+                //Console.WriteLine(s.Texture.Size.X);
+                BackgroundImagesFar.Add(s);
+            }
         }
 
         public void Update()
@@ -50,6 +72,15 @@ namespace Iris
                 Console.WriteLine("Bang");
                 Projectiles.Add(new Bullet(Helper.angleBetween(MainGame.worldMousePos, player.Pos), player.Pos, 1, 0));
             }
+
+            for (int i = 0 ; i < BackgroundImages.Count; i++)
+            {
+                BackgroundImages[i].Position -= new Vector2f(2f, 0);
+            }
+            for (int i = 0; i < BackgroundImagesFar.Count; i++)
+            {
+                BackgroundImagesFar[i].Position -= new Vector2f(1.5f, 0);
+            }
         }
 
         public void Draw()
@@ -57,8 +88,13 @@ namespace Iris
             MainGame.Camera.Center = player.Pos;
             
             MainGame.window.SetView(MainGame.Camera);
+            Sky.Draw(MainGame.window, RenderStates.Default);
+            BackgroundImagesFar.ForEach(p => { p.Draw(MainGame.window, RenderStates.Default); });
+            BackgroundImages.ForEach(p => { p.Draw(MainGame.window, RenderStates.Default); });
             Players.ForEach(p => { p.Draw(); } );
             Projectiles.ForEach(p => { p.Draw(); });
+            
+            
             MainGame.window.Draw(mapSprite);
         }
 
@@ -79,7 +115,7 @@ namespace Iris
             return r == 0 && g == 0 && b == 0 && a == 255;
         }
 
-        public Player GetPlayerWithUID(long id)
+        public Actor GetPlayerWithUID(long id)
         {
             return Players.FirstOrDefault(p => p.UID == id);
         }

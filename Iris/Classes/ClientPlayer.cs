@@ -8,33 +8,47 @@ using System.Text;
 
 namespace Iris
 {
-    public class ClientPlayer : Player
+    public class ClientPlayer : Actor
     {
+        Animation idle, running, jumpUp, jumpDown;
+
         public ClientPlayer(Deathmatch dm)
             : base(dm)
         {
             Pos = new Vector2f(10, 10);
             Speed = .35f;
-            MaxJumps = 50;
+            MaxJumps = 200;
             JumpsLeft = MaxJumps;
+
+            idle = new Animation(new Sprite(Content.GetTexture("idle.png")), 4, 120);
+            animation = idle;
         }
 
         public override void Update()
         {
+            base.Update();
             handleControls();
             UpdatePosition();
-            base.Update();
             dm.Mailman.SendPlayerPosMessage(UID, Pos);
+
+            
         }
 
         public void handleControls()
         {
+            //Console.WriteLine(Helper.angleBetween(MainGame.worldMousePos, Pos));
+            if (Input.isMouseButtonTap(Mouse.Button.Left))
+            {
+                //Console.WriteLine("Bang");
+                dm.Projectiles.Add(new Bullet(Helper.angleBetween(MainGame.worldMousePos, Pos), Pos, 1, 0));
+            }
+
             if (Input.isKeyTap(Keyboard.Key.W))
             {
                 if (OnGround || JumpsLeft > 0)
                 {
                     JumpsLeft--;
-                    Vector2f nextVec = new Vector2f(0, -15f);
+                    Vector2f nextVec = new Vector2f(0, -24f);
                     this.Velocity = nextVec;
                 }
             }
@@ -53,22 +67,27 @@ namespace Iris
 
         private void UpdatePosition()
         {
-            Color = Color.White;
+            Sprite.Color = Color.White;
             //increase velocity by gravity, up to a maximum
             Velocity.Y += dm.gravity;
-            if (Velocity.Y > dm.gravity * 12)
+            if (Velocity.Y > dm.gravity * 15)
             {
-                Velocity.Y = dm.gravity * 12;
+                Velocity.Y = dm.gravity * 15;
             }
 
-            //if destination is all clear, just set Pos and we're done
-            Vector2f dest = Velocity + Pos;
-            if (!dm.MapCollide((int)dest.X, (int)dest.Y))
+            if (dm.MapCollide((int)Pos.X, (int)Pos.Y + (int)Velocity.Y))
             {
-                Pos = dest;
-                return;
+                JumpsLeft = MaxJumps;
             }
-            Color = Color.Green;
+            //if destination is all clear, just set Pos and we're done //Nope, dont do this
+            //Vector2f dest = Velocity + Pos;
+            //if (!dm.MapCollide((int)dest.X, (int)dest.Y))
+            //{
+            //    Pos = dest;
+            //    return;
+            //}
+            
+            //Color = Color.Green;
 
             //we do the horizontal and vertical separately. one of them is blocking us
 
@@ -78,9 +97,10 @@ namespace Iris
             //try to clear vertical
             SolveVert();
 
+            Velocity.X *= .75f;
             Pos += Velocity * Speed;
             //horizontal decay
-            Velocity.X *= .75f;
+            
         }
 
         private void SolveVert()
@@ -89,7 +109,7 @@ namespace Iris
             Vector2i vertDest = new Vector2i(posi.X, posi.Y + (int)Velocity.Y);
             if (!dm.MapCollide(vertDest.X, vertDest.Y))
             {
-                Pos = new Vector2f(vertDest.X, vertDest.Y);
+                //Pos = new Vector2f(vertDest.X, vertDest.Y);
             }
             else //can't, we must search for the wall
             {
@@ -121,7 +141,7 @@ namespace Iris
             Vector2i horizDest = new Vector2i(posi.X + (int)Velocity.X, posi.Y);
             if (!dm.MapCollide(horizDest.X, horizDest.Y))
             {
-                Pos = new Vector2f(horizDest.X, horizDest.Y);
+                //Pos = new Vector2f(horizDest.X, horizDest.Y);
             }
             else //can't, we must search for the wall
             {

@@ -12,7 +12,7 @@ namespace Iris
     {
         public static float angleBetween(Vector2f vec1, Vector2f vec2)
         {
-            return (float)Math.PI / 2 + (float)(Math.PI) - (float)Math.Atan2(vec1.X - vec2.X, vec1.Y - vec2.Y);
+            return (float)Math.PI / 2 - (float)Math.Atan2(vec1.X - vec2.X, vec1.Y - vec2.Y);
         }
 
         public static Vector2f normalize(Vector2f vector)

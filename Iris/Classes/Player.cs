@@ -8,9 +8,10 @@ using System.Text;
 
 namespace Iris
 {
-    public abstract class Player : Sprite
+    public abstract class Actor
     {
         public float Speed;
+        public Sprite Sprite;
         public Vector2f Velocity;
         public Vector2f Pos;
         public Animation animation;
@@ -23,25 +24,27 @@ namespace Iris
         public int MaxJumps { get; set; }
         protected Deathmatch dm;
 
-        public Player(Deathmatch dm)
+        public Actor(Deathmatch dm)
         {
             Health = 100;
             Name = "Cactus Fantastico";
-            Position = new Vector2f(0, 0);
+            Pos = new Vector2f(0, 0);
             UID = 0;
-            Texture = Content.GetTexture("flint_right.png");
-            Origin = new Vector2f(Texture.Size.X/2, Texture.Size.Y);
+            //Texture = Content.GetTexture("flint_right.png");
+            //Origin = new Vector2f(Texture.Size.X /2 , Texture.Size.Y);
             this.dm = dm;
         }
 
         public virtual void Update()
         {
-            base.Position = Pos;
+            if (animation != null) 
+                animation.Update();
         }
 
         public virtual void Draw()
         {
-            MainGame.window.Draw(this);
+           // this.TextureRect = new IntRect(0, 0, 64, 55);
+            MainGame.window.Draw(this.Sprite);
         }
     }
 }

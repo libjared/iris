@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Iris
 {
-    class MainGame
+    public class MainGame
     {
         public static RenderWindow window;
         public static DateTime startTime;
@@ -57,15 +57,14 @@ namespace Iris
 
         private static void UpdateDraw(RenderWindow window)
         {
-
-            
-
-            window.Clear(Color.Blue);
+            window.Clear(Color.Black);
             window.DispatchEvents();
             Input.Update();
             dm.Update();
             dm.Draw();
             window.Display();
+            updateWorldMousePos();
+
             Input.refreshState(); //Always call last
 
             if (Input.isKeyDown(Keyboard.Key.Escape))
@@ -78,9 +77,9 @@ namespace Iris
             }
         }
 
-        private void updateWorldMousePos()
+        public static void updateWorldMousePos()
         {
-            worldMousePos = window.MapPixelToCoords(Mouse.GetPosition(window), Camera); //Mouse.GetPosition(Game.window).ToF() / 2 + new Vector2f(Game.window.Size.X / 4, Game.window.Size.Y / 4);
+            worldMousePos = window.MapPixelToCoords(Input.screenMousePos, Camera);
         }
     }
 }
