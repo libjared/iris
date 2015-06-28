@@ -15,16 +15,16 @@ namespace Iris
         {
             Pos = new Vector2f(10, 10);
             Speed = .35f;
-            MaxJumps = 2;
+            MaxJumps = 50;
             JumpsLeft = MaxJumps;
         }
 
         public override void Update()
         {
-            dm.Mailman.SendPlayerPosMessage(this.UID, this.Pos);
             handleControls();
-            updatePosition();           
+            UpdatePosition();
             base.Update();
+            dm.Mailman.SendPlayerPosMessage(UID, Pos);
         }
 
         public void handleControls()
@@ -51,47 +51,100 @@ namespace Iris
             }
         }
 
-        public void updatePosition()
+        private void UpdatePosition()
         {
+            Color = Color.White;
+            //increase velocity by gravity, up to a maximum
             Velocity.Y += dm.gravity;
             if (Velocity.Y > dm.gravity * 12)
             {
-                Velocity.Y = dm.gravity * 12;// = nextVecA;
+                Velocity.Y = dm.gravity * 12;
             }
-            
-            if (dm.MapCollide((int)(Pos.X + Velocity.X), (int)Pos.Y)) //Right and Left Walls
-            {
-                Velocity.X = 0;
-                Color = Color.Green;
-            }
-            
-            if (dm.MapCollide((int)(Pos.X), (int)(Pos.Y + Velocity.Y))) //Ground Collision
-            {
-                Velocity.Y = 0;
-                OnGround = true;
-                JumpsLeft = MaxJumps;
-                Color = Color.Green;
 
-                for (float i = 0; i < 10; i+=.01f)
+            //if destination is all clear, just set Pos and we're done
+            Vector2f dest = Velocity + Pos;
+            if (!dm.MapCollide((int)dest.X, (int)dest.Y))
+            {
+                Pos = dest;
+                return;
+            }
+            Color = Color.Green;
+
+            //we do the horizontal and vertical separately. one of them is blocking us
+
+            //try to clear horizontal
+            SolveHoriz();
+
+            //try to clear vertical
+            SolveVert();
+
+            Pos += Velocity * Speed;
+            //horizontal decay
+            Velocity.X *= .75f;
+        }
+
+        private void SolveVert()
+        {
+            Vector2i posi = new Vector2i((int)Pos.X, (int)Pos.Y);
+            Vector2i vertDest = new Vector2i(posi.X, posi.Y + (int)Velocity.Y);
+            if (!dm.MapCollide(vertDest.X, vertDest.Y))
+            {
+                Pos = new Vector2f(vertDest.X, vertDest.Y);
+            }
+            else //can't, we must search for the wall
+            {
+                int direction = Math.Sign(vertDest.Y - posi.Y);
+
+                if (direction == 0)
                 {
-                    if (dm.MapCollide((int)Pos.X, (int)(Pos.Y + i)))
+                    Console.WriteLine("stuck in vertical!");
+                    return;
+                }
+
+                int y = vertDest.Y;
+                while (true)
+                {
+                    y -= direction;
+                    if (!dm.MapCollide(posi.X, y))
                     {
-                        Console.WriteLine(i);
-                        Pos.Y += (int)i;
                         break;
                     }
                 }
-                
+                Velocity.Y = 0;
+                Pos.Y = y;
             }
-            else //Not On Ground
+        }
+
+        private void SolveHoriz()
+        {
+            Vector2i posi = new Vector2i((int)Pos.X, (int)Pos.Y);
+            Vector2i horizDest = new Vector2i(posi.X + (int)Velocity.X, posi.Y);
+            if (!dm.MapCollide(horizDest.X, horizDest.Y))
             {
-                
-                OnGround = false;
-                Color = Color.White;
+                Pos = new Vector2f(horizDest.X, horizDest.Y);
             }
-            
-            Pos += Velocity * Speed;
-            Velocity.X *= .75f;
+            else //can't, we must search for the wall
+            {
+                int direction = Math.Sign(horizDest.X - posi.X);
+
+                if (direction == 0)
+                {
+                    Console.WriteLine("stuck in horizontal!");
+                    return;
+                }
+
+                int x = horizDest.X;
+                while (true)
+                {
+                    x -= direction;
+                    if (!dm.MapCollide(x, posi.Y))
+                    {
+                        break;
+                    }
+                }
+                Velocity.X = 0;
+                Pos.X = x;
+            }
         }
 
         public override void Draw()
