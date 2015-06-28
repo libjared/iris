@@ -9,7 +9,7 @@ namespace Iris
         {
             if (args.Length >= 1 && args[0] == "server")
             {
-                Server s = new Server();
+                Iris.Server.Server s = new Iris.Server.Server();
                 s.Start();
             }
             else
