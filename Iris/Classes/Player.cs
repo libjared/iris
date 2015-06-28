@@ -10,10 +10,11 @@ namespace Iris
 {
     public abstract class Player : Sprite
     {
+        public float Speed;
+        public Vector2f Velocity;
+        public Vector2f Pos;
+
         public int Health { get; set; }
-        public float Speed { get; set; }
-        public Vector2f Velocity { get; set; }
-        new public Vector2f Position { get; set; }
         public string Name { get; set; }
         public long UID { get; set; }
         public bool OnGround { get; set; }
@@ -34,7 +35,7 @@ namespace Iris
 
         public virtual void Update()
         {
-            base.Position = this.Position;
+            base.Position = Pos;
         }
 
 

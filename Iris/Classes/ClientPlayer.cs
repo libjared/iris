@@ -13,6 +13,7 @@ namespace Iris
         public ClientPlayer(Deathmatch dm)
             : base(dm)
         {
+            Pos = new Vector2f(10, 10);
             Speed = .35f;
             MaxJumps = 2;
             JumpsLeft = MaxJumps;
@@ -20,7 +21,7 @@ namespace Iris
 
         public override void Update()
         {
-            dm.Mailman.SendPlayerPosMessage(this.UID, this.Position);
+            dm.Mailman.SendPlayerPosMessage(this.UID, this.Pos);
             handleControls();
             updatePosition();           
             base.Update();
@@ -39,54 +40,58 @@ namespace Iris
             }
             if (Input.isKeyDown(Keyboard.Key.A))
             {
-                Vector2f nextVec = this.Velocity + new Vector2f(-2, 0);
-                this.Velocity = nextVec;
+                this.Velocity.X -= 2;
             }
             if (Input.isKeyDown(Keyboard.Key.S))
             {
-                //Vector2f nextVec = this.Velocity + new Vector2f(-2, 0);
-                //this.Velocity = nextVec;
             }
             if (Input.isKeyDown(Keyboard.Key.D))
             {
-                Vector2f nextVec = this.Velocity + new Vector2f(2, 0);
-                this.Velocity = nextVec;
+                this.Velocity.X += 2;
             }
         }
 
         public void updatePosition()
         {
-            Velocity += new Vector2f(0, dm.gravity);
-            if (dm.MapCollide((int)(Position.X + Velocity.X), (int)Position.Y)) //Right and Left Walls
+            Velocity.Y += dm.gravity;
+            if (Velocity.Y > dm.gravity * 12)
             {
-                Vector2f nextVec = new Vector2f(0, Velocity.Y);
-                Velocity = nextVec;
+                Velocity.Y = dm.gravity * 12;// = nextVecA;
+            }
+            
+            if (dm.MapCollide((int)(Pos.X + Velocity.X), (int)Pos.Y)) //Right and Left Walls
+            {
+                Velocity.X = 0;
                 Color = Color.Green;
             }
-
-            if (dm.MapCollide((int)(Position.X), (int)(Position.Y + Velocity.Y))) //Ground Collision
+            
+            if (dm.MapCollide((int)(Pos.X), (int)(Pos.Y + Velocity.Y))) //Ground Collision
             {
+                Velocity.Y = 0;
                 OnGround = true;
                 JumpsLeft = MaxJumps;
-                Vector2f nextVec = new Vector2f(Velocity.X, 0);
-                Velocity = nextVec;
                 Color = Color.Green;
+
+                for (float i = 0; i < 10; i+=.01f)
+                {
+                    if (dm.MapCollide((int)Pos.X, (int)(Pos.Y + i)))
+                    {
+                        Console.WriteLine(i);
+                        Pos.Y += (int)i;
+                        break;
+                    }
+                }
+                
             }
             else //Not On Ground
             {
+                
                 OnGround = false;
                 Color = Color.White;
             }
-
-            if (Velocity.Y > dm.gravity * 12)
-            {
-                Vector2f nextVecA = Velocity;
-                nextVecA.Y = dm.gravity * 12;
-                Velocity = nextVecA;
-            }
-            this.Position += Velocity * Speed;
-            Vector2f nextVecSlow = new Vector2f(Velocity.X * .75f, Velocity.Y);
-            Velocity = nextVecSlow;
+            
+            Pos += Velocity * Speed;
+            Velocity.X *= .75f;
         }
 
         public override void Draw()
