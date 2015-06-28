@@ -12,6 +12,7 @@ namespace Iris
     class NetPlayer : Actor
     {
         Animation idle, running, jumpUp, jumpDown;
+        public Vector2f oldPosition;
 
         public NetPlayer(Deathmatch dm, long UID)
             : base(dm)
@@ -20,7 +21,7 @@ namespace Iris
             idle = new Animation(Content.GetTexture("idle.png"), 4, 120, 1);
             running = new Animation(Content.GetTexture("run.png"), 6, 60, 2);
             jumpUp = new Animation(Content.GetTexture("jumpUp.png"), 1, 60, 0);
-            jumpDown = new Animation(Content.GetTexture("jumpDown.png"), 3, 60, 0);
+            jumpDown = new Animation(Content.GetTexture("jumpDown.png"), 3, 60, -5);
             animation = idle;
             Texture = Content.GetTexture("idle.png");
             //.Color = Color.Red;
@@ -30,6 +31,7 @@ namespace Iris
         {
             base.Update();
             animation.Update();
+            oldPosition = Pos;
         }
 
         public override void Draw()
@@ -42,22 +44,23 @@ namespace Iris
 
         public void handleAnimationSetting()
         {
+            OnGround = false;
+            if (dm.MapCollide((int)this.Pos.X, (int)this.Pos.Y + (int)dm.gravity))
+                OnGround = true;
             if (OnGround) //On Ground
             {
-                if (Math.Abs(Velocity.X) > .2f)
+                if (Math.Abs(oldPosition.X - Pos.X) > .2f)
                     animation = running;
                 else
-                    animation = idle;
-                if (Math.Abs(Velocity.X) == 2)
                     animation = idle;
             }
             if (!OnGround) // Not on Ground
             {
-                if (Velocity.Y < 2)
+                if ((oldPosition.Y - Pos.Y) < 2)
                 {
                     animation = jumpUp;
                 }
-                if (Velocity.Y > 2)
+                if ((oldPosition.Y - Pos.Y) > 2)
                 {
                     animation = jumpDown;
                 }

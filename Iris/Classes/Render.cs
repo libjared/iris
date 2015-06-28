@@ -12,9 +12,9 @@ namespace Iris
     {
        // private static Vector2f offsetPosition = new Vector2f(0f, 0f);
 
-        public static void Draw(Texture texture, Vector2f position, Color color, Vector2f origin, int facing, float rotation, float scale = 1f)
+        public static void Draw(Texture texture, Vector2f position, Color color, Vector2f origin, int facing, float rotation, float scale = 1f, bool flipVert = false)
         {
-            DrawGenericTexture(texture, position, color, origin, facing, rotation, null, scale);
+            DrawGenericTexture(texture, position, color, origin, facing, rotation, null, scale, flipVert);
         }
 
         public static void DrawString(Font font, String message, Vector2f position, Color color, float scale, bool centered, float layer = 0.0f)
@@ -45,7 +45,7 @@ namespace Iris
         }
 
         //TODO: fix facing origin (-1 doesn't reflect about its center)
-        private static void DrawGenericTexture(Texture texture, Vector2f position, Color color, Vector2f origin, int facing, float rotation, IntRect? textureRect, float scale = 1)
+        private static void DrawGenericTexture(Texture texture, Vector2f position, Color color, Vector2f origin, int facing, float rotation, IntRect? textureRect, float scale = 1, bool flipVert = false)
         {
             Sprite sprite = new Sprite(texture);
             sprite.Texture.Smooth = false;
@@ -54,7 +54,7 @@ namespace Iris
             sprite.Position = position;
             sprite.Color = color;
             sprite.Rotation = Helper.RadToDeg(rotation);
-            sprite.Scale = new Vector2f(facing, 1) * scale;
+            sprite.Scale = new Vector2f(facing, flipVert? -1 : 1) * scale;
 
             if (textureRect.HasValue)
             {

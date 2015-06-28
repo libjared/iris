@@ -23,7 +23,7 @@ namespace Iris
             idle = new Animation(Content.GetTexture("idle.png"), 4, 120,1);
             running = new Animation(Content.GetTexture("run.png"), 6, 60,2);
             jumpUp = new Animation(Content.GetTexture("jumpUp.png"), 1, 60, 0);
-            jumpDown = new Animation(Content.GetTexture("jumpDown.png"), 3, 60, 0);
+            jumpDown = new Animation(Content.GetTexture("jumpDown.png"), 3, 60, -5);
             animation = idle;
             Texture = Content.GetTexture("idle.png");
         }
@@ -48,10 +48,14 @@ namespace Iris
             //if (frame == 1)
             //Console.Write(frame);
             //Render.Draw(animation.Texture, this.Pos, Color.White, new Vector2f(0,0), 1, 0,1);
+            Core = Pos - new Vector2f(-1, 35);
             this.Texture = animation.Texture;
+            Render.Draw(Content.GetTexture("pistolHand.png"), Core, Color.White, new Vector2f(2, 4), 1, AimAngle, 1, MainGame.worldMousePos.X < Core.X);
+            Render.Draw(Content.GetTexture("revolver.png"), Core, Color.White, new Vector2f(2, 4), 1, AimAngle, 1, MainGame.worldMousePos.X < Core.X);
             Render.DrawAnimation(Texture, this.Pos, Color.White, new Vector2f(Texture.Size.X / (animation.Count * 4), 
                 Texture.Size.Y - animation.YOffset), Facing, animation.Count, animation.Frame, 1);
 
+           
             //Sprite s = new Sprite(idleTest);
 
             //s.TextureRect = new IntRect(
@@ -74,16 +78,17 @@ namespace Iris
 
         public void handleControls()
         {
-            //Console.WriteLine(Helper.angleBetween(MainGame.worldMousePos, Pos));
+            
+            AimAngle = Helper.angleBetween(MainGame.worldMousePos, Core);
             if (Input.isMouseButtonTap(Mouse.Button.Left))
             {
                 //Console.WriteLine("Bang");
-                dm.Projectiles.Add(new Bullet(Helper.angleBetween(MainGame.worldMousePos, Pos - new Vector2f(0, 35)), Pos - new Vector2f(0, 35), 4, 0));
+                dm.Projectiles.Add(new Bullet(AimAngle, Core + Helper.PolarToVector2(28, AimAngle,1,1), 4, 0));
             }
 
             if (Input.isKeyTap(Keyboard.Key.W))
             {
-                if (OnGround || (JumpsLeft > 0 && Velocity.Y > 3))
+                if (OnGround || (JumpsLeft > 0 && Velocity.Y > 2))
                 {
                     JumpsLeft--;
                     Vector2f nextVec = new Vector2f(0, -24f);

@@ -16,6 +16,8 @@ namespace Iris
         public Vector2f Pos;
         public Animation animation;
         public int Facing = 1;
+        public float AimAngle;
+        public Vector2f Core;
 
         public int Health { get; set; }
         public string Name { get; set; }
