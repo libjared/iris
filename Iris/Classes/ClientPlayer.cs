@@ -22,6 +22,7 @@ namespace Iris
 
             idle = new Animation(new Sprite(Content.GetTexture("idle.png")), 4, 120);
             animation = idle;
+            Sprite.Texture = animation.getTexture();
         }
 
         public override void Update()

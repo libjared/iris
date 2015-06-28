@@ -54,9 +54,10 @@ namespace Iris
             //sprite.Origin = new Vector2f(sprite.Texture.Size.X / 2 / count, sprite.Texture.Size.Y);
         }
 
-        public IntRect getResult()
+        public Texture getTexture()
         {
-            return sprite.TextureRect;
+            Update();
+            return sprite.Texture;
         }
 
         public static void DrawAnimation(Texture texture, Vector2f position, Color color, Vector2f origin, int facing, int totalFrames, int totalRows, int currentFrame, int currentRow, float layer = 0.0f)

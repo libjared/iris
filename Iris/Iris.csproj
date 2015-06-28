@@ -54,7 +54,7 @@
     <Compile Include="Classes\Input.cs" />
     <Compile Include="Classes\MainGame.cs" />
     <Compile Include="Classes\NetPlayer.cs" />
-    <Compile Include="Classes\Player.cs" />
+    <Compile Include="Classes\Actor.cs" />
     <Compile Include="Classes\Program.cs" />
     <Compile Include="Classes\Projectile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
