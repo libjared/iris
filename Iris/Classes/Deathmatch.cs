@@ -196,7 +196,7 @@ namespace Iris
                 if (BackgroundTracks.Count < i)
                 {
                     Sprite s = new Sprite(Content.GetTexture("tracksBlur.png"));
-                    s.Position = new Vector2f((float)((s.Texture.Size.X - 2f) * (i - 1)) - MAPXOFFSET, 515 - MAPYOFFSET);
+                    s.Position = new Vector2f((float)((s.Texture.Size.X) * (i - 1)) - MAPXOFFSET, 515 - MAPYOFFSET);
                     BackgroundTracks.Add(s);
                 }
             }

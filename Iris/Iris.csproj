@@ -60,7 +60,7 @@
     <Compile Include="Classes\Program.cs" />
     <Compile Include="Classes\Projectile.cs" />
     <Compile Include="Classes\Render.cs" />
-    <Compile Include="Content\GunSmoke.cs" />
+    <Compile Include="Classes\GunSmoke.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Classes\Server.cs" />
   </ItemGroup>
@@ -128,6 +128,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\gibUpperLeg.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\gunSmoke.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\idle.png">
