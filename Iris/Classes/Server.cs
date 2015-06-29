@@ -105,6 +105,7 @@ namespace Iris.Server
             float angle = msg.ReadFloat();
 
             NetOutgoingMessage outMsg = server.CreateMessage();
+            outMsg.Write("BULLET");
             outMsg.Write(owner);
             outMsg.Write(x);
             outMsg.Write(y);
