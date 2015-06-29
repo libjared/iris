@@ -143,7 +143,7 @@ namespace Iris.Server
             outMsgLife.Write("LIFE");
             outMsgLife.Write(msg.SenderConnection.RemoteUniqueIdentifier);
             outMsgLife.Write(newHp);
-            server.SendToAll(outMsgLife, null, NetDeliveryMethod.ReliableOrdered, 0);
+            server.SendToAll(outMsgLife, msg.SenderConnection, NetDeliveryMethod.ReliableOrdered, 0);
         }
 
         private void HandlePOS(NetIncomingMessage msg)
@@ -235,5 +235,11 @@ namespace Iris.Server
         public long UID { get; set; }
         public string Name { get; set; }
         public int Life { get; set; }
+
+        public Player()
+        {
+            Name = "Ass-tastic";
+            Life = 100;
+        }
     }
 }
