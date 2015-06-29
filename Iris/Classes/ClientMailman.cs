@@ -123,7 +123,7 @@ namespace Iris
                     float xBULLET = msg.ReadFloat();
                     float yBULLET = msg.ReadFloat();
                     float BULLETangle = msg.ReadFloat();
-                    MainGame.dm.Projectiles.Add(new Bullet(UID_BULLET, BULLETangle, new Vector2f(xBULLET, yBULLET), 6, 0)); //No damage yet
+                    MainGame.dm.Projectiles.Add(new Bullet(UID_BULLET, BULLETangle, new Vector2f(xBULLET, yBULLET), 6, 40)); //No damage yet
                     break;
 
                 default:

@@ -88,7 +88,7 @@ namespace Iris
             {
                 if (Helper.Distance(MainGame.dm.Projectiles[i].Pos, Core) < 20)
                 {
-                    this.Health -= 9;
+                    this.Health -= MainGame.dm.Projectiles[i].Damage;
                     MainGame.dm.Projectiles.RemoveAt(i);
                 }
             }
@@ -138,7 +138,7 @@ namespace Iris
             if (Input.isMouseButtonTap(Mouse.Button.Left))
             {
                 //Console.WriteLine("Bang");
-                Bullet b = new Bullet(this.UID, AimAngle, Core + Helper.PolarToVector2(28, AimAngle, 1, 1), 6, 0);
+                Bullet b = new Bullet(this.UID, AimAngle, Core + Helper.PolarToVector2(28, AimAngle, 1, 1), 6, 40);
                 dm.Projectiles.Add(b);
                 MainGame.Camera.Center += Helper.PolarToVector2(3.5f * MainGame.rand.Next(1, 2), AimAngle + (float)Math.PI, 1, 1);
                 holdDistance = -10f;

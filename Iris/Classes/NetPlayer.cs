@@ -26,6 +26,7 @@ namespace Iris
             jumpDown = new Animation(Content.GetTexture("jumpDown.png"), 3, 60, -5);
             animation = idle;
             Texture = Content.GetTexture("idle.png");
+            Alive = true;
             //.Color = Color.Red;
         }
 
@@ -40,8 +41,49 @@ namespace Iris
             {
                 if (Helper.Distance(MainGame.dm.Projectiles[i].Pos, Core) < 20)
                 {
-                    this.Health -= 10;
+                    this.Health -= MainGame.dm.Projectiles[i].Damage;
                     MainGame.dm.Projectiles.RemoveAt(i);
+                }
+            }
+
+            if (Alive)
+            {
+                if (Health <= 0)
+                {
+                    MainGame.dm.Players.Remove(this);
+                    Alive = false;
+                    //MainGame.dm.GameObjects.Add(new Gib(new Texture(Content.GetTexture("gibHead.png")), Core, 0,0));
+                    for (int i = 0; i < 350; i++)
+                    {
+                        int gibNum = MainGame.rand.Next(1, 4);
+                        MainGame.dm.GameObjects.Add(new Gib(new Texture(Content.GetTexture("gib" + gibNum + ".png")), Core - new Vector2f(0, 4), (float)MainGame.rand.NextDouble() * 5,
+                            Helper.angleBetween(Core, Core - new Vector2f(0, 4)) + (float)Math.PI + (float)(i - 5 / 10f) + (float)MainGame.rand.NextDouble()));
+                    }
+
+                    MainGame.dm.GameObjects.Add(new Gib(new Texture(Content.GetTexture("gibHead.png")), Core - new Vector2f(0, 4), 3,
+                        Helper.angleBetween(Core, Core - new Vector2f(0, 4)) + (float)Math.PI));
+
+                    MainGame.dm.GameObjects.Add(new Gib(new Texture(Content.GetTexture("gibBody.png")), Core - new Vector2f(0, 1), 2,
+                        Helper.angleBetween(Core, Core - new Vector2f(1, 2)) + (float)Math.PI));
+
+                    MainGame.dm.GameObjects.Add(new Gib(new Texture(Content.GetTexture("gibUpperLeg.png")), Core + new Vector2f(0, 1), 3.2f,
+                        Helper.angleBetween(Core, Core - new Vector2f(.5f, 1)) + (float)Math.PI));
+
+                    MainGame.dm.GameObjects.Add(new Gib(new Texture(Content.GetTexture("gibUpperLeg.png")), Core + new Vector2f(0, 1), 3.2f,
+                        Helper.angleBetween(Core, Core - new Vector2f(-.5f, 1)) + (float)Math.PI));
+
+
+                    MainGame.dm.GameObjects.Add(new Gib(new Texture(Content.GetTexture("gibLowerLeg.png")), Core + new Vector2f(0, 1), 3.2f,
+                        Helper.angleBetween(Core, Core - new Vector2f(.15f, 3)) + (float)Math.PI));
+
+                    MainGame.dm.GameObjects.Add(new Gib(new Texture(Content.GetTexture("gibLowerLeg.png")), Core + new Vector2f(0, 1), 3.2f,
+                        Helper.angleBetween(Core, Core - new Vector2f(-.20f, 2)) + (float)Math.PI));
+
+                    MainGame.dm.GameObjects.Add(new Gib(new Texture(Content.GetTexture("gibArm.png")), Core + new Vector2f(0, 1), 3.2f,
+                        Helper.angleBetween(Core, Core - new Vector2f(.04f, 3)) + (float)Math.PI));
+
+                    MainGame.dm.GameObjects.Add(new Gib(new Texture(Content.GetTexture("gibArm.png")), Core + new Vector2f(0, 1), 3.2f,
+                        Helper.angleBetween(Core, Core - new Vector2f(-.55f, 2)) + (float)Math.PI));
                 }
             }
         }
