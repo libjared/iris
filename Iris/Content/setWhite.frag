@@ -1,4 +1,4 @@
-#version 330
+#version 120
 
 // "Seascape" by Alexander Alekseev aka TDM - 2014
 // License Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License.
