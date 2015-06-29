@@ -98,7 +98,7 @@ namespace Iris
 
 
             MainGame.window.SetView(MainGame.Camera);
-            Console.WriteLine(player.Pos);
+            //Console.WriteLine(player.Pos);
             Texture t = Content.GetTexture("sky.png");
 
             Render.Draw(t, new Vector2f(-t.Size.X, -MAPYOFFSET), Color.White, new Vector2f(0,0),1, 0, 1);
@@ -115,7 +115,7 @@ namespace Iris
             Players.ForEach(p => { p.Draw(); });
             Projectiles.ForEach(p => { p.Draw(); });
             GameObjects.ForEach(p => { p.Draw(); });
-            
+            MainGame.window.Draw(new Sprite(Content.GetTexture("mapDecor.png")));
             //MainGame.window.Draw(mapSprite);
             
         }
@@ -196,27 +196,27 @@ namespace Iris
                 if (BackgroundTracks.Count < i)
                 {
                     Sprite s = new Sprite(Content.GetTexture("tracksBlur.png"));
-                    s.Position = new Vector2f((float)((s.Texture.Size.X - 1) * (i - 1)) - MAPXOFFSET, 515 - MAPYOFFSET);
+                    s.Position = new Vector2f((float)((s.Texture.Size.X - 2f) * (i - 1)) - MAPXOFFSET, 515 - MAPYOFFSET);
                     BackgroundTracks.Add(s);
                 }
             }
 
             for (int i = 0; i < BackgroundImages.Count; i++) //Main Background
             {
-                BackgroundImages[i].Position -= new Vector2f(2f, 0);
+                BackgroundImages[i].Position -= new Vector2f(1, 0);
                 if (BackgroundImages[i].Position.X < -BackgroundImages[i].Texture.Size.X - MAPXOFFSET)
                     BackgroundImages.RemoveAt(i);
 
             }
             for (int i = 0; i < BackgroundImagesFar.Count; i++) //Far Background
             {
-                BackgroundImagesFar[i].Position -= new Vector2f(.8f, 0);
+                BackgroundImagesFar[i].Position -= new Vector2f(.4f, 0);
                 if (BackgroundImagesFar[i].Position.X < -BackgroundImagesFar[i].Texture.Size.X - MAPXOFFSET)
                     BackgroundImagesFar.RemoveAt(i);
             }
             for (int i = 0; i < BackgroundTracks.Count; i++) //Tracks
             {
-                BackgroundTracks[i].Position -= new Vector2f(8, 0);
+                BackgroundTracks[i].Position -= new Vector2f(10, 0);
                 if (BackgroundTracks[i].Position.X < -BackgroundTracks[i].Texture.Size.X - MAPXOFFSET)
                     BackgroundTracks.RemoveAt(i);
             }

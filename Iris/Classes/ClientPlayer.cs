@@ -44,6 +44,9 @@ namespace Iris
             if (Input.isKeyTap(Keyboard.Key.K))
                 Health = 0;
 
+            if (Pos.Y > 245)
+                SetHealth(0);
+
             if (Alive)
             {
                 if (Health <= 0)
