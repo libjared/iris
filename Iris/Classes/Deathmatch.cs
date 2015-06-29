@@ -110,11 +110,11 @@ namespace Iris
             Render.Draw(t, new Vector2f(0, -MAPYOFFSET), Color.White, new Vector2f(0, 0), 1, 0, 1);
             Render.Draw(t, new Vector2f(t.Size.X, -MAPYOFFSET), Color.White, new Vector2f(0, 0), 1, 0, 1);
 
-            HandleBackground();
+            
             BackgroundImagesFar.ForEach(p => { p.Draw(MainGame.window, RenderStates.Default); });
             BackgroundImages.ForEach(p => { p.Draw(MainGame.window, RenderStates.Default); });
             BackgroundTracks.ForEach(p => { p.Draw(MainGame.window, RenderStates.Default); });
-
+            HandleBackground();
 
             MainGame.window.Draw(new Sprite(Content.GetTexture("mapDecor.png")));
             if (MapCollide((int)player.Pos.X, (int)player.Pos.Y, intCol))
@@ -204,7 +204,7 @@ namespace Iris
                     BackgroundImagesFar.Add(s);
                 }
             }
-            for (int i = 0; i < 25; i++)
+            for (int i = 0; i < 150; i++)
             {
                 if (BackgroundTracks.Count < i)
                 {
@@ -223,13 +223,13 @@ namespace Iris
             }
             for (int i = 0; i < BackgroundImagesFar.Count; i++) //Far Background
             {
-                BackgroundImagesFar[i].Position -= new Vector2f(.4f, 0);
+                BackgroundImagesFar[i].Position -= new Vector2f(.2f, 0);
                 if (BackgroundImagesFar[i].Position.X < -BackgroundImagesFar[i].Texture.Size.X - MAPXOFFSET)
                     BackgroundImagesFar.RemoveAt(i);
             }
             for (int i = 0; i < BackgroundTracks.Count; i++) //Tracks
             {
-                BackgroundTracks[i].Position -= new Vector2f(10, 0);
+                BackgroundTracks[i].Position -= new Vector2f(20, 0);
                 if (BackgroundTracks[i].Position.X < -BackgroundTracks[i].Texture.Size.X - MAPXOFFSET)
                     BackgroundTracks.RemoveAt(i);
             }
