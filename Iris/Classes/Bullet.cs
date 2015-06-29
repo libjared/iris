@@ -24,7 +24,7 @@ namespace Iris
         public override void Update()
         {
             lifeRemaining--;
-            if (lifeRemaining < 0 || MainGame.dm.MapCollide((int)Pos.X,(int)Pos.Y,Deathmatch.anyCol))
+            if (lifeRemaining < 0 || MainGame.dm.MapCollide((int)Pos.X,(int)Pos.Y,Deathmatch.hardCol))
             {
                 MainGame.dm.Projectiles.Remove(this);
             }

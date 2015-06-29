@@ -23,8 +23,8 @@ namespace Iris
             Alive = true;
             SetHealth(100);
             idle = new Animation(Content.GetTexture("idle.png"), 4, 120, 1, true);
-            running = new Animation(Content.GetTexture("run.png"), 6, 60, 3, true);
-            backpedal = new Animation(Content.GetTexture("run.png"), 6, 60, 2, false);
+            running = new Animation(Content.GetTexture("run.png"), 6, 60, 1, true);
+            backpedal = new Animation(Content.GetTexture("run.png"), 6, 60, 1, false);
             jumpUp = new Animation(Content.GetTexture("jumpUp.png"), 1, 60, 0, true);
             jumpDown = new Animation(Content.GetTexture("jumpDown.png"), 3, 60, -5, true);
             animation = idle;
@@ -254,14 +254,14 @@ namespace Iris
                 Velocity.Y = dm.gravity * 15;
             }
 
-            if (dm.MapCollide((int)Pos.X, (int)Pos.Y + (int)Velocity.Y, Deathmatch.anyCol))
+            if (dm.MapCollide((int)Pos.X, (int)Pos.Y + (int)Velocity.Y, Deathmatch.hardCol))
             {
                 JumpsLeft = MaxJumps;
             }
             //if destination is all clear, just set Pos and we're done //Nope, dont do this.
             Vector2f dest = Velocity + Pos;
             OnGround = true;
-            if (!dm.MapCollide((int)dest.X, (int)dest.Y, Deathmatch.anyCol))
+            if (!dm.MapCollide((int)dest.X, (int)dest.Y, Deathmatch.hardCol))
             {
                 OnGround = false;
             }
@@ -286,7 +286,7 @@ namespace Iris
         {
             Vector2i posi = new Vector2i((int)Pos.X, (int)Pos.Y);
             Vector2i vertDest = new Vector2i(posi.X, posi.Y + (int)Velocity.Y);
-            if (!dm.MapCollide(vertDest.X, vertDest.Y, Deathmatch.anyCol))
+            if (!dm.MapCollide(vertDest.X, vertDest.Y, Deathmatch.hardCol))
             {
                 //Pos = new Vector2f(vertDest.X, vertDest.Y);
             }
@@ -304,7 +304,7 @@ namespace Iris
                 while (true)
                 {
                     y -= direction;
-                    if (!dm.MapCollide(posi.X, y, Deathmatch.anyCol))
+                    if (!dm.MapCollide(posi.X, y, Deathmatch.hardCol))
                     {
                         break;
                     }
@@ -318,7 +318,7 @@ namespace Iris
         {
             Vector2i posi = new Vector2i((int)Pos.X, (int)Pos.Y);
             Vector2i horizDest = new Vector2i(posi.X + (int)Velocity.X, posi.Y);
-            if (!dm.MapCollide(horizDest.X, horizDest.Y, Deathmatch.anyCol))
+            if (!dm.MapCollide(horizDest.X, horizDest.Y, Deathmatch.hardCol))
             {
                 //Pos = new Vector2f(horizDest.X, horizDest.Y);
             }
@@ -336,7 +336,7 @@ namespace Iris
                 while (true)
                 {
                     x -= direction;
-                    if (!dm.MapCollide(x, posi.Y, Deathmatch.anyCol))
+                    if (!dm.MapCollide(x, posi.Y, Deathmatch.hardCol))
                     {
                         break;
                     }

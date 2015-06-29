@@ -25,6 +25,7 @@ namespace Iris
 
         public static Color hardCol = new Color(0, 0, 0, 255);
         public static Color softCol = new Color(0, 255, 0, 255);
+        public static Color intCol = new Color(255, 0, 0, 0);
         public static Color anyCol = new Color(1, 1, 1, 0);
 
         public static float MAPYOFFSET = 297f;
@@ -75,6 +76,9 @@ namespace Iris
                 Mailman.SendRespawn(player.UID);
             }
 
+            if (Input.isKeyDown(Keyboard.Key.R))
+                MainGame.Camera.Center += new Vector2f(MainGame.rand.Next(-4, 5), MainGame.rand.Next(-4, 5));
+
         }
 
         public void Draw()
@@ -84,8 +88,10 @@ namespace Iris
             Vector2f focus = player.Core +
                 new Vector2f(Input.screenMousePos.X - MainGame.window.Size.X / 2,
                 Input.screenMousePos.Y - MainGame.window.Size.Y / 2) / 2;
+
             if (Helper.Distance(player.Core, focus) > 100)
                 focus = player.Core + Helper.PolarToVector2(100, player.AimAngle, 1, 1);//player.Core + Helper.normalize(focus) * 100;
+
             focus.Y = player.Pos.Y - 90;
             Helper.MoveCameraTo(MainGame.Camera, focus, .04f);
             if (MainGame.Camera.Center.Y > 180 - 90)
@@ -96,12 +102,11 @@ namespace Iris
             //                Main.screenMousePos.Y - Main.graphics.PreferredBackBufferHeight / 2) *
             //                Main.graphics.GraphicsDevice.Viewport.AspectRatio / player.currentWeapon.viewDistance);
 
-
             MainGame.window.SetView(MainGame.Camera);
             //Console.WriteLine(player.Pos);
             Texture t = Content.GetTexture("sky.png");
 
-            Render.Draw(t, new Vector2f(-t.Size.X, -MAPYOFFSET), Color.White, new Vector2f(0,0),1, 0, 1);
+            Render.Draw(t, new Vector2f(-t.Size.X, -MAPYOFFSET), Color.White, new Vector2f(0, 0), 1, 0, 1);
             Render.Draw(t, new Vector2f(0, -MAPYOFFSET), Color.White, new Vector2f(0, 0), 1, 0, 1);
             Render.Draw(t, new Vector2f(t.Size.X, -MAPYOFFSET), Color.White, new Vector2f(0, 0), 1, 0, 1);
 
@@ -110,14 +115,19 @@ namespace Iris
             BackgroundImages.ForEach(p => { p.Draw(MainGame.window, RenderStates.Default); });
             BackgroundTracks.ForEach(p => { p.Draw(MainGame.window, RenderStates.Default); });
 
-            
+
             MainGame.window.Draw(new Sprite(Content.GetTexture("mapDecor.png")));
+            if (MapCollide((int)player.Pos.X, (int)player.Pos.Y, intCol))
+                MainGame.window.Draw(new Sprite(Content.GetTexture("mapInterior.png")));
+
             Players.ForEach(p => { p.Draw(); });
             Projectiles.ForEach(p => { p.Draw(); });
             GameObjects.ForEach(p => { p.Draw(); });
-            MainGame.window.Draw(new Sprite(Content.GetTexture("mapDecor.png")));
+
+            if (!MapCollide((int)player.Pos.X, (int)player.Pos.Y, intCol))
+                MainGame.window.Draw(new Sprite(Content.GetTexture("mapDecor.png")));
             //MainGame.window.Draw(mapSprite);
-            
+
         }
 
         public bool MapCollide(int x, int y, Color c)
@@ -132,7 +142,7 @@ namespace Iris
             byte g = mapBytes[index + 1];
             byte b = mapBytes[index + 2];
             byte a = mapBytes[index + 3];
-            Color result = new Color(r,g,b,a);
+            Color result = new Color(r, g, b, a);
             //only collide if black
             if (c.A == 0 && result.A != 0)
                 return true;
@@ -146,7 +156,8 @@ namespace Iris
 
         public void CheckProjectileCollisions()
         {
-            for (int i = 0; i < Projectiles.Count; i++){
+            for (int i = 0; i < Projectiles.Count; i++)
+            {
 
                 if (Helper.Distance(Projectiles[i].Pos, player.Core) < 20)
                 {
@@ -154,8 +165,10 @@ namespace Iris
                     //Projectiles[i].onPlayerHit(player);
                 }
 
-                for (int a = 0; a < Players.Count; a++){
-                    if (Helper.Distance(Projectiles[i].Pos, Players[a].Core) < 20){
+                for (int a = 0; a < Players.Count; a++)
+                {
+                    if (Helper.Distance(Projectiles[i].Pos, Players[a].Core) < 20)
+                    {
                         if (Projectiles[i].OwnerUID != Players[a].UID)
                         {
                             //Projectiles[i].onPlayerHit(Players[a]);
