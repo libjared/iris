@@ -45,6 +45,9 @@ namespace Iris
 
         private static void LoadContentInitialize()
         {
+            Shader shad = new Shader(null, "Content/testFrag.frag");
+            rs = new RenderStates(shad);
+
             window = new RenderWindow(
                 new VideoMode(800, 600), "Project Iris", Styles.Titlebar);
 
@@ -64,6 +67,8 @@ namespace Iris
             dm = new Deathmatch();
         }
 
+        static RenderStates rs;
+
         private static void UpdateDraw(RenderWindow window)
         {
             window.Clear(Color.Black);
@@ -72,6 +77,17 @@ namespace Iris
             dm.Update();
             dm.Draw();
             Render.Draw(Content.GetTexture("crosshair.png"), worldMousePos, Color.White, new Vector2f(11, 11), 1, 0, 1);
+            //shaders
+            window.Position = new Vector2i((int)dm.player.Pos.X, (int)dm.player.Pos.Y);
+            //Image img = window.Capture();
+            //window.Clear(Color.Black);
+            //Texture thisFrame = new Texture(img);
+            rs.Shader.SetParameter("iGlobalTime", (float)(DateTime.Now - startTime).TotalSeconds);
+            RectangleShape spr = new RectangleShape();
+            spr.Position = new Vector2f(window.GetView().Center.X, window.GetView().Center.Y) - new Vector2f(400, 300);
+            spr.Size = new Vector2f(800, 600);
+            window.Draw(spr, rs);
+            //end shaders
             window.Display();
             updateWorldMousePos();
 
