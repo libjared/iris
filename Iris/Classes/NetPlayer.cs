@@ -50,11 +50,14 @@ namespace Iris
                     MainGame.dm.Players.Remove(this);
                     Alive = false;
                     //MainGame.dm.GameObjects.Add(new Gib(new Texture(Content.GetTexture("gibHead.png")), Core, 0,0));
-                    for (int i = 0; i < 350; i++)
+                    for (int i = 0; i < 100; i++)
                     {
                         int gibNum = MainGame.rand.Next(1, 4);
-                        MainGame.dm.GameObjects.Add(new Gib(new Texture(Content.GetTexture("gib" + gibNum + ".png")), Core - new Vector2f(0, 4), (float)MainGame.rand.NextDouble() * 5,
-                            Helper.angleBetween(Core, Core - new Vector2f(0, 4)) + (float)Math.PI + (float)(i - 5 / 10f) + (float)MainGame.rand.NextDouble()));
+                        Gib g = new Gib(new Texture(Content.GetTexture("gib" + gibNum + ".png")), Core - new Vector2f(0, 4) +
+                            new Vector2f(MainGame.rand.Next(-4, 5), MainGame.rand.Next(-4, 5)), (float)MainGame.rand.NextDouble() * 4.5f,
+                            Helper.angleBetween(Core, Core - new Vector2f(0, 4)) + (float)Math.PI + (float)(i - 5 / 10f) + (float)MainGame.rand.NextDouble());
+                        g.addVel = new Vector2f(Velocity.X / 15, Velocity.Y / 35); //Trauma
+                        MainGame.dm.GameObjects.Add(g);
                     }
 
                     MainGame.dm.GameObjects.Add(new Gib(new Texture(Content.GetTexture("gibHead.png")), Core - new Vector2f(0, 4), 3,

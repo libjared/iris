@@ -42,7 +42,7 @@ namespace Iris
             dm.Mailman.SendPlayerPosMessage(UID, Pos, Facing, AimAngle);
 
             if (Input.isKeyTap(Keyboard.Key.K))
-                Health = 0;
+                SetHealth(0);
 
             if (Pos.Y > 245)
                 SetHealth(0);
@@ -95,6 +95,7 @@ namespace Iris
             {
                 if (Helper.Distance(MainGame.dm.Projectiles[i].Pos, Core) < 20)
                 {
+                    ouchTimer = 10;
                     SetHealth(this.Health - MainGame.dm.Projectiles[i].Damage);
                     MainGame.dm.Projectiles.RemoveAt(i);
                 }
@@ -118,7 +119,15 @@ namespace Iris
             Render.renderStates = Actor.shader;
             Texture pistolHand = Content.GetTexture("pistolHand.png");
             Texture revolver = Content.GetTexture("revolver.png");
-            //shader.Shader.SetParameter("ouch", 1f);
+
+            if (ouchTimer > 0)
+            {
+                shader.Shader.SetParameter("ouch", 1f);
+            }
+            else
+            {
+                shader.Shader.SetParameter("ouch", 0f);
+            }
 
             shader.Shader.SetParameter("sampler", pistolHand);
             Render.Draw(pistolHand, Core + Helper.PolarToVector2(holdDistance, AimAngle, 1, 1), Color.White, new Vector2f(2, 4), 1, AimAngle, 1, Facing == -1);
@@ -159,12 +168,13 @@ namespace Iris
                 dm.Projectiles.Add(b);
                 MainGame.Camera.Center += Helper.PolarToVector2(3.5f * MainGame.rand.Next(1, 2), AimAngle + (float)Math.PI, 1, 1);
                 holdDistance = -10f;
+                MainGame.dm.GameObjects.Add(new GunSmoke(Core + Helper.PolarToVector2(32, AimAngle, 1, 1) + (Velocity * 3), AimAngle));
                 dm.Mailman.SendBulletCreate(b);
             }
 
             if (Input.isKeyTap(Keyboard.Key.W))
             {
-                if (OnGround || (JumpsLeft > 0 && Velocity.Y > .85f))
+                if (OnGround || (JumpsLeft > 0)) // && Velocity.Y > 0))
                 {
                     JumpsLeft--;
                     Vector2f nextVec = new Vector2f(0, -24f - JumpsLeft);

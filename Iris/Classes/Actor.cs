@@ -19,6 +19,7 @@ namespace Iris
         public int Facing = 1;
         public float AimAngle;
         public Vector2f Core;
+        public int ouchTimer;
 
         public int Health { get; set; }
         public string Name { get; set; }
@@ -52,6 +53,7 @@ namespace Iris
         {
             if (animation != null) 
                 animation.Update();
+            ouchTimer--;
         }
 
         public virtual void Draw()
