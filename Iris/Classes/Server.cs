@@ -90,11 +90,26 @@ namespace Iris.Server
                 case "BULLET":
                     HandleBULLET(msg);
                     break;
+                case "RESPAWN":
+                    HandleRESPAWN(msg);
+                    break;
                 default:
                     Console.WriteLine(string.Format("Bad message type {0} from player {1}",
                         type, msg.SenderConnection.RemoteUniqueIdentifier));
                     break;
             }
+        }
+
+        private void HandleRESPAWN(NetIncomingMessage msg)
+        {
+            long who = msg.SenderConnection.RemoteUniqueIdentifier;
+
+            Console.WriteLine(string.Format("RESPAWN: {0}", who));
+
+            NetOutgoingMessage outMsg = server.CreateMessage();
+            outMsg.Write("RESPAWN");
+            outMsg.Write(who);
+            server.SendToAll(outMsg, msg.SenderConnection, NetDeliveryMethod.ReliableOrdered, 0);
         }
 
         private void HandleBULLET(NetIncomingMessage msg)
