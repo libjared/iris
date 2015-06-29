@@ -125,6 +125,10 @@ namespace Iris
                     float BULLETangle = msg.ReadFloat();
                     MainGame.dm.Projectiles.Add(new Bullet(UID_BULLET, BULLETangle, new Vector2f(xBULLET, yBULLET), 6, 40)); //No damage yet
                     break;
+                case "RESPAWN": //Recieved when server has completed sending all newbie initialization
+                    long UID_RESPAWN = msg.ReadInt64();
+                    HandleJoinMessage(UID_RESPAWN);
+                    break;
 
                 default:
                     Console.WriteLine("Unrecognized Game Message Recieved: {0}\n{1}", msg.ToString(), messageType);
