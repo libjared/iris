@@ -198,5 +198,12 @@ namespace Iris
             outGoingMessage.Write(life);
             client.SendMessage(outGoingMessage, NetDeliveryMethod.ReliableOrdered);
         }
+
+        public void SendJoin(long uid)
+        {
+            NetOutgoingMessage outGoingMessage = client.CreateMessage();
+            outGoingMessage.Write("RESPAWN");
+            client.SendMessage(outGoingMessage, NetDeliveryMethod.ReliableOrdered);
+        }
     }
 }

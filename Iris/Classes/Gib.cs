@@ -15,11 +15,13 @@ namespace Iris
         public Vector2f velocity;
         public float fallVel;
         public bool rotDir; //Rotation Direction = true / clockwise
+        public int lifeRemaining = 220;
+        public Vector2f addVel;
 
         public Gib(Texture texture, Vector2f pos, float speed, float angle)
             : base()
         {
-                this.Texture = texture;
+            this.Texture = texture;
             this.Pos = pos;
             this.angle = angle;
             Rot = (float)MainGame.rand.NextDouble() - .5f;
@@ -30,12 +32,22 @@ namespace Iris
 
         public override void Update()
         {
+            lifeRemaining--;
+
+            if (lifeRemaining <= 0)
+            {
+                this.Alpha *= .97f;
+                if (Alpha < .01f)
+                    MainGame.dm.GameObjects.Remove(this);
+            }
+
+
             if (speed != 0) //Not yet at rest
             {
                 fallVel += .1f;
                 Rot += .05f * speed * (rotDir ? 1 : -1);
             }
-            velocity = Helper.normalize(new Vector2f((float)Math.Cos(angle), (float)Math.Sin(angle)));
+            velocity = Helper.normalize(new Vector2f((float)Math.Cos(angle), (float)Math.Sin(angle))) + addVel;
             Pos += velocity * speed;
             Pos.Y += fallVel;
 
@@ -49,7 +61,7 @@ namespace Iris
 
         public override void Draw()
         {
-            Render.Draw(Texture, Pos, Color.White, new Vector2f(Texture.Size.X / 2, Texture.Size.Y / 2), 1, Rot, 1);
+            Render.Draw(Texture, Pos, new Color(255, 255, 255, (byte)(Alpha * 255)), new Vector2f(Texture.Size.X / 2, Texture.Size.Y / 2), 1, Rot, 1);
             base.Draw();
         }
     }

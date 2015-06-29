@@ -13,7 +13,7 @@ namespace Iris
         public Texture Texture;
         public float Rot;
         public Vector2f Pos;
-
+        public float Alpha = 1;
 
         public GameObject()
         {

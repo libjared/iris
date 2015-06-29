@@ -43,8 +43,6 @@ namespace Iris
                     MainGame.dm.Projectiles.RemoveAt(i);
                 }
             }
-
-            Console.WriteLine(Health);
             if (Alive)
             {
                 if (Health <= 0)

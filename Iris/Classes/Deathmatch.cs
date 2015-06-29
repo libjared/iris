@@ -63,6 +63,7 @@ namespace Iris
                 player = new ClientPlayer(this);
                 Players.Add(player);
                 player.Pos = new Vector2f(46, 62);
+                Mailman.SendJoin(player.UID);
             }
 
         }
