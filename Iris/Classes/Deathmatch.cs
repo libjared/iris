@@ -92,10 +92,15 @@ namespace Iris
             if (Helper.Distance(player.Core, focus) > 100)
                 focus = player.Core + Helper.PolarToVector2(100, player.AimAngle, 1, 1);//player.Core + Helper.normalize(focus) * 100;
 
-            focus.Y = player.Pos.Y - 90;
+            
             Helper.MoveCameraTo(MainGame.Camera, focus, .04f);
             if (MainGame.Camera.Center.Y > 180 - 90)
+            {
+                focus.Y = player.Pos.Y - 90;
                 MainGame.Camera.Center = new Vector2f(MainGame.Camera.Center.X, 180 - 90);
+            
+            
+        }
 
             //Camera2D.returnCamera(player.ActorCenter +
             //            new Vector2(Main.screenMousePos.X - Main.graphics.PreferredBackBufferWidth / 2,
@@ -186,7 +191,7 @@ namespace Iris
 
         public void HandleBackground()
         {
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < 16; i++)
             {
                 if (BackgroundImages.Count < i)
                 {
