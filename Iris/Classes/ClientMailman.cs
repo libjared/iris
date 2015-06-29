@@ -134,7 +134,8 @@ namespace Iris
 
         private void HandleLifeMessage(long uid, int health)
         {
-            dm.GetPlayerWithUID(uid).Health = health;
+            if (dm.GetPlayerWithUID(uid) != null)
+                dm.GetPlayerWithUID(uid).Health = health;
         }
 
         private void HandleNameMessage(long uid, string newName)

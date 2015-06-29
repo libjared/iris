@@ -58,6 +58,13 @@ namespace Iris
             GameObjects.ForEach(p => { p.Update(); });
             CheckProjectileCollisions();
 
+            if (Input.isKeyTap(Keyboard.Key.Space))
+            {
+                player = new ClientPlayer(this);
+                Players.Add(player);
+                player.Pos = new Vector2f(46, 62);
+            }
+
         }
 
         public void Draw()

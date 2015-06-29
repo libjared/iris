@@ -21,7 +21,7 @@ namespace Iris
             MaxJumps = 2;
             JumpsLeft = MaxJumps;
             Alive = true;
-            Health = 100;
+            SetHealth(100);
             idle = new Animation(Content.GetTexture("idle.png"), 4, 120, 1, true);
             running = new Animation(Content.GetTexture("run.png"), 6, 60, 3, true);
             backpedal = new Animation(Content.GetTexture("run.png"), 6, 60, 2, false);
@@ -29,6 +29,7 @@ namespace Iris
             jumpDown = new Animation(Content.GetTexture("jumpDown.png"), 3, 60, -5, true);
             animation = idle;
             Texture = Content.GetTexture("idle.png");
+            
         }
 
         public override void Update()
@@ -39,7 +40,6 @@ namespace Iris
             handleAnimationSetting();
             UpdatePosition();
             dm.Mailman.SendPlayerPosMessage(UID, Pos, Facing, AimAngle);
-            dm.Mailman.SendHealth(Health);
 
             if (Input.isKeyTap(Keyboard.Key.K))
                 Health = 0;
@@ -89,7 +89,7 @@ namespace Iris
             {
                 if (Helper.Distance(MainGame.dm.Projectiles[i].Pos, Core) < 20)
                 {
-                    this.Health -= MainGame.dm.Projectiles[i].Damage;
+                    SetHealth(this.Health - MainGame.dm.Projectiles[i].Damage);
                     MainGame.dm.Projectiles.RemoveAt(i);
                 }
             }
@@ -319,6 +319,12 @@ namespace Iris
                 Velocity.X = 0;
                 Pos.X = x;
             }
+        }
+
+        private void SetHealth(int h)
+        {
+            Health = h;
+            dm.Mailman.SendHealth(Health);
         }
     }
 }
