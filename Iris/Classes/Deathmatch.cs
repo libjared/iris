@@ -58,12 +58,12 @@ namespace Iris
             GameObjects.ForEach(p => { p.Update(); });
             CheckProjectileCollisions();
 
-            if (Input.isKeyTap(Keyboard.Key.Space))
+            if (Input.isKeyTap(Keyboard.Key.Space) && !player.Alive)
             {
                 player = new ClientPlayer(this);
                 Players.Add(player);
                 player.Pos = new Vector2f(46, 62);
-                Mailman.SendJoin(player.UID);
+                Mailman.SendRespawn(player.UID);
             }
 
         }

@@ -203,7 +203,7 @@ namespace Iris
             client.SendMessage(outGoingMessage, NetDeliveryMethod.ReliableOrdered);
         }
 
-        public void SendJoin(long uid)
+        public void SendRespawn(long uid)
         {
             NetOutgoingMessage outGoingMessage = client.CreateMessage();
             outGoingMessage.Write("RESPAWN");
