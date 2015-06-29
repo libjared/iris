@@ -16,6 +16,7 @@ namespace Iris
         public List<Sprite> BackgroundImages { get; set; }
         public List<Sprite> BackgroundImagesFar { get; set; }
         public List<Sprite> BackgroundTracks { get; set; }
+        public List<GameObject> GameObjects = new List<GameObject>();
         private Sprite mapSprite;
         private Sprite Sky;
         private byte[] mapBytes;
@@ -54,6 +55,7 @@ namespace Iris
             Mailman.HandleMessages();
             Players.ForEach(p => { p.Update(); });
             Projectiles.ForEach(p => { p.Update(); });
+            GameObjects.ForEach(p => { p.Update(); });
             CheckProjectileCollisions();
 
         }
@@ -81,6 +83,7 @@ namespace Iris
             BackgroundTracks.ForEach(p => { p.Draw(MainGame.window, RenderStates.Default); });
             Players.ForEach(p => { p.Draw(); });
             Projectiles.ForEach(p => { p.Draw(); });
+            GameObjects.ForEach(p => { p.Draw(); });
 
 
             MainGame.window.Draw(mapSprite);

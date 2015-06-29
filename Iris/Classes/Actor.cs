@@ -11,6 +11,7 @@ namespace Iris
     public abstract class Actor
     {
         public float Speed;
+        public bool Alive;
         public Texture Texture;
         public Vector2f Velocity;
         public Vector2f Pos;

@@ -20,6 +20,7 @@ namespace Iris
             Speed = .35f;
             MaxJumps = 2;
             JumpsLeft = MaxJumps;
+            Alive = true;
 
             idle = new Animation(Content.GetTexture("idle.png"), 4, 120, 1, true);
             running = new Animation(Content.GetTexture("run.png"), 6, 60, 3, true);
@@ -39,6 +40,49 @@ namespace Iris
             UpdatePosition();
             dm.Mailman.SendPlayerPosMessage(UID, Pos, Facing, AimAngle);
 
+            if (Input.isKeyTap(Keyboard.Key.K))
+                Health = 0;
+
+            if (Alive)
+            {
+                if (Health <= 0)
+                {
+                    MainGame.dm.Players.Remove(this);
+                    Alive = false;
+                    //MainGame.dm.GameObjects.Add(new Gib(new Texture(Content.GetTexture("gibHead.png")), Core, 0,0));
+                    for (int i = 0; i < 350; i++ )
+                    {
+                        int gibNum = MainGame.rand.Next(1, 4);
+                        MainGame.dm.GameObjects.Add(new Gib(new Texture(Content.GetTexture("gib"+gibNum+".png")), Core - new Vector2f(0, 4), (float)MainGame.rand.NextDouble() * 5,
+                            Helper.angleBetween(Core, Core - new Vector2f(0, 4)) + (float)Math.PI + (float)(i - 5 / 10f) + (float)MainGame.rand.NextDouble()));
+                    }
+
+                        MainGame.dm.GameObjects.Add(new Gib(new Texture(Content.GetTexture("gibHead.png")), Core - new Vector2f(0, 4), 3,
+                            Helper.angleBetween(Core, Core - new Vector2f(0, 4)) + (float)Math.PI));
+
+                    MainGame.dm.GameObjects.Add(new Gib(new Texture(Content.GetTexture("gibBody.png")), Core - new Vector2f(0, 1), 2,
+                        Helper.angleBetween(Core, Core - new Vector2f(1, 2)) + (float)Math.PI));
+
+                    MainGame.dm.GameObjects.Add(new Gib(new Texture(Content.GetTexture("gibUpperLeg.png")), Core + new Vector2f(0, 1), 3.2f,
+                        Helper.angleBetween(Core, Core - new Vector2f(.5f, 1)) + (float)Math.PI));
+
+                    MainGame.dm.GameObjects.Add(new Gib(new Texture(Content.GetTexture("gibUpperLeg.png")), Core + new Vector2f(0, 1), 3.2f,
+                        Helper.angleBetween(Core, Core - new Vector2f(-.5f, 1)) + (float)Math.PI));
+
+
+                    MainGame.dm.GameObjects.Add(new Gib(new Texture(Content.GetTexture("gibLowerLeg.png")), Core + new Vector2f(0, 1), 3.2f,
+                        Helper.angleBetween(Core, Core - new Vector2f(.15f, 3)) + (float)Math.PI));
+
+                    MainGame.dm.GameObjects.Add(new Gib(new Texture(Content.GetTexture("gibLowerLeg.png")), Core + new Vector2f(0, 1), 3.2f,
+                        Helper.angleBetween(Core, Core - new Vector2f(-.20f, 2)) + (float)Math.PI));
+
+                    MainGame.dm.GameObjects.Add(new Gib(new Texture(Content.GetTexture("gibArm.png")), Core + new Vector2f(0, 1), 3.2f,
+                        Helper.angleBetween(Core, Core - new Vector2f(.04f, 3)) + (float)Math.PI));
+
+                    MainGame.dm.GameObjects.Add(new Gib(new Texture(Content.GetTexture("gibArm.png")), Core + new Vector2f(0, 1), 3.2f,
+                        Helper.angleBetween(Core, Core - new Vector2f(-.55f, 2)) + (float)Math.PI));
+                }
+            }
 
             for (int i = 0; i < MainGame.dm.Projectiles.Count; i++)
             {
@@ -63,8 +107,8 @@ namespace Iris
                 holdDistance += -holdDistance * .05f;
             Core = Pos - new Vector2f(-1, 35);
             this.Texture = animation.Texture;
-            Render.Draw(Content.GetTexture("pistolHand.png"), Core + Helper.PolarToVector2(holdDistance, AimAngle, 1, .5f), Color.White, new Vector2f(2, 4), 1, AimAngle, 1, Facing == -1);
-            Render.Draw(Content.GetTexture("revolver.png"), Core + Helper.PolarToVector2(holdDistance, AimAngle, 1, .5f), Color.White, new Vector2f(2, 4), 1, AimAngle, 1, Facing == -1);
+            Render.Draw(Content.GetTexture("pistolHand.png"), Core + Helper.PolarToVector2(holdDistance, AimAngle, 1, 1), Color.White, new Vector2f(2, 4), 1, AimAngle, 1, Facing == -1);
+            Render.Draw(Content.GetTexture("revolver.png"), Core + Helper.PolarToVector2(holdDistance, AimAngle, 1, 1), Color.White, new Vector2f(2, 4), 1, AimAngle, 1, Facing == -1);
             Render.DrawAnimation(Texture, this.Pos, Color.White, new Vector2f(Texture.Size.X / (animation.Count * 4),
                 Texture.Size.Y - animation.YOffset), Facing, animation.Count, animation.Frame, 1);
             //Sprite s = new Sprite(idleTest);
@@ -96,7 +140,7 @@ namespace Iris
                 //Console.WriteLine("Bang");
                 Bullet b = new Bullet(this.UID, AimAngle, Core + Helper.PolarToVector2(28, AimAngle, 1, 1), 6, 0);
                 dm.Projectiles.Add(b);
-                MainGame.Camera.Center += Helper.PolarToVector2(5 * MainGame.rand.Next(1, 2), AimAngle + (float)Math.PI, 1, 1);
+                MainGame.Camera.Center += Helper.PolarToVector2(3.5f * MainGame.rand.Next(1, 2), AimAngle + (float)Math.PI, 1, 1);
                 holdDistance = -10f;
                 dm.Mailman.SendBulletCreate(b);
             }
@@ -155,6 +199,7 @@ namespace Iris
             }
             if (!OnGround) // Not on Ground
             {
+                holdDistance = -3;
                 if (Velocity.Y < 2)
                 {
                     animation = jumpUp;
@@ -162,7 +207,6 @@ namespace Iris
                 if (Velocity.Y > 2)
                 {
                     animation = jumpDown;
-                    holdDistance = -2;
                 }
             }
         }
