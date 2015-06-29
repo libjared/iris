@@ -189,5 +189,13 @@ namespace Iris
             outGoingMessage.Write(b.Angle);
             client.SendMessage(outGoingMessage, NetDeliveryMethod.ReliableOrdered);
         }
+
+        public void SendHealth(int life)
+        {
+            NetOutgoingMessage outGoingMessage = client.CreateMessage();
+            outGoingMessage.Write("LIFE");
+            outGoingMessage.Write(life);
+            client.SendMessage(outGoingMessage, NetDeliveryMethod.ReliableOrdered);
+        }
     }
 }

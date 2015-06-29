@@ -31,6 +31,7 @@ namespace Iris
         public Actor(Deathmatch dm)
         {
             Health = 100;
+            Alive = true;
             Name = "Cactus Fantastico";
             Pos = new Vector2f(0, 0);
             UID = 0;

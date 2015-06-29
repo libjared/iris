@@ -36,16 +36,15 @@ namespace Iris
             animation.Update();
             handleAnimationSetting();
             oldPosition = Pos;
-
             for (int i = 0; i < MainGame.dm.Projectiles.Count; i++)
             {
                 if (Helper.Distance(MainGame.dm.Projectiles[i].Pos, Core) < 20)
                 {
-                    this.Health -= MainGame.dm.Projectiles[i].Damage;
                     MainGame.dm.Projectiles.RemoveAt(i);
                 }
             }
 
+            Console.WriteLine(Health);
             if (Alive)
             {
                 if (Health <= 0)

@@ -21,7 +21,7 @@ namespace Iris
             MaxJumps = 2;
             JumpsLeft = MaxJumps;
             Alive = true;
-
+            Health = 100;
             idle = new Animation(Content.GetTexture("idle.png"), 4, 120, 1, true);
             running = new Animation(Content.GetTexture("run.png"), 6, 60, 3, true);
             backpedal = new Animation(Content.GetTexture("run.png"), 6, 60, 2, false);
@@ -39,6 +39,7 @@ namespace Iris
             handleAnimationSetting();
             UpdatePosition();
             dm.Mailman.SendPlayerPosMessage(UID, Pos, Facing, AimAngle);
+            dm.Mailman.SendHealth(Health);
 
             if (Input.isKeyTap(Keyboard.Key.K))
                 Health = 0;
