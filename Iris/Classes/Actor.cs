@@ -27,6 +27,13 @@ namespace Iris
         public int JumpsLeft { get; set; }
         public int MaxJumps { get; set; }
         protected Deathmatch dm;
+        protected static RenderStates shader;
+
+        static Actor()
+        {
+            var sh = new Shader(null, "Content/setWhite.frag");
+            shader = new RenderStates(sh);
+        }
 
         public Actor(Deathmatch dm)
         {

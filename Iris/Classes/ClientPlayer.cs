@@ -114,10 +114,20 @@ namespace Iris
                 holdDistance += -holdDistance * .05f;
             Core = Pos - new Vector2f(-1, 35);
             this.Texture = animation.Texture;
-            Render.Draw(Content.GetTexture("pistolHand.png"), Core + Helper.PolarToVector2(holdDistance, AimAngle, 1, 1), Color.White, new Vector2f(2, 4), 1, AimAngle, 1, Facing == -1);
-            Render.Draw(Content.GetTexture("revolver.png"), Core + Helper.PolarToVector2(holdDistance, AimAngle, 1, 1), Color.White, new Vector2f(2, 4), 1, AimAngle, 1, Facing == -1);
+
+            Render.renderStates = Actor.shader;
+            Texture pistolHand = Content.GetTexture("pistolHand.png");
+            Texture revolver = Content.GetTexture("revolver.png");
+            //shader.Shader.SetParameter("ouch", 1f);
+
+            shader.Shader.SetParameter("sampler", pistolHand);
+            Render.Draw(pistolHand, Core + Helper.PolarToVector2(holdDistance, AimAngle, 1, 1), Color.White, new Vector2f(2, 4), 1, AimAngle, 1, Facing == -1);
+            shader.Shader.SetParameter("sampler", revolver);
+            Render.Draw(revolver, Core + Helper.PolarToVector2(holdDistance, AimAngle, 1, 1), Color.White, new Vector2f(2, 4), 1, AimAngle, 1, Facing == -1);
+            shader.Shader.SetParameter("sampler", Texture);
             Render.DrawAnimation(Texture, this.Pos, Color.White, new Vector2f(Texture.Size.X / (animation.Count * 4),
                 Texture.Size.Y - animation.YOffset), Facing, animation.Count, animation.Frame, 1);
+            Render.renderStates = null;
             //Sprite s = new Sprite(idleTest);
 
             //s.TextureRect = new IntRect(

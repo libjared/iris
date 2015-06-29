@@ -1,4 +1,4 @@
-﻿using SFML.Graphics;
+using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
 using System;
@@ -10,7 +10,7 @@ namespace Iris
 {
     public static class Render
     {
-       // private static Vector2f offsetPosition = new Vector2f(0f, 0f);
+        public static RenderStates? renderStates = null;
 
         public static void Draw(Texture texture, Vector2f position, Color color, Vector2f origin, int facing, float rotation, float scale = 1f, bool flipVert = false)
         {
@@ -60,7 +60,13 @@ namespace Iris
             {
                 sprite.TextureRect = textureRect.Value;
             }
-            MainGame.window.Draw(sprite);
+
+            if (renderStates.HasValue)
+            {
+                MainGame.window.Draw(sprite, renderStates.Value);
+            } else {
+                MainGame.window.Draw(sprite);
+            }
         }
 
         public static void OffsetPosition(Vector2f offset)
