@@ -10,6 +10,8 @@ namespace Iris
 {
     public class Bullet : Projectile
     {
+        int lifeRemaining = 500;
+
         public Bullet(long UIDOwner, float angle, Vector2f position, float speed, int damage)
         {
             this.Angle = angle;
@@ -21,7 +23,8 @@ namespace Iris
 
         public override void Update()
         {
-            if (this.Pos.X < 0 || this.Pos.X > 5000)
+            lifeRemaining--;
+            if (lifeRemaining < 0)
             {
                 MainGame.dm.Projectiles.Remove(this);
             }

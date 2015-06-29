@@ -101,7 +101,7 @@ namespace Iris
         public void handleAnimationSetting()
         {
             OnGround = false;
-            if (dm.MapCollide((int)this.Pos.X, (int)this.Pos.Y + (int)dm.gravity))
+            if (dm.MapCollide((int)this.Pos.X, (int)this.Pos.Y + (int)dm.gravity, Deathmatch.anyCol))
                 OnGround = true;
             animPadding--;
             

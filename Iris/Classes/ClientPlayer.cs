@@ -231,17 +231,16 @@ namespace Iris
                 Velocity.Y = dm.gravity * 15;
             }
 
-            if (dm.MapCollide((int)Pos.X, (int)Pos.Y + (int)Velocity.Y))
+            if (dm.MapCollide((int)Pos.X, (int)Pos.Y + (int)Velocity.Y, Deathmatch.anyCol))
             {
                 JumpsLeft = MaxJumps;
             }
             //if destination is all clear, just set Pos and we're done //Nope, dont do this.
             Vector2f dest = Velocity + Pos;
             OnGround = true;
-            if (!dm.MapCollide((int)dest.X, (int)dest.Y))
+            if (!dm.MapCollide((int)dest.X, (int)dest.Y, Deathmatch.anyCol))
             {
                 OnGround = false;
-                // return;
             }
 
             //Color = Color.Green;
@@ -264,7 +263,7 @@ namespace Iris
         {
             Vector2i posi = new Vector2i((int)Pos.X, (int)Pos.Y);
             Vector2i vertDest = new Vector2i(posi.X, posi.Y + (int)Velocity.Y);
-            if (!dm.MapCollide(vertDest.X, vertDest.Y))
+            if (!dm.MapCollide(vertDest.X, vertDest.Y, Deathmatch.anyCol))
             {
                 //Pos = new Vector2f(vertDest.X, vertDest.Y);
             }
@@ -282,7 +281,7 @@ namespace Iris
                 while (true)
                 {
                     y -= direction;
-                    if (!dm.MapCollide(posi.X, y))
+                    if (!dm.MapCollide(posi.X, y, Deathmatch.anyCol))
                     {
                         break;
                     }
@@ -296,7 +295,7 @@ namespace Iris
         {
             Vector2i posi = new Vector2i((int)Pos.X, (int)Pos.Y);
             Vector2i horizDest = new Vector2i(posi.X + (int)Velocity.X, posi.Y);
-            if (!dm.MapCollide(horizDest.X, horizDest.Y))
+            if (!dm.MapCollide(horizDest.X, horizDest.Y, Deathmatch.anyCol))
             {
                 //Pos = new Vector2f(horizDest.X, horizDest.Y);
             }
@@ -314,7 +313,7 @@ namespace Iris
                 while (true)
                 {
                     x -= direction;
-                    if (!dm.MapCollide(x, posi.Y))
+                    if (!dm.MapCollide(x, posi.Y, Deathmatch.anyCol))
                     {
                         break;
                     }

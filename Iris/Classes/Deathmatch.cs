@@ -23,6 +23,13 @@ namespace Iris
         private int mapWidth;
         private int mapHeight;
 
+        public static Color hardCol = new Color(0, 0, 0, 255);
+        public static Color softCol = new Color(0, 255, 0, 255);
+        public static Color anyCol = new Color(1, 1, 1, 0);
+
+        public static float MAPYOFFSET = 297f;
+        public static float MAPXOFFSET = 1300f;
+
         public float gravity = 1.1f;
 
         public Deathmatch()
@@ -35,18 +42,20 @@ namespace Iris
             Mailman = new ClientMailman(this);
             Mailman.Connect();
 
-            Image mapImg = new Image("Content/map.png");
+            Image mapImg = new Image("Content/mapCol.png");
             Sky = new Sprite(Content.GetTexture("sky.png"));
             mapBytes = mapImg.Pixels;
             mapSprite = new Sprite(new Texture(mapImg));
             mapWidth = (int)mapImg.Size.X;
             mapHeight = (int)mapImg.Size.Y;
 
+            Sky.Position = new Vector2f(0, -200);
+
             player = new ClientPlayer(this);
             player.Pos = new Vector2f(46, 62);
             Players.Add(player);
 
-
+            MainGame.Camera.Center = player.Pos - new Vector2f(0, 90);
 
         }
 
@@ -70,34 +79,48 @@ namespace Iris
 
         public void Draw()
         {
-            //MainGame.Camera.Center = player.Pos;
+            //MainGame.Camera.Center = player.Pos - new Vector2f(0,90);
+
             Vector2f focus = player.Core +
                 new Vector2f(Input.screenMousePos.X - MainGame.window.Size.X / 2,
                 Input.screenMousePos.Y - MainGame.window.Size.Y / 2) / 2;
             if (Helper.Distance(player.Core, focus) > 100)
                 focus = player.Core + Helper.PolarToVector2(100, player.AimAngle, 1, 1);//player.Core + Helper.normalize(focus) * 100;
+            focus.Y = player.Pos.Y - 90;
             Helper.MoveCameraTo(MainGame.Camera, focus, .04f);
+            if (MainGame.Camera.Center.Y > 180 - 90)
+                MainGame.Camera.Center = new Vector2f(MainGame.Camera.Center.X, 180 - 90);
 
             //Camera2D.returnCamera(player.ActorCenter +
             //            new Vector2(Main.screenMousePos.X - Main.graphics.PreferredBackBufferWidth / 2,
             //                Main.screenMousePos.Y - Main.graphics.PreferredBackBufferHeight / 2) *
             //                Main.graphics.GraphicsDevice.Viewport.AspectRatio / player.currentWeapon.viewDistance);
 
+
             MainGame.window.SetView(MainGame.Camera);
-            Sky.Draw(MainGame.window, RenderStates.Default);
+            Console.WriteLine(player.Pos);
+            Texture t = Content.GetTexture("sky.png");
+
+            Render.Draw(t, new Vector2f(-t.Size.X, -MAPYOFFSET), Color.White, new Vector2f(0,0),1, 0, 1);
+            Render.Draw(t, new Vector2f(0, -MAPYOFFSET), Color.White, new Vector2f(0, 0), 1, 0, 1);
+            Render.Draw(t, new Vector2f(t.Size.X, -MAPYOFFSET), Color.White, new Vector2f(0, 0), 1, 0, 1);
+
             HandleBackground();
             BackgroundImagesFar.ForEach(p => { p.Draw(MainGame.window, RenderStates.Default); });
             BackgroundImages.ForEach(p => { p.Draw(MainGame.window, RenderStates.Default); });
             BackgroundTracks.ForEach(p => { p.Draw(MainGame.window, RenderStates.Default); });
+
+            
+            MainGame.window.Draw(new Sprite(Content.GetTexture("mapDecor.png")));
             Players.ForEach(p => { p.Draw(); });
             Projectiles.ForEach(p => { p.Draw(); });
             GameObjects.ForEach(p => { p.Draw(); });
-
-
-            MainGame.window.Draw(mapSprite);
+            
+            //MainGame.window.Draw(mapSprite);
+            
         }
 
-        public bool MapCollide(int x, int y)
+        public bool MapCollide(int x, int y, Color c)
         {
             //check if OOB
             if (x < 0 || x >= mapWidth || y < 0 || y >= mapHeight)
@@ -109,9 +132,11 @@ namespace Iris
             byte g = mapBytes[index + 1];
             byte b = mapBytes[index + 2];
             byte a = mapBytes[index + 3];
-
+            Color result = new Color(r,g,b,a);
             //only collide if black
-            return r == 0 && g == 0 && b == 0 && a == 255;
+            if (c.A == 0 && result.A != 0)
+                return true;
+            return result.Equals(c);
         }
 
         public Actor GetPlayerWithUID(long id)
@@ -148,21 +173,21 @@ namespace Iris
 
         public void HandleBackground()
         {
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 8; i++)
             {
                 if (BackgroundImages.Count < i)
                 {
                     Sprite s = new Sprite(Content.GetTexture("background1.png"));
-                    s.Position = new Vector2f((float)(s.Texture.Size.X * (i - 1)), 0);
+                    s.Position = new Vector2f((float)(s.Texture.Size.X * (i - 1)) - MAPXOFFSET, 225 - MAPYOFFSET);
                     BackgroundImages.Add(s);
                 }
             }
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 16; i++)
             {
                 if (BackgroundImagesFar.Count < i)
                 {
                     Sprite s = new Sprite(Content.GetTexture("background1Far.png"));
-                    s.Position = new Vector2f((float)(s.Texture.Size.X * (i - 1)), 150);
+                    s.Position = new Vector2f((float)(s.Texture.Size.X * (i - 1)) - MAPXOFFSET, 300 - MAPYOFFSET);
                     BackgroundImagesFar.Add(s);
                 }
             }
@@ -171,27 +196,28 @@ namespace Iris
                 if (BackgroundTracks.Count < i)
                 {
                     Sprite s = new Sprite(Content.GetTexture("tracksBlur.png"));
-                    s.Position = new Vector2f((float)((s.Texture.Size.X - 1) * (i - 1)), 515);
+                    s.Position = new Vector2f((float)((s.Texture.Size.X - 1) * (i - 1)) - MAPXOFFSET, 515 - MAPYOFFSET);
                     BackgroundTracks.Add(s);
                 }
             }
+
             for (int i = 0; i < BackgroundImages.Count; i++) //Main Background
             {
                 BackgroundImages[i].Position -= new Vector2f(2f, 0);
-                if (BackgroundImages[i].Position.X < -BackgroundImages[i].Texture.Size.X)
+                if (BackgroundImages[i].Position.X < -BackgroundImages[i].Texture.Size.X - MAPXOFFSET)
                     BackgroundImages.RemoveAt(i);
 
             }
             for (int i = 0; i < BackgroundImagesFar.Count; i++) //Far Background
             {
                 BackgroundImagesFar[i].Position -= new Vector2f(.8f, 0);
-                if (BackgroundImagesFar[i].Position.X < -BackgroundImagesFar[i].Texture.Size.X)
+                if (BackgroundImagesFar[i].Position.X < -BackgroundImagesFar[i].Texture.Size.X - MAPXOFFSET)
                     BackgroundImagesFar.RemoveAt(i);
             }
             for (int i = 0; i < BackgroundTracks.Count; i++) //Tracks
             {
                 BackgroundTracks[i].Position -= new Vector2f(8, 0);
-                if (BackgroundTracks[i].Position.X < -BackgroundTracks[i].Texture.Size.X)
+                if (BackgroundTracks[i].Position.X < -BackgroundTracks[i].Texture.Size.X - MAPXOFFSET)
                     BackgroundTracks.RemoveAt(i);
             }
 
