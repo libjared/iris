@@ -20,8 +20,12 @@ namespace Iris
         }
 
         public virtual void Update()
-        {
-
+        { 
+            //Game Object on tracks
+            if (Pos.Y > 212)
+                Pos.Y = 212;
+            if (Pos.Y > 209)
+                Pos.X -= 15f;
         }
 
         public virtual void Draw()
