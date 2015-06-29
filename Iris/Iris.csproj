@@ -51,6 +51,7 @@
     <Compile Include="Classes\Content.cs" />
     <Compile Include="Classes\Deathmatch.cs" />
     <Compile Include="Classes\GameObject.cs" />
+    <Compile Include="Classes\Gib.cs" />
     <Compile Include="Classes\Helper.cs" />
     <Compile Include="Classes\Input.cs" />
     <Compile Include="Classes\MainGame.cs" />
@@ -158,6 +159,11 @@
     <Content Include="OpenTK.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\Font1.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

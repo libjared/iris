@@ -119,11 +119,11 @@ namespace Iris
                 case "INFO": //Recieved when server has completed sending all newbie initialization
                     break;
                 case "BULLET": //Recieved when server has completed sending all newbie initialization
-                     long UID_BULLET = msg.ReadInt64();
+                    long UID_BULLET = msg.ReadInt64();
                     float xBULLET = msg.ReadFloat();
                     float yBULLET = msg.ReadFloat();
                     float BULLETangle = msg.ReadFloat();
-                    MainGame.dm.Projectiles.Add(new Bullet(BULLETangle, new Vector2f(xBULLET, yBULLET), 6, 0)); //No damage yet
+                    MainGame.dm.Projectiles.Add(new Bullet(UID_BULLET, BULLETangle, new Vector2f(xBULLET, yBULLET), 6, 0)); //No damage yet
                     break;
 
                 default:

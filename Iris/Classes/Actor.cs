@@ -50,5 +50,9 @@ namespace Iris
            // this.TextureRect = new IntRect(0, 0, 64, 55);
             //MainGame.window.Draw(this.Sprite);
         }
+
+        public virtual void OnProjectileHit(Projectile hit)
+        {
+        }
     }
 }

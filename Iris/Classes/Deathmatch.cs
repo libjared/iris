@@ -45,8 +45,8 @@ namespace Iris
             player.Pos = new Vector2f(46, 62);
             Players.Add(player);
 
-            
-            
+
+
         }
 
         public void Update()
@@ -54,7 +54,8 @@ namespace Iris
             Mailman.HandleMessages();
             Players.ForEach(p => { p.Update(); });
             Projectiles.ForEach(p => { p.Update(); });
-            
+            CheckProjectileCollisions();
+
         }
 
         public void Draw()
@@ -62,7 +63,7 @@ namespace Iris
             //MainGame.Camera.Center = player.Pos;
             Vector2f focus = player.Core +
                 new Vector2f(Input.screenMousePos.X - MainGame.window.Size.X / 2,
-                Input.screenMousePos.Y - MainGame.window.Size.Y /2) / 2;
+                Input.screenMousePos.Y - MainGame.window.Size.Y / 2) / 2;
             if (Helper.Distance(player.Core, focus) > 100)
                 focus = player.Core + Helper.PolarToVector2(100, player.AimAngle, 1, 1);//player.Core + Helper.normalize(focus) * 100;
             Helper.MoveCameraTo(MainGame.Camera, focus, .04f);
@@ -78,10 +79,10 @@ namespace Iris
             BackgroundImagesFar.ForEach(p => { p.Draw(MainGame.window, RenderStates.Default); });
             BackgroundImages.ForEach(p => { p.Draw(MainGame.window, RenderStates.Default); });
             BackgroundTracks.ForEach(p => { p.Draw(MainGame.window, RenderStates.Default); });
-            Players.ForEach(p => { p.Draw(); } );
+            Players.ForEach(p => { p.Draw(); });
             Projectiles.ForEach(p => { p.Draw(); });
-            
-            
+
+
             MainGame.window.Draw(mapSprite);
         }
 
@@ -94,9 +95,9 @@ namespace Iris
             }
             int index = (y * mapWidth + x) * 4;
             byte r = mapBytes[index];
-            byte g = mapBytes[index+1];
-            byte b = mapBytes[index+2];
-            byte a = mapBytes[index+3];
+            byte g = mapBytes[index + 1];
+            byte b = mapBytes[index + 2];
+            byte a = mapBytes[index + 3];
 
             //only collide if black
             return r == 0 && g == 0 && b == 0 && a == 255;
@@ -105,6 +106,28 @@ namespace Iris
         public Actor GetPlayerWithUID(long id)
         {
             return Players.FirstOrDefault(p => p.UID == id);
+        }
+
+        public void CheckProjectileCollisions()
+        {
+            for (int i = 0; i < Projectiles.Count; i++){
+
+                if (Helper.Distance(Projectiles[i].Pos, player.Core) < 20)
+                {
+                    //player.OnProjectileHit(Projectiles[i]);
+                    //Projectiles[i].onPlayerHit(player);
+                }
+
+                for (int a = 0; a < Players.Count; a++){
+                    if (Helper.Distance(Projectiles[i].Pos, Players[a].Core) < 20){
+                        if (Projectiles[i].OwnerUID != Players[a].UID)
+                        {
+                            //Projectiles[i].onPlayerHit(Players[a]);
+                            //Players[a].OnProjectileHit(Projectiles[i]);
+                        }
+                    }
+                }
+            }
         }
 
         public void Close()

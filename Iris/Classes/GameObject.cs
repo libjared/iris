@@ -11,6 +11,9 @@ namespace Iris
     public abstract class GameObject
     {
         public Texture Texture;
+        public float Rot;
+        public Vector2f Pos;
+
 
         public GameObject()
         {

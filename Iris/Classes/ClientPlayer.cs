@@ -11,6 +11,7 @@ namespace Iris
     public class ClientPlayer : Actor
     {
         Animation idle, running, jumpUp, jumpDown, backpedal;
+        float holdDistance;
 
         public ClientPlayer(Deathmatch dm)
             : base(dm)
@@ -21,7 +22,7 @@ namespace Iris
             JumpsLeft = MaxJumps;
 
             idle = new Animation(Content.GetTexture("idle.png"), 4, 120, 1, true);
-            running = new Animation(Content.GetTexture("run.png"), 6, 60, 2, true);
+            running = new Animation(Content.GetTexture("run.png"), 6, 60, 3, true);
             backpedal = new Animation(Content.GetTexture("run.png"), 6, 60, 2, false);
             jumpUp = new Animation(Content.GetTexture("jumpUp.png"), 1, 60, 0, true);
             jumpDown = new Animation(Content.GetTexture("jumpDown.png"), 3, 60, -5, true);
@@ -38,6 +39,15 @@ namespace Iris
             UpdatePosition();
             dm.Mailman.SendPlayerPosMessage(UID, Pos, Facing, AimAngle);
 
+
+            for (int i = 0; i < MainGame.dm.Projectiles.Count; i++)
+            {
+                if (Helper.Distance(MainGame.dm.Projectiles[i].Pos, Core) < 20)
+                {
+                    this.Health -= 9;
+                    MainGame.dm.Projectiles.RemoveAt(i);
+                }
+            }
             //frameDelta += (float)MainGame.deltaTime.TotalMilliseconds;
 
         }
@@ -49,10 +59,12 @@ namespace Iris
             //if (frame == 1)
             //Console.Write(frame);
             //Render.Draw(animation.Texture, this.Pos, Color.White, new Vector2f(0,0), 1, 0,1);
+            if (holdDistance < 0)
+                holdDistance += -holdDistance * .05f;
             Core = Pos - new Vector2f(-1, 35);
             this.Texture = animation.Texture;
-            Render.Draw(Content.GetTexture("pistolHand.png"), Core, Color.White, new Vector2f(2, 4), 1, AimAngle, 1, Facing == -1);
-            Render.Draw(Content.GetTexture("revolver.png"), Core, Color.White, new Vector2f(2, 4), 1, AimAngle, 1, Facing == -1);
+            Render.Draw(Content.GetTexture("pistolHand.png"), Core + Helper.PolarToVector2(holdDistance, AimAngle, 1, .5f), Color.White, new Vector2f(2, 4), 1, AimAngle, 1, Facing == -1);
+            Render.Draw(Content.GetTexture("revolver.png"), Core + Helper.PolarToVector2(holdDistance, AimAngle, 1, .5f), Color.White, new Vector2f(2, 4), 1, AimAngle, 1, Facing == -1);
             Render.DrawAnimation(Texture, this.Pos, Color.White, new Vector2f(Texture.Size.X / (animation.Count * 4),
                 Texture.Size.Y - animation.YOffset), Facing, animation.Count, animation.Frame, 1);
             //Sprite s = new Sprite(idleTest);
@@ -82,15 +94,16 @@ namespace Iris
             if (Input.isMouseButtonTap(Mouse.Button.Left))
             {
                 //Console.WriteLine("Bang");
-                Bullet b = new Bullet(AimAngle, Core + Helper.PolarToVector2(28, AimAngle, 1, 1), 6, 0);
+                Bullet b = new Bullet(this.UID, AimAngle, Core + Helper.PolarToVector2(28, AimAngle, 1, 1), 6, 0);
                 dm.Projectiles.Add(b);
-                MainGame.Camera.Center += Helper.PolarToVector2(5 * MainGame.rand.Next(2,5), AimAngle + (float)Math.PI, 1, 1);
+                MainGame.Camera.Center += Helper.PolarToVector2(5 * MainGame.rand.Next(1, 2), AimAngle + (float)Math.PI, 1, 1);
+                holdDistance = -10f;
                 dm.Mailman.SendBulletCreate(b);
             }
 
             if (Input.isKeyTap(Keyboard.Key.W))
             {
-                if (OnGround || (JumpsLeft > 0 && Velocity.Y > 2))
+                if (OnGround || (JumpsLeft > 0 && Velocity.Y > .85f))
                 {
                     JumpsLeft--;
                     Vector2f nextVec = new Vector2f(0, -24f - JumpsLeft);
@@ -149,8 +162,14 @@ namespace Iris
                 if (Velocity.Y > 2)
                 {
                     animation = jumpDown;
+                    holdDistance = -2;
                 }
             }
+        }
+
+        public override void OnProjectileHit(Projectile hit)
+        {
+            this.Health -= hit.Damage;
         }
 
         private void UpdatePosition()
@@ -256,7 +275,5 @@ namespace Iris
                 Pos.X = x;
             }
         }
-
-
     }
 }

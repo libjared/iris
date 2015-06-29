@@ -12,11 +12,12 @@ namespace Iris
     public abstract class Projectile : GameObject
     {
         public float Angle;
-        public float Rot;
-        public Vector2f Pos;
         public Vector2f Velocity;
         public float Speed;
-        public float Damage;
+        public int Damage;
+        public float Direction;
+        public float GravityPull;
+        public long OwnerUID;
 
         public Projectile()
         {
@@ -29,6 +30,10 @@ namespace Iris
         public override void Draw()
         {
             
+        }
+
+        public virtual void onPlayerHit(Actor hit)
+        {
         }
     }
 }

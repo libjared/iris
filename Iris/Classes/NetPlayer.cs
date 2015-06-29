@@ -35,6 +35,15 @@ namespace Iris
             animation.Update();
             handleAnimationSetting();
             oldPosition = Pos;
+
+            for (int i = 0; i < MainGame.dm.Projectiles.Count; i++)
+            {
+                if (Helper.Distance(MainGame.dm.Projectiles[i].Pos, Core) < 20)
+                {
+                    this.Health -= 10;
+                    MainGame.dm.Projectiles.RemoveAt(i);
+                }
+            }
         }
 
         public override void Draw()
@@ -45,6 +54,8 @@ namespace Iris
             Render.Draw(Content.GetTexture("revolver.png"), Core, Color.White, new Vector2f(2, 4), 1, AimAngle, 1, Facing == -1);
             Render.DrawAnimation(Texture, this.Pos, Color.White, new Vector2f(Texture.Size.X / (animation.Count * 4),
                 Texture.Size.Y - animation.YOffset), Facing, animation.Count, animation.Frame, 1);
+
+            Render.DrawString(Content.GetFont("Font1.ttf"), Name, Core - new Vector2f(0, 40), Color.White, .3f, true, 1); 
             base.Draw();
         }
 
@@ -56,7 +67,7 @@ namespace Iris
             animPadding--;
             
 
-            if (animPadding <= -0)
+            if (animPadding <= -5)
             {
                 //if (Helper.Distance(oldPosition,Pos) < 2)
                  animation = idle;
@@ -79,13 +90,13 @@ namespace Iris
                     if (Facing == -1)
                     {
                         if (oldPosition.X - Pos.X < -.2f)
-                        { 
-                            animation = running;
+                        {
+                            animation = backpedal;
                             animPadding = 5;
                         }
                         if (oldPosition.X - Pos.X > .2f)
                         {
-                            animation = backpedal;
+                            animation = running;
                             animPadding = 5;
                         }
 
@@ -106,6 +117,13 @@ namespace Iris
                     }
                 }
             }
+        }
+
+        public override void OnProjectileHit(Projectile hit)
+        {
+            MainGame.dm.Projectiles.Remove(hit);
+            //Probably wont do anything
+            base.OnProjectileHit(hit);
         }
     }
 }
