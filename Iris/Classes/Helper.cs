@@ -1,4 +1,4 @@
-﻿using SFML.Window;
+using SFML.Window;
 using SFML.System;
 using SFML.Graphics;
 using System;
@@ -69,6 +69,22 @@ namespace Iris
             {
                 camera.Center += new Vector2f(0,(Math.Abs(camera.Center.Y - focus.Y) * speed));
             }
+        }
+
+        public static float Clamp(float min, float val, float max)
+        {
+            if (val <= min) { return min; }
+            if (val >= max) { return max; }
+            return val;
+        }
+
+        public static float ClampSigned(float minmax, float val)
+        {
+            if (Math.Abs(val) >= minmax)
+            {
+                return Math.Sign(val) * minmax;
+            }
+            return val;
         }
     }
 }
