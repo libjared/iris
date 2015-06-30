@@ -30,6 +30,7 @@ namespace Iris
 
         public static float MAPYOFFSET = 297f;
         public static float MAPXOFFSET = 1300f;
+        public static float shakeFactor = 1.5f;
 
         public float gravity = 0.5f;
 
@@ -67,13 +68,13 @@ namespace Iris
             Projectiles.ForEach(p => { p.Update(); });
             GameObjects.ForEach(p => { p.Update(); });
             CheckProjectileCollisions();
-
-            if (MainGame.rand.Next(4)==0)
-            for (int i = 0; i < 5; i++)
-            {
-                GameObjects.Add(new TrainDust(new Vector2f(60 + (i * 440) + MainGame.rand.Next(70), 215), (float)MainGame.rand.NextDouble() * 90));
-                GameObjects.Add(new TrainDust(new Vector2f(304 + (i * 440) + MainGame.rand.Next(70), 215), (float)MainGame.rand.NextDouble() * 90));
-            }
+            ApplyShake();
+            if (MainGame.rand.Next(4) == 0)
+                for (int i = 0; i < 5; i++)
+                {
+                    GameObjects.Add(new TrainDust(new Vector2f(60 + (i * 440) + MainGame.rand.Next(70), 215), (float)MainGame.rand.NextDouble() * 90));
+                    GameObjects.Add(new TrainDust(new Vector2f(304 + (i * 440) + MainGame.rand.Next(70), 215), (float)MainGame.rand.NextDouble() * 90));
+                }
 
             if (Input.isKeyTap(Keyboard.Key.Space) && !player.Alive)
             {
@@ -87,7 +88,9 @@ namespace Iris
                 Console.WriteLine(player.Pos);
 
             if (Input.isKeyDown(Keyboard.Key.R))
-                MainGame.Camera.Center += new Vector2f(MainGame.rand.Next(-4, 5), MainGame.rand.Next(-4, 5));
+            {
+                MainGame.Camera.Center += new Vector2f(MainGame.rand.Next(-4, 5) * shakeFactor / 5, MainGame.rand.Next(-4, 5) * shakeFactor / 5);
+            }
 
         }
 
@@ -102,7 +105,7 @@ namespace Iris
             if (Helper.Distance(player.Core, focus) > 100)
                 focus = player.Core + Helper.PolarToVector2(100, player.AimAngle, 1, 1);//player.Core + Helper.normalize(focus) * 100;
 
-            
+
             Helper.MoveCameraTo(MainGame.Camera, focus, .04f);
             if (MainGame.Camera.Center.Y > 180 - 90)
             {
@@ -123,7 +126,7 @@ namespace Iris
             Render.Draw(t, new Vector2f(0, -MAPYOFFSET), Color.White, new Vector2f(0, 0), 1, 0, 1);
             Render.Draw(t, new Vector2f(t.Size.X, -MAPYOFFSET), Color.White, new Vector2f(0, 0), 1, 0, 1);
 
-            
+
             BackgroundImagesFar.ForEach(p => { p.Draw(MainGame.window, RenderStates.Default); });
             BackgroundImages.ForEach(p => { p.Draw(MainGame.window, RenderStates.Default); });
             BackgroundTracks.ForEach(p => { p.Draw(MainGame.window, RenderStates.Default); });
@@ -205,6 +208,11 @@ namespace Iris
         public void Close()
         {
             Mailman.Disconnect();
+        }
+
+        private void ApplyShake()
+        {
+            MainGame.Camera.Center += new Vector2f(((float)MainGame.rand.NextDouble() * 2f - 1f) * shakeFactor, ((float)MainGame.rand.NextDouble() * 2.5f - 1.25f) * shakeFactor);
         }
 
         public void HandleBackground()
