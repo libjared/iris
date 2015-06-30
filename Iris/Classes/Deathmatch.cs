@@ -137,7 +137,7 @@ namespace Iris
             HandleBackground();
 
             MainGame.window.Draw(new Sprite(Content.GetTexture("mapDecor.png")));
-            if (player.Pos.Y > 60)
+            if (player.Pos.Y > 75)
             {
                 interiorAlpha += (255f - interiorAlpha) * .1f;
             }
@@ -151,7 +151,7 @@ namespace Iris
             GameObjects.ForEach(p => { p.Draw(); });
 
 
-            if (player.Pos.Y < 60)
+            if (player.Pos.Y < 75)
                 Render.Draw(Content.GetTexture("mapDecor.png"), new Vector2f(0, 0), new Color(255, 255, 255, (byte)(255 - interiorAlpha)), new Vector2f(0, 0), 1, 0f);
             //MainGame.window.Draw(mapSprite);
 
