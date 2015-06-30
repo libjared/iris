@@ -57,7 +57,7 @@ namespace Iris
             Pos += velocity * speed;
             Pos.Y += fallVel;
 
-            if (MainGame.dm.MapCollide((int)Pos.X, (int)(Pos.Y + fallVel / 2), Deathmatch.hardCol))
+            if (MainGame.dm.MapCollide((int)Pos.X, (int)(Pos.Y + fallVel / 2), CollideTypes.HardOrSoft))
             {
                 speed = 0;
                 fallVel = 0;

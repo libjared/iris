@@ -23,11 +23,6 @@ namespace Iris
         private int mapWidth;
         private int mapHeight;
 
-        public static Color hardCol = new Color(0, 0, 0, 255);
-        public static Color softCol = new Color(0, 255, 0, 255);
-        public static Color intCol = new Color(255, 0, 0, 0);
-        public static Color anyCol = new Color(1, 1, 1, 0);
-
         public static float MAPYOFFSET = 297f;
         public static float MAPXOFFSET = 1300f;
         public static float shakeFactor = 1.5f;
@@ -155,11 +150,6 @@ namespace Iris
                 Render.Draw(Content.GetTexture("mapDecor.png"), new Vector2f(0, 0), new Color(255, 255, 255, (byte)(255 - interiorAlpha)), new Vector2f(0, 0), 1, 0f);
             //MainGame.window.Draw(mapSprite);
 
-        }
-
-        public bool MapCollide(int x, int y, Color c)
-        {
-            return MapCollide(x, y, CollideTypes.HardOrSoft);
         }
 
         public bool MapCollide(int x, int y, CollideTypes types)
