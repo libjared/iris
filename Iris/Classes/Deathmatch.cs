@@ -157,19 +157,12 @@ namespace Iris
 
         }
 
-        [Flags]
-        public enum CollideTypes
-        {
-            Hard = 1,
-            Soft = 2
-        }
-
         public bool MapCollide(int x, int y, Color c)
         {
-            return MapCollide(x, y);
+            return MapCollide(x, y, CollideTypes.HardOrSoft);
         }
 
-        public bool MapCollide(int x, int y)
+        public bool MapCollide(int x, int y, CollideTypes types)
         {
             //check if OOB
             if (x < 0 || x >= mapWidth || y < 0 || y >= mapHeight)
@@ -182,7 +175,9 @@ namespace Iris
             byte b = mapBytes[index + 2];
             byte a = mapBytes[index + 3];
             //only collide if black or green
-            return (a == 255 && r == 0 && g == 0 && b == 0) || (a == 255 && r == 0 && g == 255 && b == 0);
+            if (types.HasFlag(CollideTypes.Hard) && a == 255 && r == 0 && g == 0 && b == 0) return true;
+            if (types.HasFlag(CollideTypes.Soft) && a == 255 && r == 0 && g == 255 && b == 0) return true;
+            return false;
         }
 
         public Actor GetPlayerWithUID(long id)
@@ -276,5 +271,13 @@ namespace Iris
             }
 
         }
+    }
+
+    [Flags]
+    public enum CollideTypes
+    {
+        Hard = 1,
+        Soft = 2,
+        HardOrSoft = 3
     }
 }

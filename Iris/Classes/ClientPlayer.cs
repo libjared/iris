@@ -14,6 +14,7 @@ namespace Iris
         public float holdDistance;
         public float crosshairFireExpand = 0;
         int ammo;
+        public bool SoftDrop;
 
         public ClientPlayer(Deathmatch dm)
             : base(dm)
@@ -189,9 +190,7 @@ namespace Iris
             {
                 this.Velocity.X -= 2;
             }
-            if (Input.isKeyDown(Keyboard.Key.S))
-            {
-            }
+            SoftDrop = Input.isKeyDown(Keyboard.Key.S);
             if (Input.isKeyDown(Keyboard.Key.D))
             {
                 this.Velocity.X += 2;
@@ -264,19 +263,23 @@ namespace Iris
             //truncate tiny velocities
             if (Math.Abs(Velocity.X) < 1) Velocity.X = 0;
 
+            //determine whether we're dropping through platforms
+            CollideTypes type = SoftDrop ? CollideTypes.Hard : CollideTypes.HardOrSoft;
+
             //we do the horizontal and vertical movements separately
             SolveHoriz();
-            SolveVert();
+            SolveVert(type);
         }
 
         private void UpdateOnGround()
         {
             Vector2i posi = new Vector2i((int)Pos.X, (int)Pos.Y);
             Vector2i below = posi + new Vector2i(0, 1);
-            OnGround = dm.MapCollide(below.X, below.Y);
+            CollideTypes type = SoftDrop ? CollideTypes.Hard : CollideTypes.HardOrSoft;
+            OnGround = dm.MapCollide(below.X, below.Y, type);
         }
 
-        private void SolveVert()
+        private void SolveVert(CollideTypes type)
         {
             Vector2i posi = new Vector2i((int)Pos.X, (int)Pos.Y);
             Vector2i vertDest = new Vector2i(posi.X, posi.Y + (int)Velocity.Y);
@@ -288,7 +291,7 @@ namespace Iris
 
                 bool hitSomething = true;
                 int y = posi.Y;
-                while (!dm.MapCollide(posi.X, y))
+                while (!dm.MapCollide(posi.X, y, type))
                 {
                     if (y == vertDest.Y)
                     {
@@ -318,7 +321,7 @@ namespace Iris
 
                 bool hitSomething = true;
                 int x = posi.X;
-                while (!dm.MapCollide(x, posi.Y))
+                while (!dm.MapCollide(x, posi.Y, CollideTypes.Hard))
                 {
                     if (x == horizDest.X)
                     {
