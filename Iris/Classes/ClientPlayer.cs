@@ -20,7 +20,7 @@ namespace Iris
         {
             Pos = new Vector2f(10, 10);
             Speed = .35f;
-            MaxJumps = 2;
+            MaxJumps = 20000;
             JumpsLeft = MaxJumps;
             Alive = true;
             SetHealth(10000);
@@ -43,7 +43,7 @@ namespace Iris
             UpdatePosition();
             CheckProjectiles();
             HandleDeath();
-            
+            UpdateOnGround();
             dm.Mailman.SendPlayerPosMessage(UID, Pos, Facing, AimAngle);
 
             if (Input.isKeyTap(Keyboard.Key.K))
@@ -181,7 +181,7 @@ namespace Iris
                 if (OnGround || (JumpsLeft > 0)) // && Velocity.Y > 0))
                 {
                     JumpsLeft--;
-                    Vector2f nextVec = new Vector2f(0, -24f - JumpsLeft);
+                    Vector2f nextVec = new Vector2f(0, -10f);
                     this.Velocity = nextVec;
                 }
             }
@@ -250,50 +250,49 @@ namespace Iris
 
         private void UpdatePosition()
         {
-            //Console.WriteLine(OnGround);
-            //Sprite.Color = Color.White;
             //increase velocity by gravity, up to a maximum
             Velocity.Y += dm.gravity;
-            if (Velocity.Y > dm.gravity * 15)
+            if (Velocity.Y > dm.gravity * 12)
             {
-                Velocity.Y = dm.gravity * 15;
+                Velocity.Y = dm.gravity * 12;
             }
 
-            if (dm.MapCollide((int)Pos.X, (int)Pos.Y + (int)Velocity.Y, Deathmatch.hardCol))
-            {
-                JumpsLeft = MaxJumps;
-            }
-            //if destination is all clear, just set Pos and we're done //Nope, dont do this.
-            Vector2f dest = Velocity + Pos;
-            OnGround = true;
-            if (!dm.MapCollide((int)dest.X, (int)dest.Y, Deathmatch.hardCol))
-            {
-                OnGround = false;
-            }
+            //horizontal decay, up to a maximum
+            Velocity.X *= .75f;
+            Velocity.X = Helper.ClampSigned(2f, Velocity.X);
 
-            //Color = Color.Green;
+            //truncate tiny velocities
+            if (Math.Abs(Velocity.X) < 1) Velocity.X = 0;
+
+            //if destination is all clear, just set Pos and we're done
+            Vector2i dest = new Vector2i((int)(Velocity.X + Pos.X), (int)(Velocity.Y + Pos.Y));
+            if (!dm.MapCollide(dest.X, dest.Y))
+            {
+                Pos = new Vector2f(dest.X, dest.Y);
+                return;
+            }
 
             //we do the horizontal and vertical separately. one of them is blocking us
-
             //try to clear horizontal
             SolveHoriz();
-
             //try to clear vertical
             SolveVert();
+        }
 
-            Velocity.X *= .75f;
-            Pos += Velocity * Speed;
-            //horizontal decay
-
+        private void UpdateOnGround()
+        {
+            Vector2i posi = new Vector2i((int)Pos.X, (int)Pos.Y);
+            Vector2i below = posi + new Vector2i(0, 1);
+            OnGround = dm.MapCollide(below.X, below.Y);
         }
 
         private void SolveVert()
         {
             Vector2i posi = new Vector2i((int)Pos.X, (int)Pos.Y);
             Vector2i vertDest = new Vector2i(posi.X, posi.Y + (int)Velocity.Y);
-            if (!dm.MapCollide(vertDest.X, vertDest.Y, Deathmatch.hardCol))
+            if (!dm.MapCollide(vertDest.X, vertDest.Y))
             {
-                //Pos = new Vector2f(vertDest.X, vertDest.Y);
+                Pos = new Vector2f(vertDest.X, vertDest.Y);
             }
             else //can't, we must search for the wall
             {
@@ -309,7 +308,7 @@ namespace Iris
                 while (true)
                 {
                     y -= direction;
-                    if (!dm.MapCollide(posi.X, y, Deathmatch.hardCol))
+                    if (!dm.MapCollide(posi.X, y))
                     {
                         break;
                     }
@@ -323,9 +322,9 @@ namespace Iris
         {
             Vector2i posi = new Vector2i((int)Pos.X, (int)Pos.Y);
             Vector2i horizDest = new Vector2i(posi.X + (int)Velocity.X, posi.Y);
-            if (!dm.MapCollide(horizDest.X, horizDest.Y, Deathmatch.hardCol))
+            if (!dm.MapCollide(horizDest.X, horizDest.Y))
             {
-                //Pos = new Vector2f(horizDest.X, horizDest.Y);
+                Pos = new Vector2f(horizDest.X, horizDest.Y);
             }
             else //can't, we must search for the wall
             {
@@ -341,7 +340,7 @@ namespace Iris
                 while (true)
                 {
                     x -= direction;
-                    if (!dm.MapCollide(x, posi.Y, Deathmatch.hardCol))
+                    if (!dm.MapCollide(x, posi.Y))
                     {
                         break;
                     }

@@ -31,7 +31,7 @@ namespace Iris
         public static float MAPYOFFSET = 297f;
         public static float MAPXOFFSET = 1300f;
 
-        public float gravity = 1.1f;
+        public float gravity = 0.5f;
 
         public Deathmatch()
         {
@@ -144,7 +144,19 @@ namespace Iris
 
         }
 
+        [Flags]
+        public enum CollideTypes
+        {
+            Hard = 1,
+            Soft = 2
+        }
+
         public bool MapCollide(int x, int y, Color c)
+        {
+            return MapCollide(x, y);
+        }
+
+        public bool MapCollide(int x, int y)
         {
             //check if OOB
             if (x < 0 || x >= mapWidth || y < 0 || y >= mapHeight)
@@ -156,11 +168,8 @@ namespace Iris
             byte g = mapBytes[index + 1];
             byte b = mapBytes[index + 2];
             byte a = mapBytes[index + 3];
-            Color result = new Color(r, g, b, a);
-            //only collide if black
-            if (c.A == 0 && result.A != 0)
-                return true;
-            return result.Equals(c);
+            //only collide if black or green
+            return (a == 255 && r == 0 && g == 0 && b == 0) || (a == 255 && r == 0 && g == 255 && b == 0);
         }
 
         public Actor GetPlayerWithUID(long id)
