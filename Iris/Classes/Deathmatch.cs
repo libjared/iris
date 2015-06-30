@@ -32,6 +32,8 @@ namespace Iris
         public static float MAPXOFFSET = 1300f;
         public static float shakeFactor = 1.5f;
 
+        public float interiorAlpha = 0;
+
         public float gravity = 0.5f;
 
         public Deathmatch()
@@ -75,6 +77,8 @@ namespace Iris
                     GameObjects.Add(new TrainDust(new Vector2f(60 + (i * 440) + MainGame.rand.Next(70), 215), (float)MainGame.rand.NextDouble() * 90));
                     GameObjects.Add(new TrainDust(new Vector2f(304 + (i * 440) + MainGame.rand.Next(70), 215), (float)MainGame.rand.NextDouble() * 90));
                 }
+            TrainDust td = new TrainDust(new Vector2f(2190 + MainGame.rand.Next(10), 75), (float)MainGame.rand.NextDouble() * 90, 2);
+            GameObjects.Add(td);
 
             if (Input.isKeyTap(Keyboard.Key.Space) && !player.Alive)
             {
@@ -134,7 +138,13 @@ namespace Iris
 
             MainGame.window.Draw(new Sprite(Content.GetTexture("mapDecor.png")));
             if (player.Pos.Y > 60)
-                MainGame.window.Draw(new Sprite(Content.GetTexture("mapInterior.png")));
+            {
+                interiorAlpha += (255f - interiorAlpha) * .1f;
+            }
+            else
+                interiorAlpha *= .95f;
+            Render.Draw(Content.GetTexture("mapInterior.png"), new Vector2f(0, 0), new Color(255, 255, 255, (byte)interiorAlpha), new Vector2f(0, 0), 1, 0f);
+               // MainGame.window.Draw(new Sprite(Content.GetTexture("mapInterior.png")));
 
             Players.ForEach(p => { p.Draw(); });
             Projectiles.ForEach(p => { p.Draw(); });
@@ -142,7 +152,7 @@ namespace Iris
 
 
             if (player.Pos.Y < 60)
-                MainGame.window.Draw(new Sprite(Content.GetTexture("mapDecor.png")));
+                Render.Draw(Content.GetTexture("mapDecor.png"), new Vector2f(0, 0), new Color(255, 255, 255, (byte)(255 - interiorAlpha)), new Vector2f(0, 0), 1, 0f);
             //MainGame.window.Draw(mapSprite);
 
         }

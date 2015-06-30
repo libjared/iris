@@ -34,15 +34,60 @@ namespace Iris
         {
             base.Update();
             animation.Update();
-            handleAnimationSetting();
+            HandleAnimationSetting();
+            CheckProjectiles();
+            HandleDeath();
+            
+
+           
+
             oldPosition = Pos;
+        }
+
+        public override void Draw()
+        {
+            Core = Pos - new Vector2f(-1, 35);
+            this.Texture = animation.Texture;
+            Render.renderStates = Actor.shader;
+            Texture pistolHand = Content.GetTexture("pistolHand.png");
+            Texture revolver = Content.GetTexture("revolver.png");
+
+            if (ouchTimer > 0)
+            {
+                shader.Shader.SetParameter("ouch", 1f);
+            }
+            else
+            {
+                shader.Shader.SetParameter("ouch", 0f);
+            }
+
+            shader.Shader.SetParameter("sampler", pistolHand);
+            Render.Draw(pistolHand, Core, Color.White, new Vector2f(2, 4), 1, AimAngle, 1, Facing == -1);
+            shader.Shader.SetParameter("sampler", revolver);
+            Render.Draw(revolver, Core, Color.White, new Vector2f(2, 4), 1, AimAngle, 1, Facing == -1);
+            shader.Shader.SetParameter("sampler", Texture);
+            Render.DrawAnimation(Texture, this.Pos, Color.White, new Vector2f(Texture.Size.X / (animation.Count * 4),
+                Texture.Size.Y - animation.YOffset), Facing, animation.Count, animation.Frame, 1);
+            Render.renderStates = null;
+
+            Render.DrawString(Content.GetFont("Font1.ttf"), Name, Core - new Vector2f(0, 40), Color.White, .3f, true, 1); 
+            base.Draw();
+        }
+
+        public void CheckProjectiles()
+        {
             for (int i = 0; i < MainGame.dm.Projectiles.Count; i++)
             {
                 if (Helper.Distance(MainGame.dm.Projectiles[i].Pos, Core) < 20)
                 {
                     MainGame.dm.Projectiles.RemoveAt(i);
+                    ouchTimer = 10;
                 }
             }
+        }
+
+        public void HandleDeath()
+        {
             if (Alive)
             {
                 if (Health <= 0)
@@ -88,20 +133,7 @@ namespace Iris
             }
         }
 
-        public override void Draw()
-        {
-            Core = Pos - new Vector2f(-1, 35);
-            this.Texture = animation.Texture;
-            Render.Draw(Content.GetTexture("pistolHand.png"), Core, Color.White, new Vector2f(2, 4), 1, AimAngle, 1, Facing == -1);
-            Render.Draw(Content.GetTexture("revolver.png"), Core, Color.White, new Vector2f(2, 4), 1, AimAngle, 1, Facing == -1);
-            Render.DrawAnimation(Texture, this.Pos, Color.White, new Vector2f(Texture.Size.X / (animation.Count * 4),
-                Texture.Size.Y - animation.YOffset), Facing, animation.Count, animation.Frame, 1);
-
-            Render.DrawString(Content.GetFont("Font1.ttf"), Name, Core - new Vector2f(0, 40), Color.White, .3f, true, 1); 
-            base.Draw();
-        }
-
-        public void handleAnimationSetting()
+        public void HandleAnimationSetting()
         {
             OnGround = false;
             if (dm.MapCollide((int)this.Pos.X, (int)this.Pos.Y + (int)dm.gravity, Deathmatch.anyCol))

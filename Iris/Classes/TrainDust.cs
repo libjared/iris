@@ -10,10 +10,12 @@ namespace Iris
     public class TrainDust : GameObject
     {
         public Animation animation;
+        public float scale;
 
-        public TrainDust(Vector2f pos, float Rotation)
+        public TrainDust(Vector2f pos, float Rotation, float scale = 1)
             : base()
         {
+            this.scale = scale;
             this.Pos = pos;
             this.Rot = Rotation;
             animation = new Animation(Content.GetTexture("gunSmoke.png"), 5, 25, 0);
@@ -34,7 +36,7 @@ namespace Iris
                 MainGame.dm.GameObjects.Remove(this);
             }
             //new Color(224,164,145, 200) //brownish
-            Render.DrawAnimation(Texture, this.Pos, new Color(255,255,255,100), new Vector2f(16, 8), 1, animation.Count, animation.Frame, 1, Rot);
+            Render.DrawAnimation(Texture, this.Pos, new Color(255, 255, 255, 100), new Vector2f(16, 8), 1, animation.Count, animation.Frame, 1, Rot, scale);
 
             base.Draw();
         }

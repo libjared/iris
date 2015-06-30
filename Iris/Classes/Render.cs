@@ -29,7 +29,7 @@ namespace Iris
             MainGame.window.Draw(text);
         }
 
-        public static void DrawAnimation(Texture texture, Vector2f position, Color color, Vector2f origin, int facing, int totalFrames, int currentFrame, float layer = 0.0f, float angle = 0f)
+        public static void DrawAnimation(Texture texture, Vector2f position, Color color, Vector2f origin, int facing, int totalFrames, int currentFrame, float layer = 0.0f, float angle = 0f, float scale = 1)
         {
             int widthOfFrame = (int)(texture.Size.X / totalFrames);
             int heightOfFrame = (int)(texture.Size.Y / 1);
@@ -41,7 +41,7 @@ namespace Iris
                 heightOfFrame
             );
 
-            DrawGenericTexture(texture, position, color, origin, facing, angle, source, layer);
+            DrawGenericTexture(texture, position, color, origin, facing, angle, source, scale);
         }
 
         //TODO: fix facing origin (-1 doesn't reflect about its center)
