@@ -268,7 +268,7 @@ namespace Iris
 
             //we do the horizontal and vertical movements separately
             SolveHoriz();
-            SolveVert(type);
+            SolveVert();
         }
 
         private void UpdateOnGround()
@@ -279,7 +279,7 @@ namespace Iris
             OnGround = dm.MapCollide(below.X, below.Y, type);
         }
 
-        private void SolveVert(CollideTypes type)
+        private void SolveVert()
         {
             Vector2i posi = new Vector2i((int)Pos.X, (int)Pos.Y);
             Vector2i vertDest = new Vector2i(posi.X, posi.Y + (int)Velocity.Y);
@@ -288,6 +288,7 @@ namespace Iris
             if (vertDest.Y != posi.Y)
             {
                 int direction = Math.Sign(vertDest.Y - posi.Y);
+                CollideTypes type = (SoftDrop || direction == -1) ? CollideTypes.Hard : CollideTypes.HardOrSoft;
 
                 bool hitSomething = true;
                 int y = posi.Y;
