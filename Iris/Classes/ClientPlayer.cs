@@ -286,8 +286,18 @@ namespace Iris
             {
                 int direction = Math.Sign(vertDest.Y - posi.Y);
 
-                int y = vertDest.Y;
-                while (dm.MapCollide(vertDest.X, y))
+                bool hitSomething = true;
+                int y = posi.Y;
+                while (!dm.MapCollide(posi.X, y))
+                {
+                    if (y == vertDest.Y)
+                    {
+                        hitSomething = false;
+                        break;
+                    }
+                    y += direction;
+                }
+                if (hitSomething)
                 {
                     Velocity.Y = 0;
                     y -= direction;
@@ -306,8 +316,18 @@ namespace Iris
             {
                 int direction = Math.Sign(horizDest.X - posi.X);
 
-                int x = horizDest.X;
-                while (dm.MapCollide(x, horizDest.Y))
+                bool hitSomething = true;
+                int x = posi.X;
+                while (!dm.MapCollide(x, posi.Y))
+                {
+                    if (x == horizDest.X)
+                    {
+                        hitSomething = false;
+                        break;
+                    }
+                    x += direction;
+                }
+                if (hitSomething)
                 {
                     Velocity.X = 0;
                     x -= direction;
