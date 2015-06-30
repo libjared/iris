@@ -35,5 +35,10 @@ namespace Iris
         public virtual void onPlayerHit(Actor hit)
         {
         }
+
+        public virtual void Destroy()
+        {
+
+        }
     }
 }

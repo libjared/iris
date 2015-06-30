@@ -26,7 +26,7 @@ namespace Iris
             lifeRemaining--;
             if (lifeRemaining < 0 || MainGame.dm.MapCollide((int)Pos.X,(int)Pos.Y,Deathmatch.hardCol))
             {
-                MainGame.dm.Projectiles.Remove(this);
+                Destroy();
             }
 
             Velocity = Helper.normalize((new Vector2f((float)Math.Cos(Angle), (float)Math.Sin(Angle))));
@@ -43,7 +43,15 @@ namespace Iris
 
         public override void onPlayerHit(Actor hit)
         {
+            Destroy();
+            //MainGame.dm.Projectiles.Remove(this);
+        }
+
+        public override void Destroy()
+        {
             MainGame.dm.Projectiles.Remove(this);
+            MainGame.dm.GameObjects.Add(new BulletDestroy(this.Pos + new Vector2f(Texture.Size.X/2, Texture.Size.Y/2) - (Velocity * Speed)));
+            //MainGame.dm.GameObjects.Add(new GunSmoke(this.Pos + new Vector2f(Texture.Size.X / 2, Texture.Size.Y / 2) - (Velocity * Speed), 0));
         }
     }
 }

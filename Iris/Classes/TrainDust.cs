@@ -7,19 +7,21 @@ using System.Linq;
 
 namespace Iris
 {
-    public class GunSmoke : GameObject
+    public class TrainDust : GameObject
     {
         public Animation animation;
 
-        public GunSmoke(Vector2f pos, float Rotation) :base()
+        public TrainDust(Vector2f pos, float Rotation)
+            : base()
         {
             this.Pos = pos;
             this.Rot = Rotation;
-            animation = new Animation(Content.GetTexture("gunSmoke.png"), 5, 15, 0);
+            animation = new Animation(Content.GetTexture("gunSmoke.png"), 5, 25, 0);
         }
 
         public override void Update()
         {
+            this.Pos.X -= 2f;
             base.Update();
         }
 
@@ -31,7 +33,8 @@ namespace Iris
             {
                 MainGame.dm.GameObjects.Remove(this);
             }
-            Render.DrawAnimation(Texture, this.Pos, new Color(255,255,255,255), new Vector2f(16,8), 1, animation.Count, animation.Frame, 1, Rot);
+            //new Color(224,164,145, 200) //brownish
+            Render.DrawAnimation(Texture, this.Pos, new Color(255,255,255,100), new Vector2f(16, 8), 1, animation.Count, animation.Frame, 1, Rot);
 
             base.Draw();
         }

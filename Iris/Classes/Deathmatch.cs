@@ -68,6 +68,13 @@ namespace Iris
             GameObjects.ForEach(p => { p.Update(); });
             CheckProjectileCollisions();
 
+            if (MainGame.rand.Next(4)==0)
+            for (int i = 0; i < 5; i++)
+            {
+                GameObjects.Add(new TrainDust(new Vector2f(60 + (i * 440) + MainGame.rand.Next(70), 215), (float)MainGame.rand.NextDouble() * 90));
+                GameObjects.Add(new TrainDust(new Vector2f(304 + (i * 440) + MainGame.rand.Next(70), 215), (float)MainGame.rand.NextDouble() * 90));
+            }
+
             if (Input.isKeyTap(Keyboard.Key.Space) && !player.Alive)
             {
                 player = new ClientPlayer(this);
@@ -75,6 +82,9 @@ namespace Iris
                 player.Pos = new Vector2f(46, 62);
                 Mailman.SendRespawn(player.UID);
             }
+
+            if (Input.isKeyDown(Keyboard.Key.P))
+                Console.WriteLine(player.Pos);
 
             if (Input.isKeyDown(Keyboard.Key.R))
                 MainGame.Camera.Center += new Vector2f(MainGame.rand.Next(-4, 5), MainGame.rand.Next(-4, 5));
@@ -98,9 +108,7 @@ namespace Iris
             {
                 focus.Y = player.Pos.Y - 90;
                 MainGame.Camera.Center = new Vector2f(MainGame.Camera.Center.X, 180 - 90);
-            
-            
-        }
+            }
 
             //Camera2D.returnCamera(player.ActorCenter +
             //            new Vector2(Main.screenMousePos.X - Main.graphics.PreferredBackBufferWidth / 2,
@@ -122,14 +130,15 @@ namespace Iris
             HandleBackground();
 
             MainGame.window.Draw(new Sprite(Content.GetTexture("mapDecor.png")));
-            if (MapCollide((int)player.Pos.X, (int)player.Pos.Y, intCol))
+            if (player.Pos.Y > 60)
                 MainGame.window.Draw(new Sprite(Content.GetTexture("mapInterior.png")));
 
             Players.ForEach(p => { p.Draw(); });
             Projectiles.ForEach(p => { p.Draw(); });
             GameObjects.ForEach(p => { p.Draw(); });
 
-            if (!MapCollide((int)player.Pos.X, (int)player.Pos.Y, intCol))
+
+            if (player.Pos.Y < 60)
                 MainGame.window.Draw(new Sprite(Content.GetTexture("mapDecor.png")));
             //MainGame.window.Draw(mapSprite);
 
