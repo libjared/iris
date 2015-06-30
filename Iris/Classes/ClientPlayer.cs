@@ -264,18 +264,8 @@ namespace Iris
             //truncate tiny velocities
             if (Math.Abs(Velocity.X) < 1) Velocity.X = 0;
 
-            //if destination is all clear, just set Pos and we're done
-            Vector2i dest = new Vector2i((int)(Velocity.X + Pos.X), (int)(Velocity.Y + Pos.Y));
-            if (!dm.MapCollide(dest.X, dest.Y))
-            {
-                Pos = new Vector2f(dest.X, dest.Y);
-                return;
-            }
-
-            //we do the horizontal and vertical separately. one of them is blocking us
-            //try to clear horizontal
+            //we do the horizontal and vertical movements separately
             SolveHoriz();
-            //try to clear vertical
             SolveVert();
         }
 
@@ -290,30 +280,18 @@ namespace Iris
         {
             Vector2i posi = new Vector2i((int)Pos.X, (int)Pos.Y);
             Vector2i vertDest = new Vector2i(posi.X, posi.Y + (int)Velocity.Y);
-            if (!dm.MapCollide(vertDest.X, vertDest.Y))
-            {
-                Pos = new Vector2f(vertDest.X, vertDest.Y);
-            }
-            else //can't, we must search for the wall
+
+            //if we're to move at all
+            if (vertDest.Y != posi.Y)
             {
                 int direction = Math.Sign(vertDest.Y - posi.Y);
 
-                if (direction == 0)
-                {
-                    Console.WriteLine("stuck in vertical!");
-                    return;
-                }
-
                 int y = vertDest.Y;
-                while (true)
+                while (dm.MapCollide(vertDest.X, y))
                 {
+                    Velocity.Y = 0;
                     y -= direction;
-                    if (!dm.MapCollide(posi.X, y))
-                    {
-                        break;
-                    }
                 }
-                Velocity.Y = 0;
                 Pos.Y = y;
             }
         }
@@ -322,30 +300,18 @@ namespace Iris
         {
             Vector2i posi = new Vector2i((int)Pos.X, (int)Pos.Y);
             Vector2i horizDest = new Vector2i(posi.X + (int)Velocity.X, posi.Y);
-            if (!dm.MapCollide(horizDest.X, horizDest.Y))
-            {
-                Pos = new Vector2f(horizDest.X, horizDest.Y);
-            }
-            else //can't, we must search for the wall
+
+            //if we're to move at all
+            if (horizDest.X != posi.X)
             {
                 int direction = Math.Sign(horizDest.X - posi.X);
 
-                if (direction == 0)
-                {
-                    Console.WriteLine("stuck in horizontal!");
-                    return;
-                }
-
                 int x = horizDest.X;
-                while (true)
+                while (dm.MapCollide(x, horizDest.Y))
                 {
+                    Velocity.X = 0;
                     x -= direction;
-                    if (!dm.MapCollide(x, posi.Y))
-                    {
-                        break;
-                    }
                 }
-                Velocity.X = 0;
                 Pos.X = x;
             }
         }
