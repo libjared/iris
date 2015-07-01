@@ -210,6 +210,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Content\bgPrlx.frag">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Content\Font1.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
