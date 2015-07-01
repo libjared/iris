@@ -27,6 +27,8 @@ namespace Iris
         public static float MAPXOFFSET = 1300f;
         public static float shakeFactor = 1.5f;
 
+        public bool tunnel = false;
+
         public float interiorAlpha = 0;
 
         public float gravity = 0.5f;
@@ -48,8 +50,6 @@ namespace Iris
             mapWidth = (int)mapImg.Size.X;
             mapHeight = (int)mapImg.Size.Y;
 
-            Sky.Position = new Vector2f(0, -200);
-
             player = new ClientPlayer(this);
             player.Pos = new Vector2f(46, 62);
             Players.Add(player);
@@ -60,12 +60,20 @@ namespace Iris
 
         public void Update()
         {
+            if (Input.isKeyTap(Keyboard.Key.C))
+            {
+                CliffFace c = new CliffFace();
+                GameObjects.Add(c);
+            }
+
             Mailman.HandleMessages();
             Players.ForEach(p => { p.Update(); });
             Projectiles.ForEach(p => { p.Update(); });
             GameObjects.ForEach(p => { p.Update(); });
             CheckProjectileCollisions();
             ApplyShake();
+
+
             if (MainGame.rand.Next(4) == 0)
                 for (int i = 0; i < 5; i++)
                 {
@@ -96,6 +104,7 @@ namespace Iris
         public void Draw()
         {
             //MainGame.Camera.Center = player.Pos - new Vector2f(0,90);
+            
 
             Vector2f focus = player.Core +
                 new Vector2f(Input.screenMousePos.X - MainGame.window.Size.X / 2,
@@ -119,11 +128,12 @@ namespace Iris
 
             MainGame.window.SetView(MainGame.Camera);
             //Console.WriteLine(player.Pos);
+            //Sky.Position = MainGame.Camera.Center - new Vector2f(0, -200);
             Texture t = Content.GetTexture("sky.png");
 
-            Render.Draw(t, new Vector2f(-t.Size.X, -MAPYOFFSET), Color.White, new Vector2f(0, 0), 1, 0, 1);
-            Render.Draw(t, new Vector2f(0, -MAPYOFFSET), Color.White, new Vector2f(0, 0), 1, 0, 1);
-            Render.Draw(t, new Vector2f(t.Size.X, -MAPYOFFSET), Color.White, new Vector2f(0, 0), 1, 0, 1);
+            Render.Draw(t, new Vector2f(-t.Size.X, -MAPYOFFSET + player.Pos.Y / 3), Color.White, new Vector2f(0, 0), 1, 0, 1);
+            Render.Draw(t, new Vector2f(0, -MAPYOFFSET + player.Pos.Y / 3), Color.White, new Vector2f(0, 0), 1, 0, 1);
+            Render.Draw(t, new Vector2f(t.Size.X, -MAPYOFFSET + player.Pos.Y / 3), Color.White, new Vector2f(0, 0), 1, 0, 1);
 
 
             BackgroundImagesFar.ForEach(p => { p.Draw(MainGame.window, RenderStates.Default); });
@@ -207,6 +217,12 @@ namespace Iris
 
         private void ApplyShake()
         {
+            if (player.Health == 0)
+            {
+                player.deathTimer++;
+                if (player.deathTimer > 0 && player.deathTimer < 20)
+                    MainGame.Camera.Center += new Vector2f(MainGame.rand.Next(-20, 20), MainGame.rand.Next(-20, 20));
+            }
             MainGame.Camera.Center += new Vector2f(((float)MainGame.rand.NextDouble() * 2f - 1f) * shakeFactor, ((float)MainGame.rand.NextDouble() * 2.5f - 1.25f) * shakeFactor);
         }
 

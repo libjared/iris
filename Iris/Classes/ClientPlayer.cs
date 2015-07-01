@@ -13,15 +13,17 @@ namespace Iris
         Animation idle, running, jumpUp, jumpDown, backpedal;
         public float holdDistance;
         public float crosshairFireExpand = 0;
-        int ammo;
         public bool SoftDrop;
+        public int deathTimer = 0;
+
+        int ammo;
 
         public ClientPlayer(Deathmatch dm)
             : base(dm)
         {
             Pos = new Vector2f(10, 10);
             Speed = .35f;
-            MaxJumps = 20000;
+            MaxJumps = 100;
             JumpsLeft = MaxJumps;
             Alive = true;
             SetHealth(10000);
@@ -119,6 +121,7 @@ namespace Iris
             {
                 if (Health <= 0)
                 {
+                    Health = 0;
                     MainGame.dm.Players.Remove(this);
                     Alive = false;
                     //MainGame.dm.GameObjects.Add(new Gib(new Texture(Content.GetTexture("gibHead.png")), Core, 0,0));
@@ -158,6 +161,7 @@ namespace Iris
                         Helper.angleBetween(Core, Core - new Vector2f(-.55f, 2)) + (float)Math.PI));
                 }
             }
+          
         }
 
         public void handleControls()

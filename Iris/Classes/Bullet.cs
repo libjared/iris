@@ -24,7 +24,7 @@ namespace Iris
         public override void Update()
         {
             lifeRemaining--;
-            if (lifeRemaining < 0 || MainGame.dm.MapCollide((int)Pos.X,(int)Pos.Y, CollideTypes.Hard))
+            if (lifeRemaining < 0 || MainGame.dm.MapCollide((int)Pos.X,(int)Pos.Y, CollideTypes.Hard) || Pos.Y > 215)
             {
                 Destroy();
             }
