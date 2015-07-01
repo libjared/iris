@@ -195,6 +195,12 @@ namespace Iris
                 this.Velocity.X -= 2;
             }
             SoftDrop = Input.isKeyDown(Keyboard.Key.S);
+            bool downKey = Input.isKeyTap(Keyboard.Key.S);
+            if (downKey)
+            {
+                Velocity.Y = 10;
+            }
+
             if (Input.isKeyDown(Keyboard.Key.D))
             {
                 this.Velocity.X += 2;
