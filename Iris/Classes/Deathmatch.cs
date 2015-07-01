@@ -18,13 +18,13 @@ namespace Iris
         public List<Sprite> BackgroundTracks { get; set; }
         public List<GameObject> GameObjects = new List<GameObject>();
         private Sprite mapSprite;
-        private Sprite Sky;
         private byte[] mapBytes;
         private int mapWidth;
         private int mapHeight;
 
         public static float MAPYOFFSET = 297f;
         public static float MAPXOFFSET = 1300f;
+        private static RenderStates shader;
         public static float shakeFactor = 1.5f;
 
         public bool tunnel = false;
@@ -43,8 +43,8 @@ namespace Iris
             Mailman = new ClientMailman(this);
             Mailman.Connect();
 
+            shader = new RenderStates(new Shader(null, "Content/bgPrlx.frag"));
             Image mapImg = new Image("Content/mapCol.png");
-            Sky = new Sprite(Content.GetTexture("sky.png"));
             mapBytes = mapImg.Pixels;
             mapSprite = new Sprite(new Texture(mapImg));
             mapWidth = (int)mapImg.Size.X;
@@ -126,15 +126,14 @@ namespace Iris
             //                Main.screenMousePos.Y - Main.graphics.PreferredBackBufferHeight / 2) *
             //                Main.graphics.GraphicsDevice.Viewport.AspectRatio / player.currentWeapon.viewDistance);
 
+            MainGame.window.SetView(MainGame.window.DefaultView);
+            shader.Shader.SetParameter("offsetY", MainGame.Camera.Center.Y);
+            RectangleShape rs = new RectangleShape
+            {
+                Size = new Vector2f(800, 600)
+            };
+            MainGame.window.Draw(rs, shader);
             MainGame.window.SetView(MainGame.Camera);
-            //Console.WriteLine(player.Pos);
-            //Sky.Position = MainGame.Camera.Center - new Vector2f(0, -200);
-            Texture t = Content.GetTexture("sky.png");
-
-            Render.Draw(t, new Vector2f(-t.Size.X, -MAPYOFFSET + player.Pos.Y / 3), Color.White, new Vector2f(0, 0), 1, 0, 1);
-            Render.Draw(t, new Vector2f(0, -MAPYOFFSET + player.Pos.Y / 3), Color.White, new Vector2f(0, 0), 1, 0, 1);
-            Render.Draw(t, new Vector2f(t.Size.X, -MAPYOFFSET + player.Pos.Y / 3), Color.White, new Vector2f(0, 0), 1, 0, 1);
-
 
             BackgroundImagesFar.ForEach(p => { p.Draw(MainGame.window, RenderStates.Default); });
             BackgroundImages.ForEach(p => { p.Draw(MainGame.window, RenderStates.Default); });
