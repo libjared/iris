@@ -10,6 +10,10 @@ namespace Iris
 {
     public class CliffFace : GameObject
     {
+        int yKill = 480;
+        int xKill = 320;
+        bool wooshed = false;
+
         public CliffFace()
         {
             this.Texture = Content.GetTexture("CliffOpenBlack.png");
@@ -18,14 +22,37 @@ namespace Iris
 
         public override void Update()
         {
-            this.Pos.Y = -220;
+            if (MainGame.dm.player.Pos.X < this.Pos.X + xKill * 2)
+                MainGame.dm.tunnel = true;
+
+            this.Pos.Y = -345;
             this.Pos.X -= 15;
+
+            if (this.Pos.X < MainGame.dm.player.Pos.X && !wooshed)
+            {
+                MainGame.Camera.Center -= new Vector2f(5, 0);
+                wooshed = true;
+            }
+
+            foreach (Actor a in MainGame.dm.Players)
+            {
+                if (a.Pos.X > this.Pos.X + xKill &&
+                    a.Pos.Y < this.Pos.Y + yKill &&
+                    a.Pos.X < this.Pos.X + this.Texture.Size.X * 2)
+                {
+                    //a.Pos.X -= 345;
+                    a.Health = 0;
+                }
+            }
+
+
             base.Update();
         }
 
         public override void Draw()
         {
             Render.Draw(this.Texture, this.Pos, Color.White, new Vector2f(0, 0), 1, 0f, 1);
+            Render.Draw(this.Texture, this.Pos + new Vector2f(this.Texture.Size.X * 2,0), Color.White, new Vector2f(0, 0), 1, 0f, 1, false, true);
             base.Draw();
         }
     }

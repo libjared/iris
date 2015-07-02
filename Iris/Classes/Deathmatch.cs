@@ -17,6 +17,7 @@ namespace Iris
         public List<Sprite> BackgroundImagesFar { get; set; }
         public List<Sprite> BackgroundTracks { get; set; }
         public List<GameObject> GameObjects = new List<GameObject>();
+        public List<GameObject> BackgroundGameObjects = new List<GameObject>();
         private Sprite mapSprite;
         private byte[] mapBytes;
         private int mapWidth;
@@ -28,10 +29,13 @@ namespace Iris
         public static float shakeFactor = 1.5f;
 
         public bool tunnel = false;
+        public int tunnelsTimer = 0;
 
         public float interiorAlpha = 0;
 
         public float gravity = 0.5f;
+
+        public int shittyTimerDontUse = 0;
 
         public Deathmatch()
         {
@@ -39,6 +43,7 @@ namespace Iris
             BackgroundImages = new List<Sprite>();
             BackgroundImagesFar = new List<Sprite>();
             BackgroundTracks = new List<Sprite>();
+            BackgroundGameObjects = new List<GameObject>();
             Players = new List<Actor>();
             Mailman = new ClientMailman(this);
             Mailman.Connect();
@@ -60,16 +65,28 @@ namespace Iris
 
         public void Update()
         {
+            shittyTimerDontUse++;
+            
+            if (tunnelsTimer > 0)
+            if (shittyTimerDontUse % (60 * 2) == 0) { 
+            //if (Input.isKeyTap(Keyboard.Key.C))
+            //{
+                tunnelsTimer--;
+                CliffFace c = new CliffFace();
+                BackgroundGameObjects.Add(c);
+            }
             if (Input.isKeyTap(Keyboard.Key.C))
             {
-                CliffFace c = new CliffFace();
-                GameObjects.Add(c);
+                tunnelsTimer = 5;
             }
+
+            tunnel = false;
 
             Mailman.HandleMessages();
             Players.ForEach(p => { p.Update(); });
             Projectiles.ForEach(p => { p.Update(); });
             GameObjects.ForEach(p => { p.Update(); });
+            BackgroundGameObjects.ForEach(p => { p.Update(); });
             CheckProjectileCollisions();
             ApplyShake();
 
@@ -82,6 +99,7 @@ namespace Iris
                 }
             TrainDust td = new TrainDust(new Vector2f(2190 + MainGame.rand.Next(10), 75), (float)MainGame.rand.NextDouble() * 90, 2);
             GameObjects.Add(td);
+            GameObjects.Add(new TrainDust(new Vector2f(1978 + MainGame.rand.Next(10), 75), (float)MainGame.rand.NextDouble() * 90, 1));
 
             if (Input.isKeyTap(Keyboard.Key.Space) && !player.Alive)
             {
@@ -137,8 +155,11 @@ namespace Iris
 
             BackgroundImagesFar.ForEach(p => { p.Draw(MainGame.window, RenderStates.Default); });
             BackgroundImages.ForEach(p => { p.Draw(MainGame.window, RenderStates.Default); });
+            BackgroundGameObjects.ForEach(p => { p.Draw(); });
             BackgroundTracks.ForEach(p => { p.Draw(MainGame.window, RenderStates.Default); });
             HandleBackground();
+
+          
 
             MainGame.window.Draw(new Sprite(Content.GetTexture("mapDecor.png")));
             if (player.Pos.Y > 75)
@@ -154,11 +175,16 @@ namespace Iris
             Projectiles.ForEach(p => { p.Draw(); });
             GameObjects.ForEach(p => { p.Draw(); });
 
+         
 
             if (player.Pos.Y < 75)
                 Render.Draw(Content.GetTexture("mapDecor.png"), new Vector2f(0, 0), new Color(255, 255, 255, (byte)(255 - interiorAlpha)), new Vector2f(0, 0), 1, 0f);
             //MainGame.window.Draw(mapSprite);
-
+            if (tunnel)
+            {
+                Render.Draw(Content.GetTexture("caution.png"), new Vector2f(player.Pos.X + 170, 100), Color.White, new Vector2f(0, 0), 1, 0f);
+            
+            }
         }
 
         public bool MapCollide(int x, int y, CollideTypes types)

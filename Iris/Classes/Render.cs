@@ -12,9 +12,9 @@ namespace Iris
     {
         public static RenderStates? renderStates = null;
 
-        public static void Draw(Texture texture, Vector2f position, Color color, Vector2f origin, int facing, float rotation, float scale = 1f, bool flipVert = false)
+        public static void Draw(Texture texture, Vector2f position, Color color, Vector2f origin, int facing, float rotation, float scale = 1f, bool flipVert = false, bool flipHoriz = false)
         {
-            DrawGenericTexture(texture, position, color, origin, facing, rotation, null, scale, flipVert);
+            DrawGenericTexture(texture, position, color, origin, facing, rotation, null, scale, flipVert, flipHoriz);
         }
 
         public static void DrawString(Font font, String message, Vector2f position, Color color, float scale, bool centered, float layer = 0.0f)
@@ -45,7 +45,7 @@ namespace Iris
         }
 
         //TODO: fix facing origin (-1 doesn't reflect about its center)
-        private static void DrawGenericTexture(Texture texture, Vector2f position, Color color, Vector2f origin, int facing, float rotation, IntRect? textureRect, float scale = 1, bool flipVert = false)
+        private static void DrawGenericTexture(Texture texture, Vector2f position, Color color, Vector2f origin, int facing, float rotation, IntRect? textureRect, float scale = 1, bool flipVert = false, bool flipHoriz = false)
         {
             Sprite sprite = new Sprite(texture);
             sprite.Texture.Smooth = false;
@@ -54,7 +54,7 @@ namespace Iris
             sprite.Position = position;
             sprite.Color = color;
             sprite.Rotation = Helper.RadToDeg(rotation);
-            sprite.Scale = new Vector2f(facing, flipVert? -1 : 1) * scale;
+            sprite.Scale = new Vector2f(facing * (flipHoriz? -1 : 1), flipVert? -1 : 1) * scale;
 
             if (textureRect.HasValue)
             {
