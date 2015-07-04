@@ -60,6 +60,9 @@ namespace Iris
             window.LostFocus += (o, e) => { Input.isActive = false; };
             Camera = new View(window.DefaultView);
             Camera.Size = new Vector2f(800/2, 600/2);
+
+            //GUICamera = new View(window.DefaultView);
+            //GUICamera.Size = new Vector2f(800 / 2, 600 / 2);
             //Camera.Zoom(.25f); //Adjust as needed
             dm = new Deathmatch();
         }
@@ -85,6 +88,8 @@ namespace Iris
                 }
                 window.Close();
             }
+
+          
         }
 
         public static void updateWorldMousePos()

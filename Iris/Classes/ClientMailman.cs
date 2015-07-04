@@ -118,16 +118,24 @@ namespace Iris
 
                 case "INFO": //Recieved when server has completed sending all newbie initialization
                     break;
-                case "BULLET": //Recieved when server has completed sending all newbie initialization
+                case "BULLET": 
                     long UID_BULLET = msg.ReadInt64();
                     float xBULLET = msg.ReadFloat();
                     float yBULLET = msg.ReadFloat();
                     float BULLETangle = msg.ReadFloat();
                     MainGame.dm.Projectiles.Add(new Bullet(UID_BULLET, BULLETangle, new Vector2f(xBULLET, yBULLET), 6, 40)); //No damage yet
                     break;
-                case "RESPAWN": //Recieved when server has completed sending all newbie initialization
+                case "RESPAWN": 
                     long UID_RESPAWN = msg.ReadInt64();
                     HandleJoinMessage(UID_RESPAWN);
+                    break;
+                case "COIN":
+                    long UID_COIN = msg.ReadInt64();
+                    float xCOIN = msg.ReadFloat();
+                    float yCOIN = msg.ReadFloat();
+                    float COINangle = msg.ReadFloat();
+                    float COINspeed = msg.ReadFloat();
+                    MainGame.dm.GameObjects.Add(new Coin(new Vector2f(xCOIN, yCOIN), COINspeed, COINangle));
                     break;
 
                 default:
@@ -192,6 +200,17 @@ namespace Iris
             outGoingMessage.Write(b.Pos.X);
             outGoingMessage.Write(b.Pos.Y);
             outGoingMessage.Write(b.Angle);
+            client.SendMessage(outGoingMessage, NetDeliveryMethod.ReliableOrdered);
+        }
+
+        public void SendCoinCreate(Coin c)
+        {
+            NetOutgoingMessage outGoingMessage = client.CreateMessage();
+            outGoingMessage.Write("COIN");
+            outGoingMessage.Write(c.Pos.X);
+            outGoingMessage.Write(c.Pos.Y);
+            outGoingMessage.Write(c.angle);
+            outGoingMessage.Write(c.speed);
             client.SendMessage(outGoingMessage, NetDeliveryMethod.ReliableOrdered);
         }
 

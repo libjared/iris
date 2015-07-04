@@ -20,6 +20,7 @@ namespace Iris
         public float AimAngle;
         public Vector2f Core;
         public int ouchTimer;
+        public IntRect collisionBox;
 
         public int Health { get; set; }
         public string Name { get; set; }

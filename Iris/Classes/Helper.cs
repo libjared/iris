@@ -15,6 +15,22 @@ namespace Iris
             return new Vector2f(radius * (float)Math.Cos((double)angle) * xPercent, radius * (float)Math.Sin((double)angle) * yPercent);
         }
 
+        //public static Vector2f Lerp(Vector2f point1, Vector2f point2, float percent)
+        //{
+        //    Vector2f lerpPos = new Vector2f();
+        //    lerpPos.X = (point2.X - point1.X) * percent;
+        //}
+
+        //public static Vector2f lerp(Vector2f A, Vector2f B, float t )
+        //{
+        //    return A * t + B*(1f - t);
+        //}
+
+        public static Vector2f lerp(Vector2f value1, Vector2f value2, float amount)
+        {
+            return value1 + (value2 - value1) * amount;
+        }
+
         public static float Distance(Vector2f vec1, Vector2f vec2)
         {
             return (float)Math.Sqrt(Math.Pow((vec2.X - vec1.X), 2) + Math.Pow((vec2.Y - vec1.Y), 2));

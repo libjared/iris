@@ -34,8 +34,10 @@ namespace Iris
         public float interiorAlpha = 0;
 
         public float gravity = 0.5f;
-
+        public float PlayerAimSphereRadius = 100;
         public int shittyTimerDontUse = 0;
+
+        public int clientCoins = 1000;
 
         public Deathmatch()
         {
@@ -60,7 +62,6 @@ namespace Iris
             Players.Add(player);
 
             MainGame.Camera.Center = player.Pos - new Vector2f(0, 90);
-
         }
 
         public void Update()
@@ -101,11 +102,11 @@ namespace Iris
             GameObjects.Add(td);
             GameObjects.Add(new TrainDust(new Vector2f(1978 + MainGame.rand.Next(10), 75), (float)MainGame.rand.NextDouble() * 90, 1));
 
-            if (Input.isKeyTap(Keyboard.Key.Space) && !player.Alive)
+            if (Input.isKeyTap(Keyboard.Key.LShift) && !player.Alive)
             {
                 player = new ClientPlayer(this);
                 Players.Add(player);
-                player.Pos = new Vector2f(46, 62);
+                player.Pos = new Vector2f(46, 142);
                 Mailman.SendRespawn(player.UID);
             }
 
@@ -126,13 +127,14 @@ namespace Iris
 
             Vector2f focus = player.Core +
                 new Vector2f(Input.screenMousePos.X - MainGame.window.Size.X / 2,
-                Input.screenMousePos.Y - MainGame.window.Size.Y / 2) / 2;
+                Input.screenMousePos.Y - MainGame.window.Size.Y / 2) * player.CrosshairCameraRatio;
 
-            if (Helper.Distance(player.Core, focus) > 100)
-                focus = player.Core + Helper.PolarToVector2(100, player.AimAngle, 1, 1);//player.Core + Helper.normalize(focus) * 100;
+            if (Helper.Distance(player.Core, focus) > PlayerAimSphereRadius)
+                focus = player.Core + Helper.PolarToVector2(PlayerAimSphereRadius, player.AimAngle, 1, 1);//player.Core + Helper.normalize(focus) * 100;
 
 
             Helper.MoveCameraTo(MainGame.Camera, focus, .04f);
+
             if (MainGame.Camera.Center.Y > 180 - 90)
             {
                 focus.Y = player.Pos.Y - 90;

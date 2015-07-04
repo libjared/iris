@@ -15,8 +15,10 @@ namespace Iris
         public float crosshairFireExpand = 0;
         public bool SoftDrop;
         public int deathTimer = 0;
+        public float CrosshairCameraRatio;
+        public int DropOnDeathCoins;
 
-        int ammo;
+        //int ammo;
 
         public ClientPlayer(Deathmatch dm)
             : base(dm)
@@ -40,6 +42,9 @@ namespace Iris
         public override void Update()
         {
             base.Update();
+
+            //collisionBox = new IntRect(
+            UpdateCollisionBox();
             animation.Update();
             handleControls();
             handleAnimationSetting();
@@ -48,6 +53,8 @@ namespace Iris
             HandleDeath();
             UpdateOnGround();
             dm.Mailman.SendPlayerPosMessage(UID, Pos, Facing, AimAngle);
+            UpdateCoinDropAmount();
+
 
             if (Input.isKeyTap(Keyboard.Key.K))
                 SetHealth(0);
@@ -56,10 +63,21 @@ namespace Iris
                 SetHealth(0);
 
             
-
-            
             //frameDelta += (float)MainGame.deltaTime.TotalMilliseconds;
 
+        }
+
+        private void UpdateCoinDropAmount()
+        {
+            DropOnDeathCoins = (int)(dm.clientCoins * .15f);
+        }
+
+        private void UpdateCollisionBox()
+        {
+            collisionBox.Left = (int)Pos.X - 9;
+            collisionBox.Top = (int)Pos.Y - 55;
+            collisionBox.Width = 18;
+            collisionBox.Height = 55;
         }
 
         public override void Draw()
@@ -95,24 +113,24 @@ namespace Iris
             Render.DrawAnimation(Texture, this.Pos, Color.White, new Vector2f(Texture.Size.X / (animation.Count * 4),
                 Texture.Size.Y - animation.YOffset), Facing, animation.Count, animation.Frame, 1);
             Render.renderStates = null;
-            //Sprite s = new Sprite(idleTest);
-
-            //s.TextureRect = new IntRect(
-            //    64 * frame,
-            //    0,
-            //    64,
-            //    55
-            //);
-
-            //MainGame.window.Draw(s);
-            //Render.Draw(s.Texture, this.Pos, Color.White, new Vector2f(0, 0), 1, 0, 1);
 
             RectangleShape rect = new RectangleShape();
             rect.Position = new Vector2f((int)Pos.X, (int)Pos.Y);
             rect.Size = new Vector2f(1, 1);
             rect.FillColor = Color.White;
             rect.OutlineColor = Color.White;
-            MainGame.window.Draw(rect);
+            //MainGame.window.Draw(rect); //Draw players collision point
+
+
+         
+
+
+            RectangleShape col = new RectangleShape();
+            col.Position = new Vector2f(collisionBox.Left, collisionBox.Top);
+            col.Size = new Vector2f(collisionBox.Width, collisionBox.Height);
+            col.FillColor = Color.White;
+            col.OutlineColor = Color.Red;
+            //MainGame.window.Draw(col); //Draw players collision box
         }
 
         public void HandleDeath()
@@ -121,10 +139,10 @@ namespace Iris
             {
                 if (Health <= 0)
                 {
+                    DropMoney(DropOnDeathCoins);
+                    dm.clientCoins -= DropOnDeathCoins;
                     Health = 0;
-                    MainGame.dm.Players.Remove(this);
                     Alive = false;
-                    //MainGame.dm.GameObjects.Add(new Gib(new Texture(Content.GetTexture("gibHead.png")), Core, 0,0));
                     for (int i = 0; i < 100; i++)
                     {
                         int gibNum = MainGame.rand.Next(1, 4);
@@ -159,6 +177,8 @@ namespace Iris
 
                     MainGame.dm.GameObjects.Add(new Gib(new Texture(Content.GetTexture("gibArm.png")), Core + new Vector2f(0, 1), 3.2f,
                         Helper.angleBetween(Core, Core - new Vector2f(-.55f, 2)) + (float)Math.PI));
+
+                    MainGame.dm.Players.Remove(this);
                 }
             }
           
@@ -167,6 +187,17 @@ namespace Iris
         public void handleControls()
         {
 
+            if (Mouse.IsButtonPressed(Mouse.Button.Right))
+            {
+                CrosshairCameraRatio = 1f;
+                dm.PlayerAimSphereRadius = 175f;
+            }
+            else
+            {
+                CrosshairCameraRatio = .5f;
+                dm.PlayerAimSphereRadius = 100f;
+            } //Right click zooming? Kinda cool maybe I dunno
+ 
 
             AimAngle = Helper.angleBetween(MainGame.worldMousePos, Core);
             if (Input.isMouseButtonTap(Mouse.Button.Left))
@@ -181,10 +212,13 @@ namespace Iris
                 dm.Mailman.SendBulletCreate(b);
             }
 
-            if (Input.isKeyTap(Keyboard.Key.W))
+            if (Input.isKeyTap(Keyboard.Key.W) || Input.isKeyTap(Keyboard.Key.Space))
             {
                 if (OnGround || (JumpsLeft > 0)) // && Velocity.Y > 0))
                 {
+                    TrainDust td = new TrainDust(this.Pos, 0, 1f);
+                    td.Alpha = 1;
+                    dm.GameObjects.Add(td);
                     JumpsLeft--;
                     Vector2f nextVec = new Vector2f(0, -10f);
                     this.Velocity = nextVec;
@@ -211,6 +245,17 @@ namespace Iris
             {
                 Facing = -1;
             }
+
+            if (Input.isKeyDown(Keyboard.Key.E))
+            {
+                DropMoney(15);
+            }
+            if (Input.isKeyDown(Keyboard.Key.R))
+            {
+                dm.GameObjects.Add(new TreasureBox(this.Pos));
+            }
+
+
         }
 
         public void handleAnimationSetting()
@@ -253,7 +298,6 @@ namespace Iris
 
         public override void OnProjectileHit(Projectile hit)
         {
-
             this.Health -= hit.Damage;
         }
 
@@ -368,6 +412,17 @@ namespace Iris
                     MainGame.dm.Projectiles[i].Destroy();
                 }
             }
+        }
+
+        private void DropMoney(int count)
+        {
+                for (int i = 0; i < count; i++)
+                {
+                    Coin c = new Coin(this.Core - new Vector2f(0, 0), 2.5f + (float)MainGame.rand.NextDouble() * 1.5f, (float)
+                        (-Math.PI / 2 + .35 * (MainGame.rand.NextDouble() - .5)));
+                    //dm.Mailman.SendCoinCreate(c);
+                    dm.GameObjects.Add(c);
+                }
         }
     }
 }

@@ -26,7 +26,7 @@ namespace Iris
             this.Pos.X -= 2f;
             base.Update();
         }
-
+        
         public override void Draw()
         {
             animation.Update();

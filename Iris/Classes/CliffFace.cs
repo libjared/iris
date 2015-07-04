@@ -30,7 +30,7 @@ namespace Iris
 
             if (this.Pos.X < MainGame.dm.player.Pos.X && !wooshed)
             {
-                MainGame.Camera.Center -= new Vector2f(5, 0);
+                MainGame.Camera.Center -= new Vector2f(2000f / (float)(MainGame.Camera.Center.X - (this.Pos.X + xKill)), 0);
                 wooshed = true;
             }
 
@@ -38,7 +38,7 @@ namespace Iris
             {
                 if (a.Pos.X > this.Pos.X + xKill &&
                     a.Pos.Y < this.Pos.Y + yKill &&
-                    a.Pos.X < this.Pos.X + this.Texture.Size.X * 2)
+                    a.Pos.X < this.Pos.X + this.Texture.Size.X * 2 - xKill)
                 {
                     //a.Pos.X -= 345;
                     a.Health = 0;
