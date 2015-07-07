@@ -93,11 +93,31 @@ namespace Iris.Server
                 case "RESPAWN":
                     HandleRESPAWN(msg);
                     break;
+                case "COIN":
+                    HandleCOIN(msg);
+                    break;
                 default:
                     Console.WriteLine(string.Format("Bad message type {0} from player {1}",
                         type, msg.SenderConnection.RemoteUniqueIdentifier));
                     break;
             }
+        }
+
+        private void HandleCOIN(NetIncomingMessage msg)
+        {
+            //no uid
+            float x = msg.ReadFloat();
+            float y = msg.ReadFloat();
+            float ang = msg.ReadFloat();
+            float speed = msg.ReadFloat();
+
+            NetOutgoingMessage outMsg = server.CreateMessage();
+            outMsg.Write("COIN");
+            outMsg.Write(x);
+            outMsg.Write(y);
+            outMsg.Write(ang);
+            outMsg.Write(speed);
+            server.SendToAll(outMsg, msg.SenderConnection, NetDeliveryMethod.ReliableOrdered, 0);
         }
 
         private void HandleRESPAWN(NetIncomingMessage msg)
