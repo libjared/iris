@@ -19,7 +19,7 @@ namespace Iris
             this.Speed = 8;
             this.Damage = damage;
             this.Texture = Content.GetTexture("bullet.png");
-            this.weightFactor = .0025f;
+            this.weightFactor = .0055f;
             this.Velocity = Helper.normalize((new Vector2f((float)Math.Cos(Angle), (float)Math.Sin(Angle))));
         }
 

@@ -67,7 +67,14 @@ namespace Iris
         public void Update()
         {
             shittyTimerDontUse++;
-            
+
+            if (Input.isKeyDown(Keyboard.Key.F1))
+            {
+                clientCoins = 10000;
+                player.MaxJumps = 10000000;
+                player.Health = 1000000;
+            }
+
             if (tunnelsTimer > 0)
             if (shittyTimerDontUse % (60 * 2) == 0) { 
             //if (Input.isKeyTap(Keyboard.Key.C))
@@ -89,7 +96,7 @@ namespace Iris
             GameObjects.ForEach(p => { p.Update(); });
             BackgroundGameObjects.ForEach(p => { p.Update(); });
             CheckProjectileCollisions();
-            ApplyShake();
+            //ApplyShake();
 
 
             if (MainGame.rand.Next(4) == 0)
@@ -154,6 +161,11 @@ namespace Iris
             };
             MainGame.window.Draw(rs, shader);
             MainGame.window.SetView(MainGame.Camera);
+
+            foreach (Sprite s in BackgroundImagesFar)
+            {
+                s.Position = new Vector2f(s.Position.X, 280 - MAPYOFFSET + (player.Pos.Y / 15));
+            }
 
             BackgroundImagesFar.ForEach(p => { p.Draw(MainGame.window, RenderStates.Default); });
             BackgroundImages.ForEach(p => { p.Draw(MainGame.window, RenderStates.Default); });

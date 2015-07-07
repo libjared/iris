@@ -16,7 +16,7 @@ namespace Iris
             this.Alpha = .8f;
             this.Pos = pos;
             this.Rot = Rotation;
-            animation = new Animation(Content.GetTexture("gunSmoke.png"), 5, 15, 0);
+            animation = new Animation(Content.GetTexture("gunSmoke.png"), 5, 20, 0);
         }
 
         public override void Update()

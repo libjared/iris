@@ -130,7 +130,7 @@ namespace Iris
                     HandleJoinMessage(UID_RESPAWN);
                     break;
                 case "COIN":
-                    long UID_COIN = msg.ReadInt64();
+                    //long UID_COIN = msg.ReadInt64();
                     float xCOIN = msg.ReadFloat();
                     float yCOIN = msg.ReadFloat();
                     float COINangle = msg.ReadFloat();

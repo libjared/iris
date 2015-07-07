@@ -25,10 +25,10 @@ namespace Iris
         {
             Pos = new Vector2f(10, 10);
             Speed = .35f;
-            MaxJumps = 100;
+            MaxJumps = 2;
             JumpsLeft = MaxJumps;
             Alive = true;
-            SetHealth(10000);
+            SetHealth(100);
             idle = new Animation(Content.GetTexture("idle.png"), 4, 120, 1, true);
             running = new Animation(Content.GetTexture("run.png"), 6, 50, 1, true);
             backpedal = new Animation(Content.GetTexture("run.png"), 6, 60, 1, false);
@@ -419,8 +419,8 @@ namespace Iris
                 {
                     Coin c = new Coin(this.Core - new Vector2f(0, 0), 2.5f + (float)MainGame.rand.NextDouble() * 1.5f, (float)
                         (-Math.PI / 2 + .35 * (MainGame.rand.NextDouble() - .5)));
-                    //dm.Mailman.SendCoinCreate(c);
-                    dm.GameObjects.Add(c);
+                    dm.Mailman.SendCoinCreate(c);
+                    //dm.GameObjects.Add(c);
                 }
         }
     }
