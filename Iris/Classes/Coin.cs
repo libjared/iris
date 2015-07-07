@@ -94,6 +94,7 @@ namespace Iris
 
 
             if (readyTimer < 0)
+            {
                 for (int i = 0; i < MainGame.dm.Players.Count; i++)
                 {
                     Actor A = MainGame.dm.Players[i];
@@ -114,7 +115,7 @@ namespace Iris
                         //Play pickup sound
                     }
                 }
-
+            }
 
         }
     }

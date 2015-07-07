@@ -66,5 +66,10 @@ namespace Iris
         public virtual void OnProjectileHit(Projectile hit)
         {
         }
+
+        protected virtual void UpdateCollisionBox()
+        {
+
+        }
     }
 }

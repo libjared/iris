@@ -72,12 +72,14 @@ namespace Iris
             DropOnDeathCoins = (int)(dm.clientCoins * .15f);
         }
 
-        private void UpdateCollisionBox()
+        protected override void UpdateCollisionBox()
         {
             collisionBox.Left = (int)Pos.X - 9;
             collisionBox.Top = (int)Pos.Y - 55;
             collisionBox.Width = 18;
             collisionBox.Height = 55;
+
+            base.UpdateCollisionBox();
         }
 
         public override void Draw()
@@ -249,7 +251,7 @@ namespace Iris
 
             if (Input.isKeyDown(Keyboard.Key.E))
             {
-                DropMoney(15);
+                DropMoney(MainGame.rand.Next(8,16));
             }
             if (Input.isKeyTap(Keyboard.Key.R))
             {
