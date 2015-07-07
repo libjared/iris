@@ -117,7 +117,7 @@ namespace Iris.Server
             outMsg.Write(x);
             outMsg.Write(y);
             outMsg.Write(count);
-            server.SendToAll(outMsg, msg.SenderConnection, NetDeliveryMethod.ReliableOrdered, 0);
+            server.SendToAll(outMsg, null, NetDeliveryMethod.ReliableOrdered, 0);
         }
 
         private void HandleRESPAWN(NetIncomingMessage msg)
