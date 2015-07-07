@@ -7,15 +7,17 @@ using System.Linq;
 
 namespace Iris
 {
-    public class BulletDestroy : GameObject
+    public class GunFlash : GameObject
     {
         public Animation animation;
 
-        public BulletDestroy(Vector2f pos)
+        public GunFlash(Vector2f pos, float Rotation)
             : base()
         {
+            this.Alpha = .8f;
             this.Pos = pos;
-            animation = new Animation(Content.GetTexture("bulletDestroy.png"), 4, 10, 0);
+            this.Rot = Rotation;
+            animation = new Animation(Content.GetTexture("bulletFlash.png"), 5, 15, 0);
         }
 
         public override void Update()
@@ -31,7 +33,7 @@ namespace Iris
             {
                 MainGame.dm.GameObjects.Remove(this);
             }
-            Render.DrawAnimation(Texture, this.Pos, new Color(255,255,255,200), new Vector2f(8, 8), 1, animation.Count, animation.Frame, 1, Rot);
+            Render.DrawAnimation(Texture, this.Pos, new Color(255, 255, 255, (byte)(255 * Alpha)), new Vector2f(9, Texture.Size.Y/2), 1, animation.Count, animation.Frame, 1, Rot);
 
             base.Draw();
         }

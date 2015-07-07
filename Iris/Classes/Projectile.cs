@@ -16,7 +16,7 @@ namespace Iris
         public float Speed;
         public int Damage;
         public float Direction;
-        public float GravityPull;
+        public float weightFactor;
         public long OwnerUID;
 
         public Projectile()

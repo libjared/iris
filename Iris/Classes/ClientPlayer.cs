@@ -203,12 +203,13 @@ namespace Iris
             if (Input.isMouseButtonTap(Mouse.Button.Left))
             {
                 //Console.WriteLine("Bang");
-                Bullet b = new Bullet(this.UID, AimAngle, Core + Helper.PolarToVector2(28, AimAngle, 1, 1), 6, 40);
+                Bullet b = new Bullet(this.UID, AimAngle, Core + Helper.PolarToVector2(28, AimAngle, 1, 1), 40);
                 crosshairFireExpand = .75f;
                 dm.Projectiles.Add(b);
                 MainGame.Camera.Center += Helper.PolarToVector2(3.5f * MainGame.rand.Next(1, 2), AimAngle + (float)Math.PI, 1, 1);
                 holdDistance = -10f;
                 MainGame.dm.GameObjects.Add(new GunSmoke(Core + Helper.PolarToVector2(32, AimAngle, 1, 1) + (Velocity), AimAngle));
+                MainGame.dm.GameObjects.Add(new GunFlash(Core + Helper.PolarToVector2(32, AimAngle, 1, 1) + (Velocity), AimAngle));
                 dm.Mailman.SendBulletCreate(b);
             }
 
@@ -250,12 +251,10 @@ namespace Iris
             {
                 DropMoney(15);
             }
-            if (Input.isKeyDown(Keyboard.Key.R))
+            if (Input.isKeyTap(Keyboard.Key.R))
             {
                 dm.GameObjects.Add(new TreasureBox(this.Pos));
             }
-
-
         }
 
         public void handleAnimationSetting()

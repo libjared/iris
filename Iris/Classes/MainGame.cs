@@ -46,7 +46,7 @@ namespace Iris
         private static void LoadContentInitialize()
         {
             window = new RenderWindow(
-                new VideoMode(800, 600), "Project Iris", Styles.Titlebar);
+                new VideoMode(800, 600), "Project Iris", Styles.Resize);
 
             window.SetFramerateLimit(60);
             window.SetMouseCursorVisible(false);
@@ -64,11 +64,15 @@ namespace Iris
             //GUICamera = new View(window.DefaultView);
             //GUICamera.Size = new Vector2f(800 / 2, 600 / 2);
             //Camera.Zoom(.25f); //Adjust as needed
+
             dm = new Deathmatch();
         }
 
         private static void UpdateDraw(RenderWindow window)
         {
+            //float ratio = 800 / 600;
+            window.Size = new Vector2u((uint)(800),(uint)(600));
+
             window.Clear(Color.Black);
             window.DispatchEvents();
             Input.Update();
@@ -88,8 +92,6 @@ namespace Iris
                 }
                 window.Close();
             }
-
-          
         }
 
         public static void updateWorldMousePos()

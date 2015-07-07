@@ -12,13 +12,15 @@ namespace Iris
     {
         int lifeRemaining = 500;
 
-        public Bullet(long UIDOwner, float angle, Vector2f position, float speed, int damage)
+        public Bullet(long UIDOwner, float angle, Vector2f position, int damage)
         {
             this.Angle = angle;
             this.Pos = position;
-            this.Speed = speed;
+            this.Speed = 8;
             this.Damage = damage;
             this.Texture = Content.GetTexture("bullet.png");
+            this.weightFactor = .0025f;
+            this.Velocity = Helper.normalize((new Vector2f((float)Math.Cos(Angle), (float)Math.Sin(Angle))));
         }
 
         public override void Update()
@@ -29,7 +31,7 @@ namespace Iris
                 Destroy();
             }
 
-            Velocity = Helper.normalize((new Vector2f((float)Math.Cos(Angle), (float)Math.Sin(Angle))));
+            this.Velocity.Y += weightFactor;
             this.Rot = Helper.angleBetween(this.Pos, this.Pos + Velocity);
             this.Pos += (Velocity * Speed);
             base.Update();

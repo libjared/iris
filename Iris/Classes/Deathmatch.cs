@@ -37,7 +37,7 @@ namespace Iris
         public float PlayerAimSphereRadius = 100;
         public int shittyTimerDontUse = 0;
 
-        public int clientCoins = 1000;
+        public int clientCoins = 100;
 
         public Deathmatch()
         {
