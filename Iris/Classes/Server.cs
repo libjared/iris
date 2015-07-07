@@ -108,15 +108,15 @@ namespace Iris.Server
             //no uid
             float x = msg.ReadFloat();
             float y = msg.ReadFloat();
-            float ang = msg.ReadFloat();
-            float speed = msg.ReadFloat();
+            int count = msg.ReadInt32();
+
+            //TODO: newbie
 
             NetOutgoingMessage outMsg = server.CreateMessage();
             outMsg.Write("COIN");
             outMsg.Write(x);
             outMsg.Write(y);
-            outMsg.Write(ang);
-            outMsg.Write(speed);
+            outMsg.Write(count);
             server.SendToAll(outMsg, msg.SenderConnection, NetDeliveryMethod.ReliableOrdered, 0);
         }
 
