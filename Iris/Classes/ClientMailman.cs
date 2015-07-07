@@ -133,9 +133,10 @@ namespace Iris
                     //long UID_COIN = msg.ReadInt64();
                     float xCOIN = msg.ReadFloat();
                     float yCOIN = msg.ReadFloat();
-                    float COINangle = msg.ReadFloat();
-                    float COINspeed = msg.ReadFloat();
-                    MainGame.dm.GameObjects.Add(new Coin(new Vector2f(xCOIN, yCOIN), COINspeed, COINangle));
+                    int countCOIN = msg.ReadInt32();
+
+                    HandleCoinCreate(countCOIN, xCOIN, yCOIN);
+
                     break;
 
                 default:
@@ -163,6 +164,18 @@ namespace Iris
                 plr.Pos = new Vector2f(x, y);
                 plr.Facing = facing;
                 plr.AimAngle = aimAngle;
+            }
+        }
+
+        private void HandleCoinCreate(int countCOIN, float xCOIN, float yCOIN)
+        {
+            Random r = new Random(countCOIN);
+
+            for (int i = 0; i < countCOIN; i++)
+            {
+                Coin c = new Coin(new Vector2f(xCOIN, yCOIN), 2.5f + (float)r.NextDouble() * 1.5f, (float)
+                (-Math.PI / 2 + .35 * (r.NextDouble() - .5)));
+                dm.GameObjects.Add(c);
             }
         }
 
@@ -203,14 +216,13 @@ namespace Iris
             client.SendMessage(outGoingMessage, NetDeliveryMethod.ReliableOrdered);
         }
 
-        public void SendCoinCreate(Coin c)
+        public void SendCoinCreate(Vector2f pos, int count)
         {
             NetOutgoingMessage outGoingMessage = client.CreateMessage();
             outGoingMessage.Write("COIN");
-            outGoingMessage.Write(c.Pos.X);
-            outGoingMessage.Write(c.Pos.Y);
-            outGoingMessage.Write(c.angle);
-            outGoingMessage.Write(c.speed);
+            outGoingMessage.Write(pos.X);
+            outGoingMessage.Write(pos.Y);
+            outGoingMessage.Write(count);
             client.SendMessage(outGoingMessage, NetDeliveryMethod.ReliableOrdered);
         }
 

@@ -415,13 +415,7 @@ namespace Iris
 
         private void DropMoney(int count)
         {
-                for (int i = 0; i < count; i++)
-                {
-                    Coin c = new Coin(this.Core - new Vector2f(0, 0), 2.5f + (float)MainGame.rand.NextDouble() * 1.5f, (float)
-                        (-Math.PI / 2 + .35 * (MainGame.rand.NextDouble() - .5)));
-                    dm.Mailman.SendCoinCreate(c);
-                    //dm.GameObjects.Add(c);
-                }
+            MainGame.dm.Mailman.SendCoinCreate(this.Core, count);
         }
     }
 }
