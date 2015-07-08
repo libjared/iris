@@ -13,6 +13,7 @@ namespace Iris
         public static DateTime startTime;
         public static Random rand;
         public static View Camera;
+        public static View GuiCamera;
         public static Deathmatch dm;
         public static Vector2f worldMousePos;
         public static DateTime oldDateTime;
@@ -59,11 +60,9 @@ namespace Iris
             window.GainedFocus += (o, e) => { Input.isActive = true; };
             window.LostFocus += (o, e) => { Input.isActive = false; };
             Camera = new View(window.DefaultView);
-            Camera.Size = new Vector2f(800/2, 600/2);
-
-            //GUICamera = new View(window.DefaultView);
-            //GUICamera.Size = new Vector2f(800 / 2, 600 / 2);
-            //Camera.Zoom(.25f); //Adjust as needed
+            Camera.Size = new Vector2f(800 / 2, 600 / 2);
+            GuiCamera = new View(window.DefaultView);
+            GuiCamera.Size = new Vector2f(800 / 2, 600 / 2);
 
             dm = new Deathmatch();
         }
@@ -71,19 +70,22 @@ namespace Iris
         private static void UpdateDraw(RenderWindow window)
         {
             //float ratio = 800 / 600;
-            window.Size = new Vector2u((uint)(800),(uint)(600));
+            window.Size = new Vector2u(800u, 600u);
 
             window.Clear(Color.Black);
             window.DispatchEvents();
-            Input.Update();
-            dm.Update();
-            dm.Draw();
 
-            Render.Draw(Content.GetTexture("healthBarVert.png"), worldMousePos, Color.White, new Vector2f(11, 11), 1, 0, 1 + dm.player.crosshairFireExpand);
-            Render.Draw(Content.GetTexture("ammoBarVert.png"), worldMousePos, Color.White, new Vector2f(11, 11), 1, 0, 1 + dm.player.crosshairFireExpand);
-            Render.Draw(Content.GetTexture("crosshair.png"), worldMousePos, Color.White, new Vector2f(11, 11), 1, 0, 1 + dm.player.crosshairFireExpand);
-            window.Display();
+            Input.Update();
             updateWorldMousePos();
+            dm.Update();
+            Gui.Update();
+
+            dm.Draw();
+            window.SetView(GuiCamera);
+            Gui.Draw();
+            window.SetView(Camera);
+
+            window.Display();
 
             Input.refreshState(); //Always call last
 

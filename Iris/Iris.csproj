@@ -55,6 +55,7 @@
     <Compile Include="Classes\Deathmatch.cs" />
     <Compile Include="Classes\GameObject.cs" />
     <Compile Include="Classes\Gib.cs" />
+    <Compile Include="Classes\Gui.cs" />
     <Compile Include="Classes\GunFlash.cs" />
     <Compile Include="Classes\Helper.cs" />
     <Compile Include="Classes\Input.cs" />
