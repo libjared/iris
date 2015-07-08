@@ -228,6 +228,11 @@ namespace Iris
                         MainGame.dm.GameObjects.Add(new GunSmoke(Core + Helper.PolarToVector2(32, AimAngle, 1, 1) + (Velocity), AimAngle));
                         MainGame.dm.GameObjects.Add(new GunFlash(Core + Helper.PolarToVector2(32, AimAngle, 1, 1) + (Velocity), AimAngle));
                         AMMO_Bullet--;
+
+                        if (AMMO_Bullet == 0)
+                            if (ReloadTimer < 0)
+                                ReloadTimer = 70;
+
                         FireTimer = 10;
                         dm.Mailman.SendBulletCreate(b);
                     }
