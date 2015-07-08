@@ -37,8 +37,6 @@ namespace Iris
             HandleAnimationSetting();
             CheckProjectiles();
             HandleDeath();
-
-            UpdateCollisionBox();
            
 
             oldPosition = Pos;
@@ -86,7 +84,7 @@ namespace Iris
             }
         }
 
-        protected override void UpdateCollisionBox()
+        public override void UpdateCollisionBox()
         {
             collisionBox.Left = (int)Pos.X - 9;
             collisionBox.Top = (int)Pos.Y - 55;

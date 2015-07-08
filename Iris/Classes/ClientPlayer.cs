@@ -18,7 +18,9 @@ namespace Iris
         public float CrosshairCameraRatio;
         public int DropOnDeathCoins;
 
-        //int ammo;
+        public int AMMO_Bullet;
+        public int FireTimer = 0;
+        public int ReloadTimer = 0;
 
         public ClientPlayer(Deathmatch dm)
             : base(dm)
@@ -56,6 +58,9 @@ namespace Iris
             UpdateCoinDropAmount();
 
 
+            ReloadTimer--;
+            FireTimer--;
+
             if (Input.isKeyTap(Keyboard.Key.K))
                 SetHealth(0);
 
@@ -72,7 +77,7 @@ namespace Iris
             DropOnDeathCoins = (int)(dm.clientCoins * .15f);
         }
 
-        protected override void UpdateCollisionBox()
+        public override void UpdateCollisionBox()
         {
             collisionBox.Left = (int)Pos.X - 9;
             collisionBox.Top = (int)Pos.Y - 55;
@@ -202,17 +207,36 @@ namespace Iris
  
 
             AimAngle = Helper.angleBetween(MainGame.worldMousePos, Core);
+
+            if (ReloadTimer == 0)
+            {
+                AMMO_Bullet = 6;
+            }
+
             if (Input.isMouseButtonTap(Mouse.Button.Left))
             {
-                //Console.WriteLine("Bang");
-                Bullet b = new Bullet(this.UID, AimAngle, Core + Helper.PolarToVector2(28, AimAngle, 1, 1), 40);
-                crosshairFireExpand = .75f;
-                dm.Projectiles.Add(b);
-                MainGame.Camera.Center += Helper.PolarToVector2(3.5f * MainGame.rand.Next(1, 2), AimAngle + (float)Math.PI, 1, 1);
-                holdDistance = -10f;
-                MainGame.dm.GameObjects.Add(new GunSmoke(Core + Helper.PolarToVector2(32, AimAngle, 1, 1) + (Velocity), AimAngle));
-                MainGame.dm.GameObjects.Add(new GunFlash(Core + Helper.PolarToVector2(32, AimAngle, 1, 1) + (Velocity), AimAngle));
-                dm.Mailman.SendBulletCreate(b);
+                if (AMMO_Bullet > 0)
+                {
+                    if (FireTimer <= 0)
+                    {
+                        //Console.WriteLine("Bang");
+                        Bullet b = new Bullet(this.UID, AimAngle, Core + Helper.PolarToVector2(28, AimAngle, 1, 1), 40);
+                        crosshairFireExpand = .75f;
+                        dm.Projectiles.Add(b);
+                        MainGame.Camera.Center += Helper.PolarToVector2(3.5f * MainGame.rand.Next(1, 2), AimAngle + (float)Math.PI, 1, 1);
+                        holdDistance = -10f;
+                        MainGame.dm.GameObjects.Add(new GunSmoke(Core + Helper.PolarToVector2(32, AimAngle, 1, 1) + (Velocity), AimAngle));
+                        MainGame.dm.GameObjects.Add(new GunFlash(Core + Helper.PolarToVector2(32, AimAngle, 1, 1) + (Velocity), AimAngle));
+                        AMMO_Bullet--;
+                        FireTimer = 10;
+                        dm.Mailman.SendBulletCreate(b);
+                    }
+                }
+                else
+                {
+                    if (ReloadTimer < 0)
+                        ReloadTimer = 70;
+                }
             }
 
             if (Input.isKeyTap(Keyboard.Key.W) || Input.isKeyTap(Keyboard.Key.Space))

@@ -67,7 +67,7 @@ namespace Iris
         {
         }
 
-        protected virtual void UpdateCollisionBox()
+        public virtual void UpdateCollisionBox()
         {
 
         }

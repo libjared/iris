@@ -164,6 +164,8 @@ namespace Iris
                 plr.Pos = new Vector2f(x, y);
                 plr.Facing = facing;
                 plr.AimAngle = aimAngle;
+
+                plr.UpdateCollisionBox();
             }
         }
 
