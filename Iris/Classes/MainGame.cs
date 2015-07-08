@@ -78,6 +78,9 @@ namespace Iris
             Input.Update();
             dm.Update();
             dm.Draw();
+
+            Render.Draw(Content.GetTexture("healthBarVert.png"), worldMousePos, Color.White, new Vector2f(11, 11), 1, 0, 1 + dm.player.crosshairFireExpand);
+            Render.Draw(Content.GetTexture("ammoBarVert.png"), worldMousePos, Color.White, new Vector2f(11, 11), 1, 0, 1 + dm.player.crosshairFireExpand);
             Render.Draw(Content.GetTexture("crosshair.png"), worldMousePos, Color.White, new Vector2f(11, 11), 1, 0, 1 + dm.player.crosshairFireExpand);
             window.Display();
             updateWorldMousePos();

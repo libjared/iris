@@ -74,7 +74,7 @@ namespace Iris
 
         private void UpdateCoinDropAmount()
         {
-            DropOnDeathCoins = (int)(dm.clientCoins * .15f);
+            DropOnDeathCoins = (int)(dm.clientCoins * .50f);
         }
 
         public override void UpdateCollisionBox()
