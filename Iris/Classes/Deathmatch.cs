@@ -113,7 +113,7 @@ namespace Iris
             {
                 player = new ClientPlayer(this);
                 Players.Add(player);
-                player.Pos = new Vector2f(46, 142);
+                player.Pos = new Vector2f(MainGame.rand.Next(42,1800), 142);
                 Mailman.SendRespawn(player.UID);
             }
 

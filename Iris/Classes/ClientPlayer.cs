@@ -22,6 +22,10 @@ namespace Iris
         public int FireTimer = 0;
         public int ReloadTimer = 0;
 
+        public Weapon weapon;
+
+        public List<Weapon> weapons = new List<Weapon>() { };
+
         public ClientPlayer(Deathmatch dm)
             : base(dm)
         {
@@ -38,6 +42,10 @@ namespace Iris
             jumpDown = new Animation(Content.GetTexture("jumpDown.png"), 3, 60, -5, true);
             animation = idle;
             Texture = Content.GetTexture("idle.png");
+
+            weapons.Add(new Revolver());
+
+            weapon = weapons[0];
             
         }
 
@@ -231,7 +239,7 @@ namespace Iris
 
                         if (AMMO_Bullet == 0)
                             if (ReloadTimer < 0)
-                                ReloadTimer = 70;
+                                ReloadTimer = 50;
 
                         FireTimer = 10;
                         dm.Mailman.SendBulletCreate(b);
@@ -240,7 +248,7 @@ namespace Iris
                 else
                 {
                     if (ReloadTimer < 0)
-                        ReloadTimer = 70;
+                        ReloadTimer = 50;
                 }
             }
 

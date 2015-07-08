@@ -65,8 +65,10 @@
     <Compile Include="Classes\Projectile.cs" />
     <Compile Include="Classes\Render.cs" />
     <Compile Include="Classes\GunSmoke.cs" />
+    <Compile Include="Classes\Revolver.cs" />
     <Compile Include="Classes\TrainDust.cs" />
     <Compile Include="Classes\TreasureBox.cs" />
+    <Compile Include="Classes\Weapon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Classes\Server.cs" />
   </ItemGroup>
