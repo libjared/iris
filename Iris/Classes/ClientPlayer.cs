@@ -281,7 +281,7 @@ namespace Iris
             }
 
             Facing = 1;
-            if (MainGame.worldMousePos.X < this.Pos.X)
+            if (Input.screenMousePos.X < MainGame.WindowSize.X / 2)
             {
                 Facing = -1;
             }

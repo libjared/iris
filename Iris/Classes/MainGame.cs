@@ -25,6 +25,13 @@ namespace Iris
                 return DateTime.Now - oldDateTime;
             }
         }
+        public static Vector2i WindowSize
+        {
+            get
+            {
+                return new Vector2i((int)window.Size.X, (int)window.Size.Y);
+            }
+        }
 
         public static void StartGame()
         {

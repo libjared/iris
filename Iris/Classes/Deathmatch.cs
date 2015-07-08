@@ -133,8 +133,8 @@ namespace Iris
             
 
             Vector2f focus = player.Core +
-                new Vector2f(Input.screenMousePos.X - MainGame.window.Size.X / 2,
-                Input.screenMousePos.Y - MainGame.window.Size.Y / 2) * player.CrosshairCameraRatio;
+                new Vector2f(Input.screenMousePos.X - MainGame.WindowSize.X / 2,
+                Input.screenMousePos.Y - MainGame.WindowSize.Y / 2) * player.CrosshairCameraRatio;
 
             if (Helper.Distance(player.Core, focus) > PlayerAimSphereRadius)
                 focus = player.Core + Helper.PolarToVector2(PlayerAimSphereRadius, player.AimAngle, 1, 1);//player.Core + Helper.normalize(focus) * 100;
