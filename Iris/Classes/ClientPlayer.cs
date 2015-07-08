@@ -361,6 +361,16 @@ namespace Iris
             Vector2i below = posi + new Vector2i(0, 1);
             CollideTypes type = SoftDrop ? CollideTypes.Hard : CollideTypes.HardOrSoft;
             OnGround = dm.MapCollide(below.X, below.Y, type);
+
+            //also set jumps. if just walked off a cliff, take away first jump
+            if (OnGround)
+            {
+                JumpsLeft = MaxJumps;
+            }
+            else if (JumpsLeft == MaxJumps)
+            {
+                JumpsLeft = MaxJumps - 1;
+            }
         }
 
         private void SolveVert()
