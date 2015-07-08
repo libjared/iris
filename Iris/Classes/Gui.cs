@@ -22,10 +22,12 @@ namespace Iris
         public static void Draw()
         {
             Vector2f mouse = MainGame.window.MapPixelToCoords(Input.screenMousePos);
-            
-            Render.Draw(Content.GetTexture("healthBarVert.png"), mouse, Color.White, new Vector2f(11, 11), 1, 0, 1 + CrosshairFireExpand);
-            Render.Draw(Content.GetTexture("ammoBarVert.png"), mouse, Color.White, new Vector2f(11, 11), 1, 0, 1 + CrosshairFireExpand);
-            Render.Draw(Content.GetTexture("crosshair.png"), mouse, Color.White, new Vector2f(11, 11), 1, 0, 1 + CrosshairFireExpand);
+
+            Vector2u crosshairOriginU = Content.GetTexture("crosshair.png").Size / 2;
+            Vector2f crosshairOrigin = new Vector2f(crosshairOriginU.X, crosshairOriginU.Y);
+            Render.Draw(Content.GetTexture("healthBarVert.png"), mouse, Color.White, crosshairOrigin, 1, 0, 1 + CrosshairFireExpand);
+            Render.Draw(Content.GetTexture("ammoBarVert.png"), mouse, Color.White, crosshairOrigin, 1, 0, 1 + CrosshairFireExpand);
+            Render.Draw(Content.GetTexture("crosshair.png"), mouse, Color.White, crosshairOrigin, 1, 0, 1 + CrosshairFireExpand);
         }
     }
 }
