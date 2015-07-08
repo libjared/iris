@@ -242,5 +242,13 @@ namespace Iris
             outGoingMessage.Write("RESPAWN");
             client.SendMessage(outGoingMessage, NetDeliveryMethod.ReliableOrdered);
         }
+
+        public void SendName(string name)
+        {
+            NetOutgoingMessage outGoingMessage = client.CreateMessage();
+            outGoingMessage.Write("NAME");
+            outGoingMessage.Write(name);
+            client.SendMessage(outGoingMessage, NetDeliveryMethod.ReliableOrdered);
+        }
     }
 }

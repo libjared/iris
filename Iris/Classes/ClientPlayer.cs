@@ -46,6 +46,8 @@ namespace Iris
             weapons.Add(new Revolver());
 
             weapon = weapons[0];
+
+            dm.Mailman.SendName("Dingus");
             
         }
 
