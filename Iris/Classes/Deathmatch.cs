@@ -111,10 +111,7 @@ namespace Iris
 
             if (Input.isKeyTap(Keyboard.Key.LShift) && !player.Alive)
             {
-                player = new ClientPlayer(this);
-                Players.Add(player);
-                player.Pos = new Vector2f(MainGame.rand.Next(42,1800), 142);
-                Mailman.SendRespawn(player.UID);
+                player.Respawn();
             }
 
             if (Input.isKeyDown(Keyboard.Key.P))
@@ -252,10 +249,10 @@ namespace Iris
 
         private void ApplyShake()
         {
-            if (player.Health == 0)
+            if (!player.Alive)
             {
                 player.deathTimer++;
-                if (player.deathTimer > 0 && player.deathTimer < 20)
+                if (player.deathTimer < 20)
                     MainGame.Camera.Center += new Vector2f(MainGame.rand.Next(-20, 20), MainGame.rand.Next(-20, 20));
             }
             MainGame.Camera.Center += new Vector2f(((float)MainGame.rand.NextDouble() * 2f - 1f) * shakeFactor, ((float)MainGame.rand.NextDouble() * 2.5f - 1.25f) * shakeFactor);

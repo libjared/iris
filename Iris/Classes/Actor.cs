@@ -11,7 +11,7 @@ namespace Iris
     public abstract class Actor
     {
         public float Speed;
-        public bool Alive;
+        public bool Alive { get { return Health > 0; } }
         public Texture Texture;
         public Vector2f Velocity;
         public Vector2f Pos;
@@ -21,7 +21,7 @@ namespace Iris
         public Vector2f Core;
         public int ouchTimer;
         public IntRect collisionBox;
-
+        
         public int Health { get; set; }
         public string Name { get; set; }
         public long UID { get; set; }
@@ -40,7 +40,6 @@ namespace Iris
         public Actor(Deathmatch dm)
         {
             Health = 100;
-            Alive = true;
             Name = "Cactus Fantastico";
             Pos = new Vector2f(0, 0);
             UID = 0;
