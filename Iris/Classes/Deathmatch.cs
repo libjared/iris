@@ -39,6 +39,8 @@ namespace Iris
 
         public int clientCoins = 100;
 
+        public bool devMode = false;
+
         public Deathmatch()
         {
             Projectiles = new List<Projectile>();
@@ -74,6 +76,9 @@ namespace Iris
                 player.MaxJumps = 10000000;
                 player.Health = 1000000;
             }
+
+            if (Input.isKeyOverride(Keyboard.Key.F12))
+                devMode = true;
 
             if (tunnelsTimer > 0)
             if (shittyTimerDontUse % (60 * 2) == 0) { 

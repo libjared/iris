@@ -284,11 +284,11 @@ namespace Iris
                 Facing = -1;
             }
 
-            if (Input.isKeyDown(Keyboard.Key.E))
+            if (Input.isKeyDown(Keyboard.Key.E) && dm.devMode)
             {
                 DropMoney(MainGame.rand.Next(8, 16));
             }
-            if (Input.isKeyTap(Keyboard.Key.R))
+            if (Input.isKeyTap(Keyboard.Key.R) && dm.devMode)
             {
                 dm.GameObjects.Add(new TreasureBox(this.Pos));
             }

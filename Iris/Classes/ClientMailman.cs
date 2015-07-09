@@ -192,9 +192,12 @@ namespace Iris
         private void HandleChatMessage(long uid, string message)
         {
             //TODO: add gui chat
-            Actor p = dm.GetPlayerWithUID(uid);
-            Gui.Chats.Insert(0, p.Name + ": " + message);
-            Gui.ChatCloseDelay = 300;
+            if (dm.GetPlayerWithUID(uid) != null)
+            {
+                Actor p = dm.GetPlayerWithUID(uid);
+                Gui.Chats.Insert(0, message);
+                Gui.ChatCloseDelay = 300;
+            }
         }
 
         private void HandleJoinMessage(long uid)

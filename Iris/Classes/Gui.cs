@@ -21,6 +21,7 @@ namespace Iris
         public static StringBuilder Draft = new StringBuilder();
         public static int ChatCloseDelay = 0;
         public static int maxCharacters = 50;
+        public static int maxNameCharacters = 12;
 
         static Gui()
         {
@@ -121,6 +122,7 @@ namespace Iris
 
 
             Render.Draw(Content.GetTexture("characterUI.png"), new Vector2f(0, 0), Color.White, new Vector2f(0, 0), 1, 0f);
+            Render.Draw(Content.GetTexture("gibHead.png"), new Vector2f(1, 4), Color.White, new Vector2f(0, 0), 1, 0f, 1.5f);
 
             Render.DrawString(Content.GetFont("PixelSix.ttf"), MainGame.dm.clientCoins + "", new Vector2f(35, 30), Color.White, .5f, true, 1);
 
@@ -193,9 +195,36 @@ namespace Iris
                 }
                 else
                 {
-                    MainGame.dm.Mailman.SendChat(Draft.ToString());
-                    string completeMessage = MainGame.dm.player.Name+ ": " + Draft.ToString();
-                    Chats.Insert(0, completeMessage);
+                    if (Draft.ToString().IndexOf("/setname") == 0)
+                    {
+                        string newName = Draft.ToString().Substring(9).Trim();
+                        if (newName.Length > maxNameCharacters)
+                            newName = newName.Substring(0, maxNameCharacters);
+
+
+                        if (newName.ToLower().Contains("fag") ||
+                            newName.ToLower().Contains("nigge") ||
+                            newName.ToLower().Contains("fuck") ||
+                            newName.ToLower().Contains("shit") ||
+                            newName.ToLower().Contains("gay"))
+                        {
+                            Chats.Insert(0, "Nope.");
+                        }
+                        else
+                        {
+                            MainGame.dm.Mailman.SendChat(MainGame.dm.player.Name + " has changed their name to " + newName);
+                            Chats.Insert(0, "You have changed your name to " + newName);
+                            MainGame.dm.player.Name = newName;
+                            MainGame.dm.Mailman.SendName(MainGame.dm.player.Name);
+                        }
+                    }
+                    else
+                    {
+                        string completeMessage = MainGame.dm.player.Name + ": " + Draft.ToString();
+                        MainGame.dm.Mailman.SendChat(completeMessage);
+                        Chats.Insert(0, completeMessage);
+                    }
+
                     Draft.Clear();
                     Input.isActive = true;
                     ChatOpen = false;
