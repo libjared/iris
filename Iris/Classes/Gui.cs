@@ -24,6 +24,9 @@ namespace Iris
 
         public static void Update()
         {
+            if (Chats.Count > 5)
+                Chats.RemoveAt(Chats.Count - 1);
+
             ChatCloseDelay--;
             if (!Composing)
                 ChatOpen = false;
@@ -135,7 +138,7 @@ namespace Iris
                 rectBG2.FillColor = new Color(10, 10, 10, 200);
                 rectBG2.Draw(MainGame.window, RenderStates.Default);
 
-                Font font = Content.GetFont("PixelSix.ttf");
+                Font font = Content.GetFont("OldNewspaperTypes.ttf");
                 for (int i = 0; i < Chats.Count; i++)
                 {
                     Render.DrawString(font, Chats[i], new Vector2f(10, 265 - (i * 15)), Color.White, .35f, false, 1);
@@ -193,7 +196,8 @@ namespace Iris
                 else
                 {
                     MainGame.dm.Mailman.SendChat(Draft);
-                    Chats.Insert(0, MainGame.dm.player.Name+ ": " + Draft);
+                    string completeMessage = MainGame.dm.player.Name+ ": " + Draft;
+                    Chats.Insert(0, completeMessage);
                     Draft = "";
                     Input.isActive = true;
                     ChatOpen = false;
