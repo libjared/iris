@@ -96,11 +96,29 @@ namespace Iris.Server
                 case "COIN":
                     HandleCOIN(msg);
                     break;
+                case "CHAT":
+                    HandleCHAT(msg);
+                    break;
                 default:
                     Console.WriteLine(string.Format("Bad message type {0} from player {1}",
                         type, msg.SenderConnection.RemoteUniqueIdentifier));
                     break;
             }
+        }
+
+        private void HandleCHAT(NetIncomingMessage msg)
+        {
+            long who = msg.SenderConnection.RemoteUniqueIdentifier;
+            string text = msg.ReadString();
+
+            string hisName = GetPlayerFromUID(who).Name;
+            Console.WriteLine(string.Format("CHAT {0}: {1}", hisName, text));
+
+            NetOutgoingMessage outMsg = server.CreateMessage();
+            outMsg.Write("CHAT");
+            outMsg.Write(who);
+            outMsg.Write(text);
+            server.SendToAll(outMsg, msg.SenderConnection, NetDeliveryMethod.ReliableOrdered, 0);
         }
 
         private void HandleCOIN(NetIncomingMessage msg)
