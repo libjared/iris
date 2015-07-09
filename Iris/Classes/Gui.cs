@@ -197,7 +197,16 @@ namespace Iris
                 {
                     if (Draft.ToString().IndexOf("/setname") == 0)
                     {
-                        string newName = Draft.ToString().Substring(9).Trim();
+                        string newName = "";
+                        try
+                        {
+                           newName  = Draft.ToString().Substring(9).Trim();
+                        }
+                        catch(Exception)
+                        {
+                            Chats.Insert(0, "Oops!");
+                            return;
+                        }
                         if (newName.Length > maxNameCharacters)
                             newName = newName.Substring(0, maxNameCharacters);
 

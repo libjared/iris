@@ -21,11 +21,28 @@ namespace Iris
         public bool pickedUp = false;
         public Actor pickerUpper;
         public int readyTimer = 45; //After maybe half a second they'll be available to be picked up
+        public Color c = Color.White;
 
         public Coin(Vector2f pos, float speed, float angle)
             : base()
         {
             this.Texture = Content.GetTexture("coin.png");
+            //if (MainGame.rand.Next(100) < 10)
+            //{
+            //    this.Texture = Content.GetTexture("diamond.png");
+            //    if (MainGame.rand.Next(3) == 0)
+            //    {
+            //        c = Color.Red;
+            //    }
+            //    else if (MainGame.rand.Next(3) == 0)
+            //    {
+            //        c = Color.Green;
+            //    }
+            //    else
+            //    {
+            //        c = Color.Cyan;
+            //    }
+            //}
             this.Pos = pos;
             this.angle = angle;
             this.speed = speed;
@@ -85,7 +102,9 @@ namespace Iris
         public override void Draw()
         {
             if ((lifeRemaining > 120) || MainGame.rand.Next(0, 2) == 1)
-                Render.Draw(Texture, Pos - new Vector2f(0, 3), new Color(255, 255, 255, (byte)(Alpha * 255)), new Vector2f(Texture.Size.X / 2, Texture.Size.Y / 2), 1, Rot, 1);
+            {
+                Render.Draw(Texture, Pos - new Vector2f(0, 3), c, new Vector2f(Texture.Size.X / 2, Texture.Size.Y / 2), 1, Rot, 1);
+            }
             base.Draw();
         }
 
