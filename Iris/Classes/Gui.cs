@@ -4,6 +4,7 @@ using SFML.Window;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Iris
 {
@@ -17,7 +18,7 @@ namespace Iris
         public static List<String> Chats = new List<string>() { };
         public static bool ChatOpen = false;
         public static bool Composing = false;
-        public static string Draft = "";
+        public static StringBuilder Draft = new StringBuilder();
         public static int ChatCloseDelay = 0;
         public static int maxCharacters = 50;
 
@@ -30,7 +31,7 @@ namespace Iris
                     if (Keyboard.IsKeyPressed(Keyboard.Key.BackSpace))
                     {
                         if (Draft.Length > 0)
-                            Draft = Draft.Substring(0, Draft.Length - 1);
+                            Draft = Draft.Remove(Draft.Length - 1, 1);
                     }
                     else if (Keyboard.IsKeyPressed(Keyboard.Key.Return))
                     {
@@ -48,8 +49,8 @@ namespace Iris
                     }
                     else
                     {
-                        if (Draft.Length<maxCharacters)
-                            Draft += e.Unicode;
+                        if (Draft.Length < maxCharacters)
+                            Draft.Append(e.Unicode);
                     }
                 }
             };
@@ -146,11 +147,11 @@ namespace Iris
                 //int subStringStart = Draft.Length > 50 ? Draft.Length - 50 : 0;
 
 
-                Render.DrawString(font, Draft, new Vector2f(10, 283), Color.White, .35f, false, 1);
+                Render.DrawString(font, Draft.ToString(), new Vector2f(10, 283), Color.White, .35f, false, 1);
 
                 if (Composing)
                 {
-                    Text textBar = new Text(Draft, font);
+                    Text textBar = new Text(Draft.ToString(), font);
 
                     Render.DrawString(font, "|", new Vector2f(10 + textBar.GetLocalBounds().Width * .35f, 283), Color.White, .35f, false, 1);
                 }
@@ -184,7 +185,7 @@ namespace Iris
                     ChatOpen = true;
                     Composing = true;
                 }
-                else if (Draft.Equals(""))
+                else if (Draft.Length == 0)
                 {
                     Input.isActive = true;
                     ChatOpen = false;
@@ -192,10 +193,10 @@ namespace Iris
                 }
                 else
                 {
-                    MainGame.dm.Mailman.SendChat(Draft);
-                    string completeMessage = MainGame.dm.player.Name+ ": " + Draft;
+                    MainGame.dm.Mailman.SendChat(Draft.ToString());
+                    string completeMessage = MainGame.dm.player.Name+ ": " + Draft.ToString();
                     Chats.Insert(0, completeMessage);
-                    Draft = "";
+                    Draft.Clear();
                     Input.isActive = true;
                     ChatOpen = false;
                     ChatCloseDelay = 60 * 4;
