@@ -38,6 +38,7 @@ namespace Iris
         public int shittyTimerDontUse = 0;
 
         public int clientCoins = 100;
+        public string clientName = "Newbie McGee";
 
         public bool devMode = false;
 
@@ -78,7 +79,11 @@ namespace Iris
             }
 
             if (Input.isKeyOverride(Keyboard.Key.F12))
+            {
                 devMode = true;
+                player.MaxJumps = 10000;
+                player.JumpsLeft = 10000;
+            }
 
             if (tunnelsTimer > 0)
             if (shittyTimerDontUse % (60 * 2) == 0) { 

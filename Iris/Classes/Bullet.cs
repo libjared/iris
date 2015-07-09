@@ -10,7 +10,7 @@ namespace Iris
 {
     public class Bullet : Projectile
     {
-        int lifeRemaining = 500;
+        int lifeRemaining = 120;
 
         public Bullet(long UIDOwner, float angle, Vector2f position)
         {
@@ -19,7 +19,7 @@ namespace Iris
             this.Speed = 8;
             this.Damage = 25;
             this.Texture = Content.GetTexture("bullet.png");
-            this.weightFactor = .0025f;
+            this.weightFactor = .0015f;
             this.Velocity = Helper.normalize((new Vector2f((float)Math.Cos(Angle), (float)Math.Sin(Angle))));
         }
 

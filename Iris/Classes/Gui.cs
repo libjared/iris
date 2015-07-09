@@ -212,15 +212,16 @@ namespace Iris
                         }
                         else
                         {
-                            MainGame.dm.Mailman.SendChat(MainGame.dm.player.Name + " has changed their name to " + newName);
+                            MainGame.dm.Mailman.SendChat(MainGame.dm.clientName + " has changed their name to " + newName);
                             Chats.Insert(0, "You have changed your name to " + newName);
-                            MainGame.dm.player.Name = newName;
+                            //MainGame.dm.player.Name = newName;
+                            MainGame.dm.clientName = newName;
                             MainGame.dm.Mailman.SendName(MainGame.dm.player.Name);
                         }
                     }
                     else
                     {
-                        string completeMessage = MainGame.dm.player.Name + ": " + Draft.ToString();
+                        string completeMessage = MainGame.dm.clientName +": " + Draft.ToString();
                         MainGame.dm.Mailman.SendChat(completeMessage);
                         Chats.Insert(0, completeMessage);
                     }
