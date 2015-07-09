@@ -61,6 +61,14 @@ namespace Iris
             return false;
         }
 
+        public static bool isKeyOverride(Keyboard.Key key)
+        {
+            if (PressedKeys.Contains(key.ToString()) &&
+                !OldPressedKeys.Contains(key.ToString()))
+                return true;
+            return false;
+        }
+
         public static bool isMouseButtonTap(Mouse.Button key)
         {
             if (!isActive)

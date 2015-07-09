@@ -12,7 +12,6 @@ namespace Iris
     {
         Animation idle, running, jumpUp, jumpDown, backpedal;
         public float holdDistance;
-        public float crosshairFireExpand = 0;
         public bool SoftDrop;
         public int deathTimer = 0;
         public float CrosshairCameraRatio;
@@ -47,8 +46,6 @@ namespace Iris
 
             weapon = weapons[0];
 
-            dm.Mailman.SendName("Dingus");
-            
         }
 
         public override void Update()
@@ -77,7 +74,7 @@ namespace Iris
             if (Pos.Y > 245)
                 SetHealth(0);
 
-            
+
             //frameDelta += (float)MainGame.deltaTime.TotalMilliseconds;
 
         }
@@ -139,7 +136,7 @@ namespace Iris
             //MainGame.window.Draw(rect); //Draw players collision point
 
 
-         
+
 
 
             RectangleShape col = new RectangleShape();
@@ -198,7 +195,7 @@ namespace Iris
                     MainGame.dm.Players.Remove(this);
                 }
             }
-          
+
         }
 
         public void handleControls()
@@ -214,13 +211,12 @@ namespace Iris
                 CrosshairCameraRatio = .5f;
                 dm.PlayerAimSphereRadius = 100f;
             } //Right click zooming? Kinda cool maybe I dunno
- 
 
             AimAngle = Helper.angleBetween(MainGame.worldMousePos, Core);
 
             if (ReloadTimer == 0)
             {
-                AMMO_Bullet = 6;
+                AMMO_Bullet = 8;
             }
 
             if (Input.isMouseButtonTap(Mouse.Button.Left))
@@ -230,8 +226,8 @@ namespace Iris
                     if (FireTimer <= 0)
                     {
                         //Console.WriteLine("Bang");
-                        Bullet b = new Bullet(this.UID, AimAngle, Core + Helper.PolarToVector2(28, AimAngle, 1, 1), 40);
-                        crosshairFireExpand = .75f;
+                        Bullet b = new Bullet(this.UID, AimAngle, Core + Helper.PolarToVector2(28, AimAngle, 1, 1));
+                        Gui.CrosshairFireExpand = .75f;
                         dm.Projectiles.Add(b);
                         MainGame.Camera.Center += Helper.PolarToVector2(3.5f * MainGame.rand.Next(1, 2), AimAngle + (float)Math.PI, 1, 1);
                         holdDistance = -10f;
@@ -241,7 +237,7 @@ namespace Iris
 
                         if (AMMO_Bullet == 0)
                             if (ReloadTimer < 0)
-                                ReloadTimer = 50;
+                                ReloadTimer = 70;
 
                         FireTimer = 10;
                         dm.Mailman.SendBulletCreate(b);
@@ -250,7 +246,7 @@ namespace Iris
                 else
                 {
                     if (ReloadTimer < 0)
-                        ReloadTimer = 50;
+                        ReloadTimer = 70;
                 }
             }
 
@@ -290,7 +286,7 @@ namespace Iris
 
             if (Input.isKeyDown(Keyboard.Key.E))
             {
-                DropMoney(MainGame.rand.Next(8,16));
+                DropMoney(MainGame.rand.Next(8, 16));
             }
             if (Input.isKeyTap(Keyboard.Key.R))
             {
@@ -300,7 +296,7 @@ namespace Iris
 
         public void handleAnimationSetting()
         {
-            crosshairFireExpand *= .8f;
+
             if (OnGround) //On Ground
             {
                 animation = idle;

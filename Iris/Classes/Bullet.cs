@@ -12,12 +12,12 @@ namespace Iris
     {
         int lifeRemaining = 500;
 
-        public Bullet(long UIDOwner, float angle, Vector2f position, int damage)
+        public Bullet(long UIDOwner, float angle, Vector2f position)
         {
             this.Angle = angle;
             this.Pos = position;
             this.Speed = 8;
-            this.Damage = damage;
+            this.Damage = 25;
             this.Texture = Content.GetTexture("bullet.png");
             this.weightFactor = .0025f;
             this.Velocity = Helper.normalize((new Vector2f((float)Math.Cos(Angle), (float)Math.Sin(Angle))));

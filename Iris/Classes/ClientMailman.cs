@@ -30,7 +30,14 @@ namespace Iris
             client.Start();
 
             //start processing messages
-            client.Connect(ip, port);
+            try
+            {
+                client.Connect(ip, port);
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Check your connection");
+            }
         }
 
         public void HandleMessages()
@@ -118,14 +125,14 @@ namespace Iris
 
                 case "INFO": //Recieved when server has completed sending all newbie initialization
                     break;
-                case "BULLET": 
+                case "BULLET":
                     long UID_BULLET = msg.ReadInt64();
                     float xBULLET = msg.ReadFloat();
                     float yBULLET = msg.ReadFloat();
                     float BULLETangle = msg.ReadFloat();
-                    MainGame.dm.Projectiles.Add(new Bullet(UID_BULLET, BULLETangle, new Vector2f(xBULLET, yBULLET), 40)); //No damage yet
+                    MainGame.dm.Projectiles.Add(new Bullet(UID_BULLET, BULLETangle, new Vector2f(xBULLET, yBULLET)));
                     break;
-                case "RESPAWN": 
+                case "RESPAWN":
                     long UID_RESPAWN = msg.ReadInt64();
                     HandleJoinMessage(UID_RESPAWN);
                     break;
@@ -153,7 +160,8 @@ namespace Iris
 
         private void HandleNameMessage(long uid, string newName)
         {
-            dm.GetPlayerWithUID(uid).Name = newName;
+            if (dm.GetPlayerWithUID(uid) != null)
+                dm.GetPlayerWithUID(uid).Name = newName;
         }
 
         private void HandlePosMessage(long uid, float x, float y, int facing, float aimAngle)
@@ -185,6 +193,8 @@ namespace Iris
         {
             //TODO: add gui chat
             Actor p = dm.GetPlayerWithUID(uid);
+            Gui.Chats.Insert(0, p.Name + ": " + message);
+            Gui.ChatCloseDelay = 300;
         }
 
         private void HandleJoinMessage(long uid)
@@ -248,6 +258,14 @@ namespace Iris
             NetOutgoingMessage outGoingMessage = client.CreateMessage();
             outGoingMessage.Write("NAME");
             outGoingMessage.Write(name);
+            client.SendMessage(outGoingMessage, NetDeliveryMethod.ReliableOrdered);
+        }
+
+        public void SendChat(string message)
+        {
+            NetOutgoingMessage outGoingMessage = client.CreateMessage();
+            outGoingMessage.Write("CHAT");
+            outGoingMessage.Write(message);
             client.SendMessage(outGoingMessage, NetDeliveryMethod.ReliableOrdered);
         }
     }

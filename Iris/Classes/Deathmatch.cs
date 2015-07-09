@@ -96,7 +96,7 @@ namespace Iris
             GameObjects.ForEach(p => { p.Update(); });
             BackgroundGameObjects.ForEach(p => { p.Update(); });
             CheckProjectileCollisions();
-            //ApplyShake();
+            ApplyShake();
 
 
             if (MainGame.rand.Next(4) == 0)
@@ -194,11 +194,7 @@ namespace Iris
             if (player.Pos.Y < 75)
                 Render.Draw(Content.GetTexture("mapDecor.png"), new Vector2f(0, 0), new Color(255, 255, 255, (byte)(255 - interiorAlpha)), new Vector2f(0, 0), 1, 0f);
             //MainGame.window.Draw(mapSprite);
-            if (tunnel)
-            {
-                Render.Draw(Content.GetTexture("caution.png"), new Vector2f(player.Pos.X + 170, 100), Color.White, new Vector2f(0, 0), 1, 0f);
-            
-            }
+           
         }
 
         public bool MapCollide(int x, int y, CollideTypes types)

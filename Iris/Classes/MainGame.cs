@@ -64,8 +64,15 @@ namespace Iris
                 window.Close();
             };
 
-            window.GainedFocus += (o, e) => { Input.isActive = true; };
-            window.LostFocus += (o, e) => { Input.isActive = false; };
+            window.GainedFocus += (o, e) =>
+            {
+                Input.isActive = true;
+            };
+            window.LostFocus += (o, e) =>
+            {
+                Input.isActive = false;
+            };
+
             Camera = new View(window.DefaultView);
             Camera.Size = new Vector2f(800 / 2, 600 / 2);
             GuiCamera = new View(window.DefaultView);
