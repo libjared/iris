@@ -203,11 +203,17 @@ namespace Iris
         private void HandleJoinMessage(long uid)
         {
             dm.Players.Add(new NetPlayer(dm, uid));
+
+            Gui.Chats.Add("[Server]: " + Math.Abs(uid).ToString().Substring(0, 4) + " has connected");
+            Gui.ChatCloseDelay = 200;
         }
 
         private void HandlePartMessage(long uid)
         {
             dm.Players.Remove(dm.GetPlayerWithUID(uid));
+
+            Gui.Chats.Add("[Server]: " + Math.Abs(uid).ToString().Substring(0, 4) + " has disconnected");
+            Gui.ChatCloseDelay = 200;
         }
 
         public void SendPlayerPosMessage(long uid, Vector2f pos, int facing, float aimAngle)
