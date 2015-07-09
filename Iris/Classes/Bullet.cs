@@ -10,7 +10,7 @@ namespace Iris
 {
     public class Bullet : Projectile
     {
-        int lifeRemaining = 120;
+        int lifeRemaining = 60;
 
         public Bullet(long UIDOwner, float angle, Vector2f position)
         {

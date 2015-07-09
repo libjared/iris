@@ -21,7 +21,7 @@ namespace Iris
         public Vector2f Core;
         public int ouchTimer;
         public IntRect collisionBox;
-
+        public bool initialized;
         public int Health { get; set; }
         public string Name { get; set; }
         public long UID { get; set; }
@@ -41,7 +41,7 @@ namespace Iris
         {
             Health = 100;
             Alive = true;
-            Name = "Cactus Fantastico";
+            Name = "Actor";
             Pos = new Vector2f(0, 0);
             UID = 0;
             Texture = null;//new Texture();

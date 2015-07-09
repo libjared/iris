@@ -125,6 +125,7 @@ namespace Iris
             Render.Draw(Content.GetTexture("gibHead.png"), new Vector2f(1, 4), Color.White, new Vector2f(0, 0), 1, 0f, 1.5f);
 
             Render.DrawString(Content.GetFont("PixelSix.ttf"), MainGame.dm.clientCoins + "", new Vector2f(35, 30), Color.White, .5f, true, 1);
+            Render.DrawString(Content.GetFont("OldNewspaperTypes.ttf"), MainGame.dm.clientName, new Vector2f(2, 55), Color.White, .25f, false, 1);
 
             if (ChatOpen)
             {
@@ -161,7 +162,7 @@ namespace Iris
 
             if (MainGame.dm.tunnel)
             {
-                Render.Draw(Content.GetTexture("caution.png"), new Vector2f(550, 300), Color.White, new Vector2f(0, 0), 1, 0f);
+                Render.Draw(Content.GetTexture("caution.png"), new Vector2f(350, 190), Color.White, new Vector2f(0, 0), 1, 0f);
 
             }
 
@@ -198,6 +199,7 @@ namespace Iris
                     if (Draft.ToString().IndexOf("/setname") == 0)
                     {
                         string newName = "";
+
                         try
                         {
                            newName  = Draft.ToString().Substring(9).Trim();
@@ -223,7 +225,7 @@ namespace Iris
                         {
                             MainGame.dm.Mailman.SendChat(MainGame.dm.clientName + " has changed their name to " + newName);
                             Chats.Insert(0, "You have changed your name to " + newName);
-                            //MainGame.dm.player.Name = newName;
+                            MainGame.dm.player.Name = newName;
                             MainGame.dm.clientName = newName;
                             MainGame.dm.Mailman.SendName(MainGame.dm.player.Name);
                         }

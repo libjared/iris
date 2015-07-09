@@ -51,8 +51,7 @@ namespace Iris
         public override void Update()
         {
             base.Update();
-
-            //collisionBox = new IntRect(
+            Init();
             UpdateCollisionBox();
             animation.Update();
             handleControls();
@@ -196,6 +195,16 @@ namespace Iris
                 }
             }
 
+        }
+
+        public void Init()
+        {
+            if (!initialized)
+            {
+                initialized = true;
+                this.Name = MainGame.dm.clientName;
+                MainGame.dm.Mailman.SendName(MainGame.dm.clientName);
+            }
         }
 
         public void handleControls()

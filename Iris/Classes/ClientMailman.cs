@@ -134,7 +134,7 @@ namespace Iris
                     break;
                 case "RESPAWN":
                     long UID_RESPAWN = msg.ReadInt64();
-                    HandleJoinMessage(UID_RESPAWN);
+                    HandleRespawnMessage(UID_RESPAWN);
                     break;
                 case "COIN":
                     //long UID_COIN = msg.ReadInt64();
@@ -198,6 +198,11 @@ namespace Iris
                 Gui.Chats.Insert(0, message);
                 Gui.ChatCloseDelay = 300;
             //}
+        }
+
+        private void HandleRespawnMessage(long uid)
+        {
+            dm.Players.Add(new NetPlayer(dm, uid));
         }
 
         private void HandleJoinMessage(long uid)

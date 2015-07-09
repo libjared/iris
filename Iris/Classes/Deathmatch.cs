@@ -69,6 +69,7 @@ namespace Iris
 
         public void Update()
         {
+           
             shittyTimerDontUse++;
 
             if (Input.isKeyDown(Keyboard.Key.F1))
@@ -322,6 +323,8 @@ namespace Iris
             }
 
         }
+
+      
     }
 
     [Flags]
