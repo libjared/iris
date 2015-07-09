@@ -20,7 +20,40 @@ namespace Iris
         public static string Draft = "";
         public static int ChatCloseDelay = 0;
         public static int maxCharacters = 50;
-        public static bool init;
+
+        static Gui()
+        {
+            MainGame.window.TextEntered += (object sender, TextEventArgs e) =>
+            {
+                if (Composing)
+                {
+                    if (Keyboard.IsKeyPressed(Keyboard.Key.BackSpace))
+                    {
+                        if (Draft.Length > 0)
+                            Draft = Draft.Substring(0, Draft.Length - 1);
+                    }
+                    else if (Keyboard.IsKeyPressed(Keyboard.Key.Return))
+                    {
+                    }
+                    else if (Keyboard.IsKeyPressed(Keyboard.Key.LControl))
+                    {
+                    }
+                    else if (Keyboard.IsKeyPressed(Keyboard.Key.Escape))
+                    {
+                        ChatOpen = false;
+                        Input.isActive = true;
+                    }
+                    else if (Keyboard.IsKeyPressed(Keyboard.Key.Tab))
+                    {
+                    }
+                    else
+                    {
+                        if (Draft.Length<maxCharacters)
+                            Draft += e.Unicode;
+                    }
+                }
+            };
+        }
 
         public static void Update()
         {
@@ -33,42 +66,6 @@ namespace Iris
 
             if (ChatCloseDelay > 0)
                 ChatOpen = true;
-
-            if (!init)
-            {
-                init = true;
-
-                MainGame.window.TextEntered += (object sender, TextEventArgs e) =>
-                {
-                    if (Composing)
-                    {
-                        if (Keyboard.IsKeyPressed(Keyboard.Key.BackSpace))
-                        {
-                            if (Draft.Length > 0)
-                                Draft = Draft.Substring(0, Draft.Length - 1);
-                        }
-                        else if (Keyboard.IsKeyPressed(Keyboard.Key.Return))
-                        {
-                        }
-                        else if (Keyboard.IsKeyPressed(Keyboard.Key.LControl))
-                        {
-                        }
-                        else if (Keyboard.IsKeyPressed(Keyboard.Key.Escape))
-                        {
-                            ChatOpen = false;
-                            Input.isActive = true;
-                        }
-                        else if (Keyboard.IsKeyPressed(Keyboard.Key.Tab))
-                        {
-                        }
-                        else
-                        {
-                            if (Draft.Length < maxCharacters)
-                                Draft += e.Unicode;
-                        }
-                    }
-                };
-            }
 
             CrosshairFireExpand *= .8f;
             MainGame.GuiCamera.Center = new Vector2f(MainGame.window.Size.X / 4, MainGame.window.Size.Y / 4);
