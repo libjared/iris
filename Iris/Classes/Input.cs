@@ -69,6 +69,11 @@ namespace Iris
             return false;
         }
 
+        public static bool isKeyDownOverride(Keyboard.Key key)
+        {
+            return Keyboard.IsKeyPressed(key);
+        }
+
         public static bool isMouseButtonTap(Mouse.Button key)
         {
             if (!isActive)

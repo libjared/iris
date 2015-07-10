@@ -11,6 +11,7 @@ namespace Iris
     {
         public ClientMailman Mailman { get; set; }
         public ClientPlayer player;
+
         public List<Actor> Players { get; set; }
         public List<Projectile> Projectiles { get; set; }
         public List<Sprite> BackgroundImages { get; set; }
@@ -26,7 +27,7 @@ namespace Iris
         public static float MAPYOFFSET = 297f;
         public static float MAPXOFFSET = 1300f;
         private static RenderStates shader;
-        public static float shakeFactor = 1.5f;
+        public static float shakeFactor = 1.1f;
 
         public bool tunnel = false;
         public int tunnelsTimer = 0;
@@ -69,8 +70,8 @@ namespace Iris
 
         public void Update()
         {
-           
             shittyTimerDontUse++;
+
 
             if (Input.isKeyDown(Keyboard.Key.F1))
             {
@@ -122,10 +123,14 @@ namespace Iris
 
             if (Input.isKeyTap(Keyboard.Key.LShift) && !player.Alive)
             {
-                player = new ClientPlayer(this);
-                Players.Add(player);
-                player.Pos = new Vector2f(MainGame.rand.Next(42,1800), 142);
-                Mailman.SendRespawn(player.UID);
+                //Players.Remove(player);
+                //player = new ClientPlayer(this);
+                //Players.Add(player);
+                player.Pos = new Vector2f(42, 142);
+                player.SetHealth(100);
+                player.Alive = true;
+                //player.Pos = new Vector2f(MainGame.rand.Next(42,1800), 142);
+                //Mailman.SendRespawn(player.UID);
             }
 
             if (Input.isKeyDown(Keyboard.Key.P))

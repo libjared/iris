@@ -45,22 +45,27 @@ namespace Iris
             weapons.Add(new Revolver());
 
             weapon = weapons[0];
-
         }
 
         public override void Update()
         {
+            HandleDeath();
             base.Update();
             Init();
+
+            dm.Mailman.SendPlayerPosMessage(UID, Pos, Facing, AimAngle);
+            
+            UpdatePosition();
+
+            if (!Alive)
+                return;
             UpdateCollisionBox();
             animation.Update();
             handleControls();
             handleAnimationSetting();
-            UpdatePosition();
             CheckProjectiles();
-            HandleDeath();
+            
             UpdateOnGround();
-            dm.Mailman.SendPlayerPosMessage(UID, Pos, Facing, AimAngle);
             UpdateCoinDropAmount();
 
 
@@ -97,6 +102,8 @@ namespace Iris
         {
             base.Draw();
 
+            if (!Alive)
+                return;
             //if (frame == 1)
             //Console.Write(frame);
             //Render.Draw(animation.Texture, this.Pos, Color.White, new Vector2f(0,0), 1, 0,1);
@@ -191,7 +198,7 @@ namespace Iris
                     MainGame.dm.GameObjects.Add(new Gib(new Texture(Content.GetTexture("gibArm.png")), Core + new Vector2f(0, 1), 3.2f,
                         Helper.angleBetween(Core, Core - new Vector2f(-.55f, 2)) + (float)Math.PI));
 
-                    MainGame.dm.Players.Remove(this);
+                    //MainGame.dm.Players.Remove(this);
                 }
             }
 
@@ -288,7 +295,7 @@ namespace Iris
             }
 
             Facing = 1;
-            if (Input.screenMousePos.X < MainGame.WindowSize.X / 2)
+            if (MainGame.worldMousePos.X < MainGame.dm.player.Pos.X)
             {
                 Facing = -1;
             }
@@ -449,7 +456,7 @@ namespace Iris
             }
         }
 
-        private void SetHealth(int h)
+        public void SetHealth(int h)
         {
             Health = h;
             dm.Mailman.SendHealth(Health);

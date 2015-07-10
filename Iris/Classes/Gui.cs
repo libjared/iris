@@ -122,10 +122,10 @@ namespace Iris
 
 
             Render.Draw(Content.GetTexture("characterUI.png"), new Vector2f(0, 0), Color.White, new Vector2f(0, 0), 1, 0f);
-            Render.Draw(Content.GetTexture("gibHead.png"), new Vector2f(1, 4), Color.White, new Vector2f(0, 0), 1, 0f, 1.5f);
+            Render.Draw(Content.GetTexture("gibHead.png"), new Vector2f(0, 3), Color.White, new Vector2f(0, 0), 1, 0f, 1.5f);
 
             Render.DrawString(Content.GetFont("PixelSix.ttf"), MainGame.dm.clientCoins + "", new Vector2f(35, 30), Color.White, .5f, true, 1);
-            Render.DrawString(Content.GetFont("OldNewspaperTypes.ttf"), MainGame.dm.clientName, new Vector2f(2, 55), Color.White, .25f, false, 1);
+            Render.DrawString(Content.GetFont("PixelSix.ttf"), MainGame.dm.clientName, new Vector2f(2, 55), Color.White, .25f, false, 1);
 
             if (ChatOpen)
             {
@@ -166,7 +166,7 @@ namespace Iris
 
             }
 
-            if (Input.isKeyDown(Keyboard.Key.Tab))
+            if (Input.isKeyDownOverride(Keyboard.Key.Tab))
             {
                 RectangleShape rectBG = new RectangleShape(new Vector2f(190, MainGame.dm.Players.Count * 20));
                 rectBG.Position = new Vector2f(100, 70);

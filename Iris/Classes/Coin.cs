@@ -117,6 +117,9 @@ namespace Iris
                 for (int i = 0; i < MainGame.dm.Players.Count; i++)
                 {
                     Actor A = MainGame.dm.Players[i];
+                    if (!A.Alive)
+                        continue;
+
                     if (A.collisionBox.Contains((int)this.Pos.X, (int)this.Pos.Y - 4))
                     {
                         pickedUp = true;

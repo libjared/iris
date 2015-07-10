@@ -40,7 +40,6 @@ namespace Iris
         public Actor(Deathmatch dm)
         {
             Health = 100;
-            Alive = true;
             Name = "Actor";
             Pos = new Vector2f(0, 0);
             UID = 0;
@@ -52,6 +51,12 @@ namespace Iris
 
         public virtual void Update()
         {
+            if (Health > 0)
+                Alive = true;
+            else
+                Alive = false;
+            
+
             if (animation != null) 
                 animation.Update();
             ouchTimer--;

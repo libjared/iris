@@ -130,7 +130,8 @@ namespace Iris
                     float xBULLET = msg.ReadFloat();
                     float yBULLET = msg.ReadFloat();
                     float BULLETangle = msg.ReadFloat();
-                    MainGame.dm.Projectiles.Add(new Bullet(UID_BULLET, BULLETangle, new Vector2f(xBULLET, yBULLET)));
+                    Bullet b = new Bullet(UID_BULLET, BULLETangle, new Vector2f(xBULLET, yBULLET));
+                    HandleBulletCreate(b, UID_BULLET);
                     break;
                 case "RESPAWN":
                     long UID_RESPAWN = msg.ReadInt64();
@@ -175,6 +176,14 @@ namespace Iris
 
                 plr.UpdateCollisionBox();
             }
+        }
+        private void HandleBulletCreate(Bullet b, long uid)
+        {
+            Actor shooter = ((Actor)dm.GetPlayerWithUID(uid));
+            MainGame.dm.Projectiles.Add(b);
+
+            MainGame.dm.GameObjects.Add(new GunSmoke(shooter.Core + Helper.PolarToVector2(32, shooter.AimAngle, 1, 1) + (shooter.Velocity), shooter.AimAngle));
+            MainGame.dm.GameObjects.Add(new GunFlash(shooter.Core + Helper.PolarToVector2(32, shooter.AimAngle, 1, 1) + (shooter.Velocity), shooter.AimAngle));
         }
 
         private void HandleCoinCreate(int countCOIN, float xCOIN, float yCOIN)
