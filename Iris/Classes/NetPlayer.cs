@@ -112,7 +112,7 @@ namespace Iris
 
                     Alive = false;
                     //MainGame.dm.GameObjects.Add(new Gib(new Texture(Content.GetTexture("gibHead.png")), Core, 0,0));
-                    for (int i = 0; i < 100; i++)
+                    for (int i = 0; i < MainGame.gibCount; i++)
                     {
                         int gibNum = MainGame.rand.Next(1, 4);
                         Gib g = new Gib(new Texture(Content.GetTexture("gib" + gibNum + ".png")), Core - new Vector2f(0, 4) +

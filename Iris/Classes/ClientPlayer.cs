@@ -163,7 +163,7 @@ namespace Iris
                     dm.clientCoins -= DropOnDeathCoins;
                     Health = 0;
                     Alive = false;
-                    for (int i = 0; i < 100; i++)
+                    for (int i = 0; i < MainGame.gibCount; i++)
                     {
                         int gibNum = MainGame.rand.Next(1, 4);
                         Gib g = new Gib(new Texture(Content.GetTexture("gib" + gibNum + ".png")), Core - new Vector2f(0, 4) +

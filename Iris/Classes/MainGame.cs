@@ -17,6 +17,7 @@ namespace Iris
         public static Deathmatch dm;
         public static Vector2f worldMousePos;
         public static DateTime oldDateTime;
+        public static int gibCount = 20;
         const double expectedTicks = (1000.0 / 63.0) * 10000.0;
         public static TimeSpan deltaTime
         {

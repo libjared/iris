@@ -35,7 +35,7 @@ namespace Iris
         public float interiorAlpha = 0;
 
         public float gravity = 0.5f;
-        public float PlayerAimSphereRadius = 100;
+        public float PlayerAimSphereRadius = 50;
         public int shittyTimerDontUse = 0;
 
         public int clientCoins = 100;
@@ -109,7 +109,6 @@ namespace Iris
             BackgroundGameObjects.ForEach(p => { p.Update(); });
             CheckProjectileCollisions();
             ApplyShake();
-
 
             if (MainGame.rand.Next(4) == 0)
                 for (int i = 0; i < 5; i++)
@@ -328,7 +327,6 @@ namespace Iris
             }
 
         }
-
       
     }
 

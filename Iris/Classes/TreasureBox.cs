@@ -14,6 +14,7 @@ namespace Iris
         bool opened = false;
         int openDelay = 60 * 2; //Timer until the chest opens
         int dropTimer = 60 * 1; //Timer until the opened chest despawns
+        int goldCount = 100;
         bool goldDropped = false;
 
         public TreasureBox()
@@ -55,7 +56,7 @@ namespace Iris
                     Actor A = MainGame.dm.Players[i];
                     if (A.collisionBox.Contains((int)this.Pos.X, (int)this.Pos.Y - 4))
                     {
-                        DropMoney(200);
+                        DropMoney(goldCount);
                         goldDropped = true;
                         Texture = Content.GetTexture("treasureEmpty.png");
                         //origin = new Vector2f(this.Texture.Size.X / 2, this.Texture.Size.Y);
