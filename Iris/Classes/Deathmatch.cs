@@ -177,10 +177,10 @@ namespace Iris
             MainGame.window.Draw(rs, shader);
             MainGame.window.SetView(MainGame.Camera);
 
-            foreach (Sprite s in BackgroundImagesFar)
-            {
-                s.Position = new Vector2f(s.Position.X, 280 - MAPYOFFSET + (player.Pos.Y / 15));
-            }
+            //foreach (Sprite s in BackgroundImagesFar)
+            //{
+            //    s.Position = new Vector2f(s.Position.X, 280 - MAPYOFFSET + (player.Pos.Y / 15));
+            //}
 
             BackgroundImagesFar.ForEach(p => { p.Draw(MainGame.window, RenderStates.Default); });
             BackgroundImages.ForEach(p => { p.Draw(MainGame.window, RenderStates.Default); });

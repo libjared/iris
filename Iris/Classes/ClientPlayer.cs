@@ -239,7 +239,7 @@ namespace Iris
             {
                 if (AMMO_Bullet != 0)
                 {
-                    ReloadTimer = 70 - (AMMO_Bullet * 10);
+                    ReloadTimer = 70;
                     AMMO_Bullet = 0;
                 }
             }
