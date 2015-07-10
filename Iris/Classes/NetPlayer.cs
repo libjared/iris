@@ -108,10 +108,8 @@ namespace Iris
             {
                 if (Health <= 0)
                 {
-                    //MainGame.dm.Players.Remove(this);
-
+                    Gui.FragTexts.Add(new FragText(this.Name, this.Name, Content.GetTexture("skullIcon.png")));
                     Alive = false;
-                    //MainGame.dm.GameObjects.Add(new Gib(new Texture(Content.GetTexture("gibHead.png")), Core, 0,0));
                     for (int i = 0; i < MainGame.gibCount; i++)
                     {
                         int gibNum = MainGame.rand.Next(1, 4);

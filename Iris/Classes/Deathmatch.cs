@@ -122,7 +122,7 @@ namespace Iris
 
             if (Input.isKeyTap(Keyboard.Key.LShift) && !player.Alive)
             {
-                if (player.deathTimer > 180)
+                if (player.respawnTimer <= 0)
                 {
                     //Players.Remove(player);
                     //player = new ClientPlayer(this);

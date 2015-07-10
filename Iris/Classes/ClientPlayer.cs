@@ -130,8 +130,10 @@ namespace Iris
 
             shader.Shader.SetParameter("sampler", pistolHand);
             Render.Draw(pistolHand, Core + Helper.PolarToVector2(holdDistance, AimAngle, 1, 1), Color.White, new Vector2f(2, 4), 1, AimAngle, 1, Facing == -1);
+
             shader.Shader.SetParameter("sampler", revolver);
             Render.Draw(revolver, Core + Helper.PolarToVector2(holdDistance, AimAngle, 1, 1), Color.White, new Vector2f(2, 4), 1, AimAngle, 1, Facing == -1);
+
             shader.Shader.SetParameter("sampler", Texture);
             Render.DrawAnimation(Texture, this.Pos, Color.White, new Vector2f(Texture.Size.X / (animation.Count * 4),
                 Texture.Size.Y - animation.YOffset), Facing, animation.Count, animation.Frame, 1);
@@ -162,6 +164,8 @@ namespace Iris
             {
                 if (Health <= 0)
                 {
+                    Gui.FragTexts.Add(new FragText(this.Name, this.Name, Content.GetTexture("skullIcon.png")));
+
                     DropMoney(DropOnDeathCoins);
                     dm.clientCoins -= DropOnDeathCoins;
                     Health = 0;

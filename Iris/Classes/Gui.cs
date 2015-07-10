@@ -16,12 +16,14 @@ namespace Iris
         //for things normally held in other classes; updated framely
         //private static 
         public static List<String> Chats = new List<string>() { };
+        public static List<FragText> FragTexts = new List<FragText>() { };
         public static bool ChatOpen = false;
         public static bool Composing = false;
         public static StringBuilder Draft = new StringBuilder();
         public static int ChatCloseDelay = 0;
         public static int maxCharacters = 50;
         public static int maxNameCharacters = 12;
+        public static int FragTextRemoveTimer = 60 * 5;
 
         static Gui()
         {
@@ -59,10 +61,21 @@ namespace Iris
 
         public static void Update()
         {
+            ChatCloseDelay--;
+            if (FragTexts.Count > 0)
+                FragTextRemoveTimer--;
+
+            if (FragTextRemoveTimer <= 0 || FragTexts.Count > 5)
+            {
+                FragTextRemoveTimer = 60 * 5;
+                if (FragTexts.Count > 0)
+                    FragTexts.RemoveAt(0);
+            }
+
             if (Chats.Count > 5)
                 Chats.RemoveAt(Chats.Count - 1);
 
-            ChatCloseDelay--;
+
             if (!Composing)
                 ChatOpen = false;
 
@@ -170,6 +183,24 @@ namespace Iris
                 }
             }
 
+            for (int i = 0; i < FragTexts.Count; i++)
+            {
+                int spacing = 4;
+                int rightX = 390;
+
+                Font font = Content.GetFont("OldNewspaperTypes.ttf");
+                Text textKiller = new Text(FragTexts[i].killer.ToString(), font);
+                Text textVictim = new Text(FragTexts[i].killer.ToString(), font);
+
+                Render.DrawString(font, FragTexts[i].killer, new Vector2f(rightX - (textVictim.GetLocalBounds().Width * .35f) -
+                    (textKiller.GetLocalBounds().Width * .35f) - (FragTexts[i].icon.Size.X + (spacing * 2)), 10 + i * 15), Color.White, .35f, false, 1);
+
+                Render.Draw(FragTexts[i].icon, new Vector2f(rightX - (textVictim.GetLocalBounds().Width * .35f) - (FragTexts[i].icon.Size.X + spacing), 13 + i * 15), Color.White, new Vector2f(0, 0), 1, 0);
+
+
+                Render.DrawString(font, FragTexts[i].victim, new Vector2f(rightX - (textVictim.GetLocalBounds().Width * .35f), 10 + i * 15), Color.White, .35f, false, 1);
+            }
+
             if (MainGame.dm.tunnel)
             {
                 Render.Draw(Content.GetTexture("caution.png"), new Vector2f(350, 190), Color.White, new Vector2f(0, 0), 1, 0f);
@@ -212,9 +243,9 @@ namespace Iris
 
                         try
                         {
-                           newName  = Draft.ToString().Substring(9).Trim();
+                            newName = Draft.ToString().Substring(9).Trim();
                         }
-                        catch(Exception)
+                        catch (Exception)
                         {
                             Chats.Insert(0, "Oops!");
                             return;
@@ -242,7 +273,7 @@ namespace Iris
                     }
                     else
                     {
-                        string completeMessage = MainGame.dm.clientName +": " + Draft.ToString();
+                        string completeMessage = MainGame.dm.clientName + ": " + Draft.ToString();
                         MainGame.dm.Mailman.SendChat(completeMessage);
                         Chats.Insert(0, completeMessage);
                     }
