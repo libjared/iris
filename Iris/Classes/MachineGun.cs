@@ -9,16 +9,17 @@ using System.Text;
 
 namespace Iris
 {
-    public class Revolver : Weapon
+    public class MachineGun : Weapon
     {
-        public Revolver(Actor owner) : base(owner)
+        public MachineGun(Actor owner)
+            : base(owner)
         {
-            this.texture = Content.GetTexture("revolver.png");
-            MaxAmmo = 8;
+            this.texture = Content.GetTexture("machinegun.png");
+            MaxAmmo = 10;
             FireSpeed = 15;
-            ReloadSpeed = 70;
+            ReloadSpeed = 180;
             Ammo = MaxAmmo;
-            AutomaticFire = false;
+            AutomaticFire = true;
         }
 
         public override void Update()

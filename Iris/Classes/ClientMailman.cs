@@ -218,7 +218,7 @@ namespace Iris
         {
             dm.Players.Add(new NetPlayer(dm, uid));
 
-            Gui.Chats.Add("[Server]: " + Math.Abs(uid).ToString().Substring(0, 4) + " has connected");
+            Gui.Chats.Insert(0, "[Server]: " + Math.Abs(uid).ToString().Substring(0, 4) + " has connected");
             Gui.ChatCloseDelay = 200;
         }
 
@@ -226,7 +226,7 @@ namespace Iris
         {
             dm.Players.Remove(dm.GetPlayerWithUID(uid));
 
-            Gui.Chats.Add("[Server]: " + Math.Abs(uid).ToString().Substring(0, 4) + " has disconnected");
+            Gui.Chats.Insert(0, "[Server]: " + Math.Abs(uid).ToString().Substring(0, 4) + " has disconnected");
             Gui.ChatCloseDelay = 200;
         }
 

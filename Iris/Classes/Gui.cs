@@ -107,11 +107,11 @@ namespace Iris
             ammoBar.Origin = crosshairOrigin - new Vector2f(0, 10);
             ammoBar.Scale = new Vector2f(1, -1f);
 
-            if (MainGame.dm.player.AMMO_Bullet > 0)
-                ammoBar.TextureRect = new IntRect(0, 10, (int)healthBar.Texture.Size.X, (int)(24 * ((float)MainGame.dm.player.AMMO_Bullet / 8f)));
+            if (MainGame.dm.player.weapon.Ammo > 0)
+                ammoBar.TextureRect = new IntRect(0, 10, (int)healthBar.Texture.Size.X, (int)(24 * ((float)MainGame.dm.player.weapon.Ammo / 8f)));
             else
             {
-                ammoBar.TextureRect = new IntRect(0, 10, (int)healthBar.Texture.Size.X, (int)(24 * ((float)(70 - MainGame.dm.player.ReloadTimer) / 70f)));
+                ammoBar.TextureRect = new IntRect(0, 10, (int)healthBar.Texture.Size.X, (int)(24 * ((float)(70 - MainGame.dm.player.weapon.ReloadTimer) / 70f)));
                 ammoBar.Color = Color.Red;//new Color(0, 0, 0, 170);
             }
 
@@ -255,9 +255,11 @@ namespace Iris
 
 
                         if (newName.ToLower().Contains("fag") ||
-                            newName.ToLower().Contains("nigge") ||
+                            newName.ToLower().Contains("nigger") ||
                             newName.ToLower().Contains("fuck") ||
                             newName.ToLower().Contains("shit") ||
+                            newName.ToLower().Contains("cunt") ||
+                            newName.ToLower().Contains("ass") ||
                             newName.ToLower().Contains("gay"))
                         {
                             Chats.Insert(0, "Nope.");

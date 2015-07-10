@@ -60,6 +60,7 @@
     <Compile Include="Classes\GunFlash.cs" />
     <Compile Include="Classes\Helper.cs" />
     <Compile Include="Classes\Input.cs" />
+    <Compile Include="Classes\MachineGun.cs" />
     <Compile Include="Classes\MainGame.cs" />
     <Compile Include="Classes\NetPlayer.cs" />
     <Compile Include="Classes\Actor.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="Classes\Render.cs" />
     <Compile Include="Classes\GunSmoke.cs" />
     <Compile Include="Classes\Revolver.cs" />
+    <Compile Include="Classes\Shotgun.cs" />
     <Compile Include="Classes\TrainDust.cs" />
     <Compile Include="Classes\TreasureBox.cs" />
     <Compile Include="Classes\Weapon.cs" />
@@ -188,6 +190,9 @@
     <Content Include="Content\jumpUp.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\machinegun.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\map.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -210,6 +215,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\run.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\shotgun.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\skullIcon.png">

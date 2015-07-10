@@ -20,8 +20,6 @@ namespace Iris
         public int respawnLength = 5; //In seconds
 
         public int AMMO_Bullet;
-        public int FireTimer = 0;
-        public int ReloadTimer = 0;
 
         public Weapon weapon;
 
@@ -44,7 +42,10 @@ namespace Iris
             animation = idle;
             Texture = Content.GetTexture("idle.png");
             deathTimer = 0;
-            weapons.Add(new Revolver());
+
+            weapons.Add(new Revolver(this));
+            weapons.Add(new Shotgun(this));
+            weapons.Add(new MachineGun(this));
             respawnTimer = respawnLength * 60;
 
             weapon = weapons[0];
@@ -57,7 +58,7 @@ namespace Iris
             Init();
 
             dm.Mailman.SendPlayerPosMessage(UID, Pos, Facing, AimAngle);
-            
+
             UpdatePosition();
 
             if (!Alive)
@@ -67,13 +68,12 @@ namespace Iris
             handleControls();
             handleAnimationSetting();
             CheckProjectiles();
-            
+            weapon.Update();
             UpdateOnGround();
             UpdateCoinDropAmount();
 
 
-            ReloadTimer--;
-            FireTimer--;
+
 
             if (Input.isKeyTap(Keyboard.Key.K))
                 SetHealth(0);
@@ -117,7 +117,7 @@ namespace Iris
 
             Render.renderStates = Actor.shader;
             Texture pistolHand = Content.GetTexture("pistolHand.png");
-            Texture revolver = Content.GetTexture("revolver.png");
+            Texture weaponTexture = weapon.texture;
 
             if (ouchTimer > 0)
             {
@@ -131,8 +131,8 @@ namespace Iris
             shader.Shader.SetParameter("sampler", pistolHand);
             Render.Draw(pistolHand, Core + Helper.PolarToVector2(holdDistance, AimAngle, 1, 1), Color.White, new Vector2f(2, 4), 1, AimAngle, 1, Facing == -1);
 
-            shader.Shader.SetParameter("sampler", revolver);
-            Render.Draw(revolver, Core + Helper.PolarToVector2(holdDistance, AimAngle, 1, 1), Color.White, new Vector2f(2, 4), 1, AimAngle, 1, Facing == -1);
+            shader.Shader.SetParameter("sampler", weaponTexture);
+            Render.Draw(weaponTexture, Core + Helper.PolarToVector2(holdDistance, AimAngle, 1, 1), Color.White, new Vector2f(2, 4), 1, AimAngle, 1, Facing == -1);
 
             shader.Shader.SetParameter("sampler", Texture);
             Render.DrawAnimation(Texture, this.Pos, Color.White, new Vector2f(Texture.Size.X / (animation.Count * 4),
@@ -230,6 +230,13 @@ namespace Iris
         public void handleControls()
         {
 
+            if (Input.isKeyTap(Keyboard.Key.Num1))
+                weapon = weapons[0];
+            if (Input.isKeyTap(Keyboard.Key.Num2))
+                weapon = weapons[1];
+            if (Input.isKeyTap(Keyboard.Key.Num3))
+                weapon = weapons[2];
+
             if (Mouse.IsButtonPressed(Mouse.Button.Right))
             {
                 CrosshairCameraRatio = 1f;
@@ -243,48 +250,23 @@ namespace Iris
 
             AimAngle = Helper.angleBetween(MainGame.worldMousePos, Core);
 
-            if (ReloadTimer == 0)
-            {
-                AMMO_Bullet = 8;
-            }
+
 
             if (Input.isKeyTap(Keyboard.Key.R))
             {
-                if (AMMO_Bullet != 0)
-                {
-                    ReloadTimer = 70;
-                    AMMO_Bullet = 0;
-                }
+                weapon.Reload();
             }
 
-            if (Input.isMouseButtonTap(Mouse.Button.Left))
-            {
-                if (AMMO_Bullet > 0)
+            if (!weapon.AutomaticFire)
+                if (Input.isMouseButtonTap(Mouse.Button.Left))
                 {
-                    if (FireTimer <= 0)
-                    {
-                        //Console.WriteLine("Bang");
-                        Bullet b = new Bullet(this.UID, AimAngle, Core + Helper.PolarToVector2(28, AimAngle, 1, 1));
-                        Gui.CrosshairFireExpand = .75f;
-                        dm.Projectiles.Add(b);
-                        MainGame.Camera.Center += Helper.PolarToVector2(3.5f * MainGame.rand.Next(1, 2), AimAngle + (float)Math.PI, 1, 1);
-                        holdDistance = -10f;
-                        MainGame.dm.GameObjects.Add(new GunSmoke(Core + Helper.PolarToVector2(32, AimAngle, 1, 1) + (Velocity), AimAngle));
-                        MainGame.dm.GameObjects.Add(new GunFlash(Core + Helper.PolarToVector2(32, AimAngle, 1, 1) + (Velocity), AimAngle));
-                        AMMO_Bullet--;
-
-                        if (AMMO_Bullet == 0)
-                            if (ReloadTimer < 0)
-                                ReloadTimer = 70;
-
-                        FireTimer = 10;
-                        dm.Mailman.SendBulletCreate(b);
-                    }
+                    weapon.Fire();
                 }
-                else
+            if (weapon.AutomaticFire)
+            {
+                if (Mouse.IsButtonPressed(Mouse.Button.Left))
                 {
-                    if (ReloadTimer < 0)
-                        ReloadTimer = 70;
+                    weapon.Fire();
                 }
             }
 
