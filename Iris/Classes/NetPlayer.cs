@@ -32,11 +32,16 @@ namespace Iris
 
         public override void Update()
         {
+            HandleDeath();
             base.Update();
+
+            
+            if (!Alive)
+                return;
             animation.Update();
             HandleAnimationSetting();
             CheckProjectiles();
-            HandleDeath();
+            
            
 
             oldPosition = Pos;
@@ -44,6 +49,9 @@ namespace Iris
 
         public override void Draw()
         {
+            if (!Alive)
+                return;
+
             Core = Pos - new Vector2f(-1, 35);
             this.Texture = animation.Texture;
             Render.renderStates = Actor.shader;
@@ -100,7 +108,8 @@ namespace Iris
             {
                 if (Health <= 0)
                 {
-                    MainGame.dm.Players.Remove(this);
+                    //MainGame.dm.Players.Remove(this);
+
                     Alive = false;
                     //MainGame.dm.GameObjects.Add(new Gib(new Texture(Content.GetTexture("gibHead.png")), Core, 0,0));
                     for (int i = 0; i < 100; i++)
