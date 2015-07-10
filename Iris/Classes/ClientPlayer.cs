@@ -235,6 +235,15 @@ namespace Iris
                 AMMO_Bullet = 8;
             }
 
+            if (Input.isKeyTap(Keyboard.Key.R))
+            {
+                if (AMMO_Bullet != 0)
+                {
+                    ReloadTimer = 70 - (AMMO_Bullet * 10);
+                    AMMO_Bullet = 0;
+                }
+            }
+
             if (Input.isMouseButtonTap(Mouse.Button.Left))
             {
                 if (AMMO_Bullet > 0)
