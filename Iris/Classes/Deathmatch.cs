@@ -122,12 +122,17 @@ namespace Iris
 
             if (Input.isKeyTap(Keyboard.Key.LShift) && !player.Alive)
             {
-                //Players.Remove(player);
-                //player = new ClientPlayer(this);
-                //Players.Add(player);
-                player.Pos = new Vector2f(42, 142);
-                player.SetHealth(100);
-                player.Alive = true;
+                if (player.deathTimer > 180)
+                {
+                    //Players.Remove(player);
+                    //player = new ClientPlayer(this);
+                    //Players.Add(player);
+                    player.deathTimer = 0;
+                    player.respawnTimer = player.respawnLength * 60;
+                    player.Pos = new Vector2f(42, 142);
+                    player.SetHealth(100);
+                    player.Alive = true;
+                }
                 //player.Pos = new Vector2f(MainGame.rand.Next(42,1800), 142);
                 //Mailman.SendRespawn(player.UID);
             }
@@ -269,7 +274,6 @@ namespace Iris
         {
             if (player.Health == 0)
             {
-                player.deathTimer++;
                 if (player.deathTimer > 0 && player.deathTimer < 20)
                     MainGame.Camera.Center += new Vector2f(MainGame.rand.Next(-20, 20), MainGame.rand.Next(-20, 20));
             }

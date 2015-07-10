@@ -16,6 +16,8 @@ namespace Iris
         public int deathTimer = 0;
         public float CrosshairCameraRatio;
         public int DropOnDeathCoins;
+        public int respawnTimer;
+        public int respawnLength = 5; //In seconds
 
         public int AMMO_Bullet;
         public int FireTimer = 0;
@@ -41,8 +43,9 @@ namespace Iris
             jumpDown = new Animation(Content.GetTexture("jumpDown.png"), 3, 60, -5, true);
             animation = idle;
             Texture = Content.GetTexture("idle.png");
-
+            deathTimer = 0;
             weapons.Add(new Revolver());
+            respawnTimer = respawnLength * 60;
 
             weapon = weapons[0];
         }
@@ -200,6 +203,12 @@ namespace Iris
 
                     //MainGame.dm.Players.Remove(this);
                 }
+            }
+            else
+            {
+                deathTimer++;
+                if (respawnTimer > 0)
+                    respawnTimer--;
             }
 
         }

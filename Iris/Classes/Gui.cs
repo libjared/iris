@@ -127,6 +127,16 @@ namespace Iris
             Render.DrawString(Content.GetFont("PixelSix.ttf"), MainGame.dm.clientCoins + "", new Vector2f(35, 30), Color.White, .5f, true, 1);
             Render.DrawString(Content.GetFont("PixelSix.ttf"), MainGame.dm.clientName, new Vector2f(2, 55), Color.White, .25f, false, 1);
 
+            if (!MainGame.dm.player.Alive)
+            {
+                if (MainGame.dm.player.respawnTimer > 0)
+                    Render.DrawString(Content.GetFont("PixelSix.ttf"), (MainGame.dm.player.respawnTimer / 60) + 1 + "", new Vector2f(200, 45), Color.White, .9f, true, 1);
+                else
+                {
+                    Render.DrawString(Content.GetFont("PixelSix.ttf"), "Respawn!", new Vector2f(200, 45), Color.White, .9f, true, 1);
+                }
+            }
+
             if (ChatOpen)
             {
                 RectangleShape rectBG = new RectangleShape(new Vector2f(350, 85));
