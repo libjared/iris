@@ -35,14 +35,14 @@ namespace Iris
             HandleDeath();
             base.Update();
 
-            
+
             if (!Alive)
                 return;
             animation.Update();
             HandleAnimationSetting();
             CheckProjectiles();
-            
-           
+
+
 
             oldPosition = Pos;
         }
@@ -76,7 +76,7 @@ namespace Iris
                 Texture.Size.Y - animation.YOffset), Facing, animation.Count, animation.Frame, 1);
             Render.renderStates = null;
 
-            Render.DrawString(Content.GetFont("Font1.ttf"), Name, Core - new Vector2f(0, 40), Color.White, .3f, true, 1); 
+            Render.DrawString(Content.GetFont("Font1.ttf"), Name, Core - new Vector2f(0, 40), Color.White, .3f, true, 1);
             base.Draw();
         }
 
@@ -108,7 +108,8 @@ namespace Iris
             {
                 if (Health <= 0)
                 {
-                    Gui.FragTexts.Add(new FragText(this.Killer.Name, this.Name, Content.GetTexture("skullIcon.png")));
+                    if (Killer != null)
+                        Gui.FragTexts.Add(new FragText(this.Killer.Name, this.Name, Content.GetTexture("skullIcon.png")));
                     Alive = false;
                     for (int i = 0; i < MainGame.gibCount; i++)
                     {
@@ -154,12 +155,12 @@ namespace Iris
             if (dm.MapCollide((int)this.Pos.X, (int)this.Pos.Y + 1, CollideTypes.HardOrSoft))
                 OnGround = true;
             animPadding--;
-            
+
 
             if (animPadding <= -5)
             {
                 //if (Helper.Distance(oldPosition,Pos) < 2)
-                 animation = idle;
+                animation = idle;
                 if (OnGround) //On Ground
                 {
                     if (Facing == 1)
