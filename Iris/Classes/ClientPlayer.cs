@@ -42,6 +42,7 @@ namespace Iris
             animation = idle;
             Texture = Content.GetTexture("idle.png");
             deathTimer = 0;
+            Killer = this;
 
             weapons.Add(new Revolver(this));
             weapons.Add(new Shotgun(this));
@@ -174,7 +175,8 @@ namespace Iris
             {
                 if (Health <= 0)
                 {
-                    Gui.FragTexts.Add(new FragText(this.Killer.Name, this.Name, Content.GetTexture("skullIcon.png")));
+                    if (Killer != null)
+                        Gui.FragTexts.Add(new FragText(this.Killer.Name, this.Name, Content.GetTexture("skullIcon.png")));
 
                     DropMoney(DropOnDeathCoins);
                     dm.clientCoins -= DropOnDeathCoins;
