@@ -9,28 +9,38 @@ using System.Text;
 
 namespace Iris
 {
-    public class Shotgun : Weapon
+    public class BombWeapon : Weapon
     {
-        public Shotgun(Actor owner)
+        public BombWeapon(Actor owner)
             : base(owner)
         {
-            this.texture = Content.GetTexture("shotgun.png");
-            MaxAmmo = 8;
-            FireSpeed = 50;
-            ReloadSpeed = 0;
+            this.texture = Content.GetTexture("bombWeapon.png");
+            MaxAmmo = 2;
+            FireSpeed = 60;
+            ReloadSpeed = 1;
             Ammo = MaxAmmo;
             AutomaticFire = false;
         }
 
         public override void Update()
         {
-            ReloadSpeed = (MaxAmmo - Ammo) * 20;
+            ReloadSpeed = (MaxAmmo - Ammo) * 10;
             ReloadTimer--;
             FireTimer--;
+
+            if (FireTimer > 0)
+                this.texture = null;
+            else
+                this.texture = Content.GetTexture("bombWeapon.png");
 
             if (ReloadTimer == 0)
             {
                 Ammo = MaxAmmo;
+            }
+
+            if (Input.isMouseButtonTap(Mouse.Button.Right))
+            {
+                MainGame.dm.GameObjects.Add(new Explosion(this.Owner.Core));
             }
 
             base.Update();
@@ -61,18 +71,14 @@ namespace Iris
                 if (FireTimer <= 0)
                 {
                     //Console.WriteLine("Bang");
-                    Bullet b0 = new Bullet(Owner.UID, Owner.AimAngle, Owner.Core + Helper.PolarToVector2(28, Owner.AimAngle, 1, 1));
-                    Bullet b1 = new Bullet(Owner.UID, Owner.AimAngle - .1f, Owner.Core + Helper.PolarToVector2(28, Owner.AimAngle, 1, 1));
-                    Bullet b2 = new Bullet(Owner.UID, Owner.AimAngle + .1f, Owner.Core + Helper.PolarToVector2(28, Owner.AimAngle, 1, 1));
+                    BombInstance b = new BombInstance(Owner.UID, Owner.AimAngle, Owner.Core + Helper.PolarToVector2(28, Owner.AimAngle, 1, 1));
 
                     Gui.CrosshairFireExpand = .75f;
-                    MainGame.dm.Projectiles.Add(b0);
-                    MainGame.dm.Projectiles.Add(b1);
-                    MainGame.dm.Projectiles.Add(b2);
+                    MainGame.dm.Projectiles.Add(b);
                     MainGame.Camera.Center += Helper.PolarToVector2(3.5f * MainGame.rand.Next(2, 3), Owner.AimAngle + (float)Math.PI, 1, 1);
                     ((ClientPlayer)Owner).holdDistance = -10f;
-                    MainGame.dm.GameObjects.Add(new GunSmoke(Owner.Core + Helper.PolarToVector2(32, Owner.AimAngle, 1, 1) + (Owner.Velocity), Owner.AimAngle));
-                    MainGame.dm.GameObjects.Add(new GunFlash(Owner.Core + Helper.PolarToVector2(32, Owner.AimAngle, 1, 1) + (Owner.Velocity), Owner.AimAngle));
+                    //MainGame.dm.GameObjects.Add(new GunSmoke(Owner.Core + Helper.PolarToVector2(32, Owner.AimAngle, 1, 1) + (Owner.Velocity), Owner.AimAngle));
+                    //MainGame.dm.GameObjects.Add(new GunFlash(Owner.Core + Helper.PolarToVector2(32, Owner.AimAngle, 1, 1) + (Owner.Velocity), Owner.AimAngle));
                     Ammo--;
 
                     if (Ammo == 0)
@@ -80,9 +86,7 @@ namespace Iris
                             ReloadTimer = ReloadSpeed;
 
                     FireTimer = FireSpeed;
-                    MainGame.dm.Mailman.SendBulletCreate(b0);
-                    MainGame.dm.Mailman.SendBulletCreate(b1);
-                    MainGame.dm.Mailman.SendBulletCreate(b2);
+                    //MainGame.dm.Mailman.SendBulletCreate(b);
                 }
             }
             else

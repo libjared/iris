@@ -46,6 +46,7 @@ namespace Iris
             weapons.Add(new Revolver(this));
             weapons.Add(new Shotgun(this));
             weapons.Add(new MachineGun(this));
+            weapons.Add(new BombWeapon(this));
             respawnTimer = respawnLength * 60;
 
             weapon = weapons[0];
@@ -131,8 +132,11 @@ namespace Iris
             shader.Shader.SetParameter("sampler", pistolHand);
             Render.Draw(pistolHand, Core + Helper.PolarToVector2(holdDistance, AimAngle, 1, 1), Color.White, new Vector2f(2, 4), 1, AimAngle, 1, Facing == -1);
 
-            shader.Shader.SetParameter("sampler", weaponTexture);
-            Render.Draw(weaponTexture, Core + Helper.PolarToVector2(holdDistance, AimAngle, 1, 1), Color.White, new Vector2f(2, 4), 1, AimAngle, 1, Facing == -1);
+            if (weaponTexture != null)
+            {
+                shader.Shader.SetParameter("sampler", weaponTexture);
+                Render.Draw(weaponTexture, Core + Helper.PolarToVector2(holdDistance, AimAngle, 1, 1), Color.White, new Vector2f(2, 4), 1, AimAngle, 1, Facing == -1);
+            }
 
             shader.Shader.SetParameter("sampler", Texture);
             Render.DrawAnimation(Texture, this.Pos, Color.White, new Vector2f(Texture.Size.X / (animation.Count * 4),
@@ -236,6 +240,8 @@ namespace Iris
                 weapon = weapons[1];
             if (Input.isKeyTap(Keyboard.Key.Num3))
                 weapon = weapons[2];
+            if (Input.isKeyTap(Keyboard.Key.Num4))
+                weapon = weapons[3];
 
             if (Mouse.IsButtonPressed(Mouse.Button.Right))
             {
@@ -256,6 +262,7 @@ namespace Iris
             {
                 weapon.Reload();
             }
+            
 
             if (!weapon.AutomaticFire)
                 if (Input.isMouseButtonTap(Mouse.Button.Left))

@@ -45,6 +45,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Classes\Animation.cs" />
+    <Compile Include="Classes\BombInstance.cs" />
+    <Compile Include="Classes\BombWeapon.cs" />
     <Compile Include="Classes\Bullet.cs" />
     <Compile Include="Classes\BulletDestroy.cs" />
     <Compile Include="Classes\ClientMailman.cs" />
@@ -53,6 +55,7 @@
     <Compile Include="Classes\Coin.cs" />
     <Compile Include="Classes\Content.cs" />
     <Compile Include="Classes\Deathmatch.cs" />
+    <Compile Include="Classes\Explosion.cs" />
     <Compile Include="Classes\FragText.cs" />
     <Compile Include="Classes\GameObject.cs" />
     <Compile Include="Classes\Gib.cs" />
@@ -109,6 +112,12 @@
     <Content Include="Content\background1medblur.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\bomb.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\bombWeapon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\bullet.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -143,6 +152,15 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\diamond.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\explosion.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\explosionGib1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\explosionGib2.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\flint_right.png">

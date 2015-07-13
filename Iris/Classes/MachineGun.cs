@@ -29,7 +29,7 @@ namespace Iris
 
             if (ReloadTimer == 0)
             {
-                Ammo = 8;
+                Ammo = MaxAmmo;
             }
 
             base.Update();

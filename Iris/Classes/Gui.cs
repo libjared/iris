@@ -24,6 +24,7 @@ namespace Iris
         public static int maxCharacters = 50;
         public static int maxNameCharacters = 12;
         public static int FragTextRemoveTimer = 60 * 5;
+        public static bool shopping;
 
         static Gui()
         {
@@ -72,6 +73,9 @@ namespace Iris
                     FragTexts.RemoveAt(0);
             }
 
+            if (Input.isKeyTap(Keyboard.Key.E))
+                shopping = !shopping;
+
             if (Chats.Count > 5)
                 Chats.RemoveAt(Chats.Count - 1);
 
@@ -88,7 +92,18 @@ namespace Iris
 
         public static void Draw()
         {
+            if (shopping)
+            {
+                RectangleShape rectBG = new RectangleShape(new Vector2f(200, 105));
+                rectBG.Position = new Vector2f(100, 10);
+                rectBG.FillColor = new Color(10, 10, 10, 150);
+                rectBG.Draw(MainGame.window, RenderStates.Default);
 
+                Render.Draw(Content.GetTexture("revolver.png"), new Vector2f(100, 40), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins > 0 ? 255 : 55)), new Vector2f(0, 0), 1, 0f);
+                Render.Draw(Content.GetTexture("shotgun.png"), new Vector2f(140, 40), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins > 100 ? 255 : 55)), new Vector2f(0, 0), 1, 0f);
+                Render.Draw(Content.GetTexture("machinegun.png"), new Vector2f(200, 40), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins > 200 ? 255 : 55)), new Vector2f(0, 0), 1, 0f);
+                Render.Draw(Content.GetTexture("bomb.png"), new Vector2f(260, 40), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins > 300 ? 255 : 55)), new Vector2f(0, 0), 1, 0f);
+            }
 
             Vector2f mouse = MainGame.window.MapPixelToCoords(Input.screenMousePos);
 
@@ -108,10 +123,10 @@ namespace Iris
             ammoBar.Scale = new Vector2f(1, -1f);
 
             if (MainGame.dm.player.weapon.Ammo > 0)
-                ammoBar.TextureRect = new IntRect(0, 10, (int)healthBar.Texture.Size.X, (int)(24 * ((float)MainGame.dm.player.weapon.Ammo / 8f)));
+                ammoBar.TextureRect = new IntRect(0, 10, (int)healthBar.Texture.Size.X, (int)(24 * ((float)MainGame.dm.player.weapon.Ammo / (float)MainGame.dm.player.weapon.MaxAmmo)));
             else
             {
-                ammoBar.TextureRect = new IntRect(0, 10, (int)healthBar.Texture.Size.X, (int)(24 * ((float)(70 - MainGame.dm.player.weapon.ReloadTimer) / 70f)));
+                ammoBar.TextureRect = new IntRect(0, 10, (int)healthBar.Texture.Size.X, (int)(24 * ((float)(70 - MainGame.dm.player.weapon.ReloadTimer) / MainGame.dm.player.weapon.ReloadSpeed)));
                 ammoBar.Color = Color.Red;//new Color(0, 0, 0, 170);
             }
 

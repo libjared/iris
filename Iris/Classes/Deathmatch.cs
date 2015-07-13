@@ -27,7 +27,7 @@ namespace Iris
         public static float MAPYOFFSET = 297f;
         public static float MAPXOFFSET = 1300f;
         private static RenderStates shader;
-        public static float shakeFactor = 1.1f;
+        public static float shakeFactor = .6f;
 
         public bool tunnel = false;
         public int tunnelsTimer = 0;
