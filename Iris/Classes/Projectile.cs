@@ -12,6 +12,7 @@ namespace Iris
     public abstract class Projectile : GameObject
     {
         public float Angle;
+        public Actor Owner;
         public Vector2f Velocity;
         public float Speed;
         public int Damage;
@@ -34,6 +35,7 @@ namespace Iris
 
         public virtual void onPlayerHit(Actor hit)
         {
+            //If we ever use a hit.OnHit() method
         }
 
         public virtual void Destroy()

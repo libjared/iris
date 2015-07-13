@@ -11,6 +11,7 @@ namespace Iris
     public abstract class Actor
     {
         public float Speed;
+        public Actor Killer; // The person that kills them
         public bool Alive;
         public Texture Texture;
         public Vector2f Velocity;

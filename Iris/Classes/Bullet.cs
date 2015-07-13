@@ -14,6 +14,7 @@ namespace Iris
 
         public Bullet(long UIDOwner, float angle, Vector2f position)
         {
+            this.Owner = MainGame.dm.GetPlayerWithUID(UIDOwner);
             this.Angle = angle;
             this.Pos = position;
             this.Speed = 8;

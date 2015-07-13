@@ -12,9 +12,17 @@ namespace Iris
     {
         Animation animation;
         bool damaged = false;
+        public Actor Owner;
 
         public Explosion(Vector2f center)
         {
+            this.Pos = center;
+            animation = new Animation(Content.GetTexture("explosion.png"), 6, 30, 0);
+        }
+
+        public Explosion(Vector2f center, Actor Owner)
+        {
+            this.Owner = Owner;
             this.Pos = center;
             animation = new Animation(Content.GetTexture("explosion.png"), 6, 30, 0);
         }
@@ -29,19 +37,17 @@ namespace Iris
                     if (a is ClientPlayer)
                     {
                         float angleBetween = Helper.angleBetween(this.Pos, a.Core);
-                        if (Helper.Distance(a.Pos, this.Pos) < 110)
+                        if (Helper.Distance(a.Core, this.Pos) < 130)
                         {
                             ((ClientPlayer)a).SetHealth(a.Health - 20);
                             a.ouchTimer = 10;
-                            a.Velocity -= new Vector2f((float)Math.Cos(angleBetween) + 3, (float)Math.Sin(angleBetween) + 1) * 5;
                         }
-                        if (Helper.Distance(a.Pos, this.Pos) < 90)
+                        if (Helper.Distance(a.Core, this.Pos) < 110)
                         {
                             ((ClientPlayer)a).SetHealth(a.Health - 30);
                             a.ouchTimer = 10;
-                            a.Velocity -= new Vector2f((float)Math.Cos(angleBetween) + 3, (float)Math.Sin(angleBetween) + 1) * 6;
                         }
-                        if (Helper.Distance(a.Pos, this.Pos) < 60)
+                        if (Helper.Distance(a.Core, this.Pos) < 80)
                             ((ClientPlayer)a).SetHealth(0);
                     }
                 }

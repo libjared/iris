@@ -108,7 +108,7 @@ namespace Iris
             {
                 if (Health <= 0)
                 {
-                    Gui.FragTexts.Add(new FragText(this.Name, this.Name, Content.GetTexture("skullIcon.png")));
+                    Gui.FragTexts.Add(new FragText(this.Killer.Name, this.Name, Content.GetTexture("skullIcon.png")));
                     Alive = false;
                     for (int i = 0; i < MainGame.gibCount; i++)
                     {

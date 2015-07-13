@@ -77,10 +77,16 @@ namespace Iris
 
 
             if (Input.isKeyTap(Keyboard.Key.K))
+            {
                 SetHealth(0);
+                Killer = this;
+            }
 
             if (Pos.Y > 245)
+            {
                 SetHealth(0);
+                Killer = this;
+            }
 
 
             //frameDelta += (float)MainGame.deltaTime.TotalMilliseconds;
@@ -168,7 +174,7 @@ namespace Iris
             {
                 if (Health <= 0)
                 {
-                    Gui.FragTexts.Add(new FragText(this.Name, this.Name, Content.GetTexture("skullIcon.png")));
+                    Gui.FragTexts.Add(new FragText(this.Killer.Name, this.Name, Content.GetTexture("skullIcon.png")));
 
                     DropMoney(DropOnDeathCoins);
                     dm.clientCoins -= DropOnDeathCoins;
@@ -215,6 +221,13 @@ namespace Iris
             else
             {
                 deathTimer++;
+
+                if (Killer != null)
+                    if (deathTimer > 60 * 2.5f)
+                    {
+                        MainGame.Camera.Center = Killer.Core;
+                    }
+
                 if (respawnTimer > 0)
                     respawnTimer--;
             }
@@ -262,7 +275,7 @@ namespace Iris
             {
                 weapon.Reload();
             }
-            
+
 
             if (!weapon.AutomaticFire)
                 if (Input.isMouseButtonTap(Mouse.Button.Left))
@@ -481,6 +494,10 @@ namespace Iris
                 {
                     ouchTimer = 10;
                     SetHealth(this.Health - MainGame.dm.Projectiles[i].Damage);
+                    if (Health <= 0)
+                    {
+                        Killer = MainGame.dm.Projectiles[i].Owner;
+                    }
                     this.Velocity += MainGame.dm.Projectiles[i].Velocity * 10;
                     MainGame.dm.Projectiles[i].Destroy();
                 }
