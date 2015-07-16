@@ -80,12 +80,12 @@ namespace Iris
                 player.Health = 1000000;
             }
 
-            //if (Input.isKeyOverride(Keyboard.Key.F12))
-            //{
+            if (Input.isKeyOverride(Keyboard.Key.F12))
+            {
                 devMode = true;
                 player.MaxJumps = 10000;
                 player.JumpsLeft = 10000;
-            //}
+            }
 
             if (tunnelsTimer > 0)
             if (shittyTimerDontUse % (60 * 2) == 0) { 

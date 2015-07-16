@@ -234,7 +234,7 @@ namespace Iris
                 if (Killer != null)
                     if (deathTimer > 60 * 2.5f)
                     {
-                        MainGame.Camera.Center = Killer.Core;
+                        Helper.MoveCameraTo(MainGame.Camera, Killer.Core, .8f);
                     }
 
                 if (respawnTimer > 0)
