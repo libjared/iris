@@ -38,6 +38,7 @@ namespace Iris
             animation = idle;
             Texture = Content.GetTexture("idle.png");
             deathTimer = 0;
+            Killer = this;
 
             weapons = new List<Weapon>()
             {
