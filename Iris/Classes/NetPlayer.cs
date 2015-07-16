@@ -14,6 +14,7 @@ namespace Iris
         Animation idle, running, jumpUp, jumpDown, backpedal;
         public Vector2f oldPosition;
         public int animPadding; //Wait a slight bit before changing animations since position may be unreliable
+        public int weaponIndex = 0;
 
         public NetPlayer(Deathmatch dm, long UID)
             : base(dm)
@@ -28,6 +29,14 @@ namespace Iris
             Texture = Content.GetTexture("idle.png");
             Alive = true;
             //.Color = Color.Red;
+
+            weapons = new List<Weapon>()
+            {
+                new Revolver(this),
+                new Shotgun(this),
+                new MachineGun(this),
+                new BombWeapon(this),
+            };
         }
 
         public override void Update()
@@ -38,6 +47,7 @@ namespace Iris
             
             if (!Alive)
                 return;
+            this.weapon = weapons[weaponIndex];
             animation.Update();
             HandleAnimationSetting();
             CheckProjectiles();
@@ -56,7 +66,7 @@ namespace Iris
             this.Texture = animation.Texture;
             Render.renderStates = Actor.shader;
             Texture pistolHand = Content.GetTexture("pistolHand.png");
-            Texture revolver = Content.GetTexture("revolver.png");
+            Texture weaponTexture = weapon.texture;
 
             if (ouchTimer > 0)
             {
@@ -69,8 +79,8 @@ namespace Iris
 
             shader.Shader.SetParameter("sampler", pistolHand);
             Render.Draw(pistolHand, Core, Color.White, new Vector2f(2, 4), 1, AimAngle, 1, Facing == -1);
-            shader.Shader.SetParameter("sampler", revolver);
-            Render.Draw(revolver, Core, Color.White, new Vector2f(2, 4), 1, AimAngle, 1, Facing == -1);
+            shader.Shader.SetParameter("sampler", weaponTexture);
+            Render.Draw(weaponTexture, Core, Color.White, new Vector2f(2, 4), 1, AimAngle, 1, Facing == -1);
             shader.Shader.SetParameter("sampler", Texture);
             Render.DrawAnimation(Texture, this.Pos, Color.White, new Vector2f(Texture.Size.X / (animation.Count * 4),
                 Texture.Size.Y - animation.YOffset), Facing, animation.Count, animation.Frame, 1);

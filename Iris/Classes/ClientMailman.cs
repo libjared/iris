@@ -291,5 +291,19 @@ namespace Iris
             outGoingMessage.Write(message);
             client.SendMessage(outGoingMessage, NetDeliveryMethod.ReliableOrdered);
         }
+
+        internal void sendWeaponSwitch(int p)
+        {
+            NetOutgoingMessage outGoingMessage = client.CreateMessage();
+            outGoingMessage.Write("SWITCHWEAPON");
+            outGoingMessage.Write(p);
+            client.SendMessage(outGoingMessage, NetDeliveryMethod.ReliableOrdered);
+        }
+
+        internal void HandleNetPlayerWeaponSwitch(long UID, int index)
+        {
+            NetPlayer np = MainGame.dm.GetPlayerWithUID(UID) as NetPlayer;
+            np.weaponIndex = index;
+        }
     }
 }

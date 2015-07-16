@@ -32,6 +32,10 @@ namespace Iris
         protected Deathmatch dm;
         protected static RenderStates shader;
 
+        public Weapon weapon;
+
+        public List<Weapon> weapons = new List<Weapon>() { };
+
         static Actor()
         {
             var sh = new Shader(null, "Content/setWhite.frag");
@@ -48,6 +52,7 @@ namespace Iris
             //Texture = Content.GetTexture("flint_right.png");
             //Origin = new Vector2f(Texture.Size.X /2 , Texture.Size.Y);
             this.dm = dm;
+            Killer = this;
         }
 
         public virtual void Update()

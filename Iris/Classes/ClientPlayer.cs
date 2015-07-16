@@ -21,10 +21,6 @@ namespace Iris
 
         public int AMMO_Bullet;
 
-        public Weapon weapon;
-
-        public List<Weapon> weapons = new List<Weapon>() { };
-
         public ClientPlayer(Deathmatch dm)
             : base(dm)
         {
@@ -43,10 +39,14 @@ namespace Iris
             Texture = Content.GetTexture("idle.png");
             deathTimer = 0;
 
-            weapons.Add(new Revolver(this));
-            weapons.Add(new Shotgun(this));
-            weapons.Add(new MachineGun(this));
-            weapons.Add(new BombWeapon(this));
+            weapons = new List<Weapon>()
+            {
+                new Revolver(this),
+                null,
+                null,
+                null,
+            };
+
             respawnTimer = respawnLength * 60;
 
             weapon = weapons[0];
@@ -72,6 +72,7 @@ namespace Iris
             weapon.Update();
             UpdateOnGround();
             UpdateCoinDropAmount();
+            RegenHealth();
 
 
 
@@ -91,6 +92,12 @@ namespace Iris
 
             //frameDelta += (float)MainGame.deltaTime.TotalMilliseconds;
 
+        }
+
+        private void RegenHealth()
+        {
+            if (MainGame.rand.Next(60 + (MainGame.dm.clientCoins / 20)) == 0 && Health < 100)
+                SetHealth(Health + 1);
         }
 
         private void UpdateCoinDropAmount()
@@ -174,7 +181,8 @@ namespace Iris
             {
                 if (Health <= 0)
                 {
-                    Gui.FragTexts.Add(new FragText(this.Killer.Name, this.Name, Content.GetTexture("skullIcon.png")));
+                    if (Killer != null)
+                        Gui.FragTexts.Add(new FragText(this.Killer.Name, this.Name, Content.GetTexture("skullIcon.png")));
 
                     DropMoney(DropOnDeathCoins);
                     dm.clientCoins -= DropOnDeathCoins;
@@ -247,14 +255,24 @@ namespace Iris
         public void handleControls()
         {
 
-            if (Input.isKeyTap(Keyboard.Key.Num1))
-                weapon = weapons[0];
-            if (Input.isKeyTap(Keyboard.Key.Num2))
-                weapon = weapons[1];
-            if (Input.isKeyTap(Keyboard.Key.Num3))
-                weapon = weapons[2];
-            if (Input.isKeyTap(Keyboard.Key.Num4))
-                weapon = weapons[3];
+            try
+            {
+                if (Input.isKeyDown(Keyboard.Key.Num1))
+                    weapon = weapons[0];
+                if (Input.isKeyDown(Keyboard.Key.Num2))
+                    if (weapons[1] != null)
+                        weapon = weapons[1];
+                if (Input.isKeyDown(Keyboard.Key.Num3))
+                    if (weapons[2] != null)
+                        weapon = weapons[2];
+                if (Input.isKeyDown(Keyboard.Key.Num4))
+                    if (weapons[3] != null)
+                        weapon = weapons[3];
+            }
+            catch (Exception)
+            {
+
+            }
 
             if (Mouse.IsButtonPressed(Mouse.Button.Right))
             {
@@ -324,7 +342,7 @@ namespace Iris
                 Facing = -1;
             }
 
-            if (Input.isKeyDown(Keyboard.Key.E) && dm.devMode)
+            if (Input.isKeyDown(Keyboard.Key.Q) && dm.devMode)
             {
                 DropMoney(MainGame.rand.Next(8, 16));
             }

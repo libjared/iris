@@ -94,15 +94,70 @@ namespace Iris
         {
             if (shopping)
             {
-                RectangleShape rectBG = new RectangleShape(new Vector2f(200, 105));
+                RectangleShape rectBG = new RectangleShape(new Vector2f(200, 80));
                 rectBG.Position = new Vector2f(100, 10);
                 rectBG.FillColor = new Color(10, 10, 10, 150);
                 rectBG.Draw(MainGame.window, RenderStates.Default);
 
+                int shotgunCost = 200;
+                int machinegunCost = 275;
+                int bombCost = 325;
+
                 Render.Draw(Content.GetTexture("revolver.png"), new Vector2f(100, 40), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins > 0 ? 255 : 55)), new Vector2f(0, 0), 1, 0f);
-                Render.Draw(Content.GetTexture("shotgun.png"), new Vector2f(140, 40), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins > 100 ? 255 : 55)), new Vector2f(0, 0), 1, 0f);
-                Render.Draw(Content.GetTexture("machinegun.png"), new Vector2f(200, 40), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins > 200 ? 255 : 55)), new Vector2f(0, 0), 1, 0f);
-                Render.Draw(Content.GetTexture("bomb.png"), new Vector2f(260, 40), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins > 300 ? 255 : 55)), new Vector2f(0, 0), 1, 0f);
+                Render.DrawString(Content.GetFont("PixelSix.ttf"), "Free", new Vector2f(120, 60), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins > 0 ? 255 : 55)), .5f, true, 1);
+                Render.DrawString(Content.GetFont("PixelSix.ttf"), "[1]", new Vector2f(120, 13), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins > 0 ? 255 : 55)), .5f, true, 1);
+
+                Render.Draw(Content.GetTexture("shotgun.png"), new Vector2f(140, 40), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins > shotgunCost ? 255 : 55)), new Vector2f(0, 0), 1, 0f);
+                if (MainGame.dm.player.weapons[1] == null)
+                {
+                    Render.DrawString(Content.GetFont("PixelSix.ttf"), "" + shotgunCost + "c", new Vector2f(165, 60), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins > shotgunCost ? 255 : 55)), .5f, true, 1);
+                    Render.DrawString(Content.GetFont("PixelSix.ttf"), "[2]", new Vector2f(165, 13), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins > shotgunCost ? 255 : 55)), .5f, true, 1);
+                }
+
+                Render.Draw(Content.GetTexture("machinegun.png"), new Vector2f(200, 40), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins > machinegunCost ? 255 : 55)), new Vector2f(0, 0), 1, 0f);
+                if (MainGame.dm.player.weapons[2] == null)
+                {
+                    Render.DrawString(Content.GetFont("PixelSix.ttf"), "" + machinegunCost + "c", new Vector2f(225, 60), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins > machinegunCost ? 255 : 55)), .5f, true, 1);
+                    Render.DrawString(Content.GetFont("PixelSix.ttf"), "[3]", new Vector2f(225, 13), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins > machinegunCost ? 255 : 55)), .5f, true, 1);
+                }
+
+                Render.Draw(Content.GetTexture("bomb.png"), new Vector2f(260, 40), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins > bombCost ? 255 : 55)), new Vector2f(0, 0), 1, 0f);
+                if (MainGame.dm.player.weapons[3] == null)
+                {
+                    Render.DrawString(Content.GetFont("PixelSix.ttf"), "" + bombCost + "c", new Vector2f(275, 60), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins > bombCost ? 255 : 55)), .5f, true, 1);
+                    Render.DrawString(Content.GetFont("PixelSix.ttf"), "[4]", new Vector2f(275, 13), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins > bombCost ? 255 : 55)), .5f, true, 1);
+                }
+
+                if (Input.isKeyTap(Keyboard.Key.Num2))
+                {
+                    if (MainGame.dm.clientCoins > shotgunCost)
+                    {
+                        MainGame.dm.clientCoins -= shotgunCost;
+                        MainGame.dm.player.weapons[1] = (new Shotgun(MainGame.dm.player));
+                        MainGame.dm.Mailman.sendWeaponSwitch(1);
+                        shopping = false;
+                    }
+                }
+                if (Input.isKeyTap(Keyboard.Key.Num3))
+                {
+                    if (MainGame.dm.clientCoins > machinegunCost)
+                    {
+                        MainGame.dm.clientCoins -= machinegunCost;
+                        MainGame.dm.player.weapons[2] = (new MachineGun(MainGame.dm.player));
+                        MainGame.dm.Mailman.sendWeaponSwitch(2);
+                        shopping = false;
+                    }
+                }
+                if (Input.isKeyTap(Keyboard.Key.Num4))
+                {
+                    if (MainGame.dm.clientCoins > bombCost)
+                    {
+                        MainGame.dm.clientCoins -= bombCost;
+                        MainGame.dm.player.weapons[3] = (new BombWeapon(MainGame.dm.player));
+                        MainGame.dm.Mailman.sendWeaponSwitch(3);
+                        shopping = false;
+                    }
+                }
             }
 
             Vector2f mouse = MainGame.window.MapPixelToCoords(Input.screenMousePos);
@@ -153,7 +208,8 @@ namespace Iris
             Render.Draw(Content.GetTexture("gibHead.png"), new Vector2f(0, 3), Color.White, new Vector2f(0, 0), 1, 0f, 1.5f);
 
             Render.DrawString(Content.GetFont("PixelSix.ttf"), MainGame.dm.clientCoins + "", new Vector2f(35, 30), Color.White, .5f, true, 1);
-            Render.DrawString(Content.GetFont("PixelSix.ttf"), MainGame.dm.clientName, new Vector2f(2, 55), Color.White, .25f, false, 1);
+            Render.DrawString(Content.GetFont("PixelSix.ttf"), MainGame.dm.clientName, new Vector2f(2, 55), Color.White, .3f, false, 1);
+            Render.DrawString(Content.GetFont("PixelSix.ttf"), "[E] Shop", new Vector2f(2, 65), Color.White, .25f, false, 1);
 
             if (!MainGame.dm.player.Alive)
             {
@@ -219,7 +275,32 @@ namespace Iris
             if (MainGame.dm.tunnel)
             {
                 Render.Draw(Content.GetTexture("caution.png"), new Vector2f(350, 190), Color.White, new Vector2f(0, 0), 1, 0f);
+            }
 
+            for (int i = 0; i < MainGame.dm.GameObjects.Count; i++)
+            {
+                if (MainGame.dm.GameObjects[i] is TreasureBox)
+                {
+                    TreasureBox box = MainGame.dm.GameObjects[i] as TreasureBox;
+                    Vector2f drawPos = box.Pos;
+                    if (Helper.Distance(box.Pos, MainGame.dm.player.Pos) > 320)
+                    {
+                        int flip = -1;
+                        if (box.Pos.X < MainGame.dm.player.Pos.X)
+                            drawPos.X = 40;
+                        else
+                        {
+                            drawPos.X = 350;
+                            flip = 1;
+                        }
+
+                        drawPos.Y = box.Pos.Y;
+
+                        if (!box.goldDropped)
+                            Render.Draw(Content.GetTexture("treasureBubble.png"), drawPos, Color.White, new Vector2f(0, 0), flip, 0f);
+                    }
+                   
+                }
             }
 
             if (Input.isKeyDownOverride(Keyboard.Key.Tab))

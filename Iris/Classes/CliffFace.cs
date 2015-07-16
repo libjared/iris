@@ -10,7 +10,7 @@ namespace Iris
 {
     public class CliffFace : GameObject
     {
-        int yKill = 480;
+        int yKill = 430;
         int xKill = 320;
         bool wooshed = false;
 

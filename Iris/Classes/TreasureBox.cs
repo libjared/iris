@@ -15,7 +15,7 @@ namespace Iris
         int openDelay = 60 * 2; //Timer until the chest opens
         int dropTimer = 60 * 1; //Timer until the opened chest despawns
         int goldCount = 100;
-        bool goldDropped = false;
+        public bool goldDropped = false;
 
         public TreasureBox()
         {
