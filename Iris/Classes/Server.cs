@@ -9,9 +9,8 @@ namespace Iris.Server
     class Server
     {
         const int MS_BETWEEN = 16;
-        const int QUIT_DELAY = 100;
         private NetServer server;
-        private bool quit = false;
+        private AutoResetEvent quitter = new AutoResetEvent(false);
 
         //local data
         List<Player> dActors = new List<Player>();
@@ -29,10 +28,7 @@ namespace Iris.Server
             server.Start();
 
             //block until quit
-            while (!quit)
-            {
-                Thread.Sleep(MS_BETWEEN);
-            }
+            quitter.WaitOne();
 
             Console.WriteLine("Exiting");
         }
