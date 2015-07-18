@@ -135,6 +135,7 @@ namespace Iris
                         MainGame.dm.clientCoins -= shotgunCost;
                         MainGame.dm.player.weapons[1] = (new Shotgun(MainGame.dm.player));
                         MainGame.dm.Mailman.sendWeaponSwitch(1);
+                        MainGame.dm.player.weapon = MainGame.dm.player.weapons[1];
                         shopping = false;
                     }
                 }
@@ -145,6 +146,7 @@ namespace Iris
                         MainGame.dm.clientCoins -= machinegunCost;
                         MainGame.dm.player.weapons[2] = (new MachineGun(MainGame.dm.player));
                         MainGame.dm.Mailman.sendWeaponSwitch(2);
+                        MainGame.dm.player.weapon = MainGame.dm.player.weapons[2];
                         shopping = false;
                     }
                 }
@@ -155,6 +157,7 @@ namespace Iris
                         MainGame.dm.clientCoins -= bombCost;
                         MainGame.dm.player.weapons[3] = (new BombWeapon(MainGame.dm.player));
                         MainGame.dm.Mailman.sendWeaponSwitch(3);
+                        MainGame.dm.player.weapon = MainGame.dm.player.weapons[3];
                         shopping = false;
                     }
                 }

@@ -129,7 +129,7 @@ namespace Iris
                     //Players.Add(player);
                     player.deathTimer = 0;
                     player.respawnTimer = player.respawnLength * 60;
-                    player.Pos = new Vector2f(42, 142);
+                    player.Pos = new Vector2f(42 + MainGame.rand.Next(1000), 142);
                     player.SetHealth(100);
                     player.Alive = true;
                 }

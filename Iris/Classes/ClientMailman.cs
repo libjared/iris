@@ -146,7 +146,11 @@ namespace Iris
                     HandleCoinCreate(countCOIN, xCOIN, yCOIN);
 
                     break;
-
+                case "SWITCHWEAPON":
+                    long UID_WEPSWITCH = msg.ReadInt64();
+                    int WEAPONID = msg.ReadInt32();
+                    HandleNetPlayerWeaponSwitch(UID_WEPSWITCH, WEAPONID);
+                    break;
                 default:
                     Console.WriteLine("Unrecognized Game Message Recieved: {0}\n{1}", msg.ToString(), messageType);
                     break;

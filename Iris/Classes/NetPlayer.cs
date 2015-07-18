@@ -96,7 +96,7 @@ namespace Iris
             {
                 if (Helper.Distance(MainGame.dm.Projectiles[i].Pos, Core) < 20)
                 {
-                    MainGame.dm.Projectiles.RemoveAt(i);
+                    MainGame.dm.Projectiles[i].Destroy();
                     ouchTimer = 10;
                 }
             }
@@ -221,7 +221,7 @@ namespace Iris
 
         public override void OnProjectileHit(Projectile hit)
         {
-            MainGame.dm.Projectiles.Remove(hit);
+            hit.Destroy();
             //Probably wont do anything
             base.OnProjectileHit(hit);
         }

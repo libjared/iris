@@ -97,7 +97,7 @@ namespace Iris
 
         private void RegenHealth()
         {
-            if (MainGame.rand.Next(60 + (MainGame.dm.clientCoins / 20)) == 0 && Health < 100)
+            if (MainGame.rand.Next((MainGame.dm.clientCoins / 20)) == 0 && Health < 100)
                 SetHealth(Health + 1);
         }
 
@@ -258,17 +258,35 @@ namespace Iris
 
             try
             {
-                if (Input.isKeyDown(Keyboard.Key.Num1))
+                if (Input.isKeyTap(Keyboard.Key.Num1))
+                {
                     weapon = weapons[0];
-                if (Input.isKeyDown(Keyboard.Key.Num2))
+                    MainGame.dm.Mailman.sendWeaponSwitch(0);
+                }
+                if (Input.isKeyTap(Keyboard.Key.Num2))
+                {
                     if (weapons[1] != null)
+                    {
                         weapon = weapons[1];
-                if (Input.isKeyDown(Keyboard.Key.Num3))
+                        MainGame.dm.Mailman.sendWeaponSwitch(1);
+                    }
+                }
+                if (Input.isKeyTap(Keyboard.Key.Num3))
+                {
                     if (weapons[2] != null)
+                    {
                         weapon = weapons[2];
-                if (Input.isKeyDown(Keyboard.Key.Num4))
+                        MainGame.dm.Mailman.sendWeaponSwitch(2);
+                    }
+                }
+                if (Input.isKeyTap(Keyboard.Key.Num4))
+                {
                     if (weapons[3] != null)
+                    {
                         weapon = weapons[3];
+                        MainGame.dm.Mailman.sendWeaponSwitch(3);
+                    }
+                }
             }
             catch (Exception)
             {
