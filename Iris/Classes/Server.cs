@@ -95,11 +95,31 @@ namespace Iris.Server
                 case "CHAT":
                     HandleCHAT(msg);
                     break;
+                case "SWITCHWEAPON":
+                    HandleSWITCHWEAPON(msg);
+                    break;
                 default:
                     Console.WriteLine(string.Format("Bad message type {0} from player {1}",
                         type, msg.SenderConnection.RemoteUniqueIdentifier));
                     break;
             }
+        }
+
+        private void HandleSWITCHWEAPON(NetIncomingMessage msg)
+        {
+            long who = msg.SenderConnection.RemoteUniqueIdentifier;
+            int wep = msg.ReadInt32();
+
+            string hisName = GetPlayerFromUID(who).Name;
+            Console.WriteLine(string.Format("SWITCHWEAPON {0}: {1}", hisName, wep));
+
+            //TODO: newbie
+
+            NetOutgoingMessage outMsg = server.CreateMessage();
+            outMsg.Write("SWITCHWEAPON");
+            outMsg.Write(who);
+            outMsg.Write(wep);
+            server.SendToAll(outMsg, msg.SenderConnection, NetDeliveryMethod.ReliableOrdered, 0);
         }
 
         private void HandleCHAT(NetIncomingMessage msg)
