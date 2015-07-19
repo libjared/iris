@@ -73,6 +73,7 @@
     <Compile Include="Classes\GunSmoke.cs" />
     <Compile Include="Classes\Revolver.cs" />
     <Compile Include="Classes\Shotgun.cs" />
+    <Compile Include="Classes\SoundInstance.cs" />
     <Compile Include="Classes\TrainDust.cs" />
     <Compile Include="Classes\TreasureBox.cs" />
     <Compile Include="Classes\Weapon.cs" />
@@ -161,6 +162,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\explosionGib2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\fart.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\flint_right.png">

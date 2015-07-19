@@ -19,6 +19,7 @@ namespace Iris
         public static DateTime oldDateTime;
         public static int gibCount = 20;
         const double expectedTicks = (1000.0 / 63.0) * 10000.0;
+        public static List<SoundInstance> soundInstances;
         public static TimeSpan deltaTime
         {
             get
@@ -78,7 +79,7 @@ namespace Iris
             Camera.Size = new Vector2f(800 / 2, 600 / 2);
             GuiCamera = new View(window.DefaultView);
             GuiCamera.Size = new Vector2f(800 / 2, 600 / 2);
-
+            soundInstances = new List<SoundInstance>() { };
             dm = new Deathmatch();
         }
 
@@ -89,6 +90,7 @@ namespace Iris
 
             window.Clear(Color.Black);
             window.DispatchEvents();
+            UpdateSoundInstances();
 
             Input.Update();
             updateWorldMousePos();
@@ -117,6 +119,14 @@ namespace Iris
         public static void updateWorldMousePos()
         {
             worldMousePos = window.MapPixelToCoords(Input.screenMousePos, Camera);
+        }
+
+        private static void UpdateSoundInstances()
+        {
+            for (int i = 0; i < soundInstances.Count; i++)
+            {
+                soundInstances[i].Update();
+            }
         }
     }
 }

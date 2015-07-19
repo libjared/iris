@@ -100,6 +100,11 @@ namespace Iris
                 tunnelsTimer = 5;
             }
 
+            if (Input.isKeyTap(Keyboard.Key.T))
+            {
+                MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("fart.wav"), 0, 1));
+            }
+
             tunnel = false;
 
             Mailman.HandleMessages();
