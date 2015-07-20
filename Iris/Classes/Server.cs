@@ -98,11 +98,30 @@ namespace Iris.Server
                 case "SWITCHWEAPON":
                     HandleSWITCHWEAPON(msg);
                     break;
+                case "BOMB":
+                    HandleBOMB(msg);
+                    break;
                 default:
                     Console.WriteLine(string.Format("Bad message type {0} from player {1}",
                         type, msg.SenderConnection.RemoteUniqueIdentifier));
                     break;
             }
+        }
+
+        private void HandleBOMB(NetIncomingMessage msg)
+        {
+            long owner = msg.SenderConnection.RemoteUniqueIdentifier;
+            float x = msg.ReadFloat();
+            float y = msg.ReadFloat();
+            float angle = msg.ReadFloat();
+
+            NetOutgoingMessage outMsg = server.CreateMessage();
+            outMsg.Write("BOMB");
+            outMsg.Write(owner);
+            outMsg.Write(x);
+            outMsg.Write(y);
+            outMsg.Write(angle);
+            server.SendToAll(outMsg, msg.SenderConnection, NetDeliveryMethod.ReliableOrdered, 0);
         }
 
         private void HandleSWITCHWEAPON(NetIncomingMessage msg)
