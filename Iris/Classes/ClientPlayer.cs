@@ -334,6 +334,7 @@ namespace Iris
             {
                 if (OnGround || (JumpsLeft > 0)) // && Velocity.Y > 0))
                 {
+                    MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("jump.wav"), 1, .3f, 25));
                     TrainDust td = new TrainDust(this.Pos, 0, 1f);
                     td.Alpha = 1;
                     dm.GameObjects.Add(td);

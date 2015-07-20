@@ -71,8 +71,9 @@ namespace Iris
                 if (FireTimer <= 0)
                 {
                     //Console.WriteLine("Bang");
+                    
                     BombInstance b = new BombInstance(Owner.UID, Owner.AimAngle, Owner.Core + Helper.PolarToVector2(28, Owner.AimAngle, 1, 1));
-
+                    MainGame.dm.Mailman.SendBombCreate(b);
                     Gui.CrosshairFireExpand = .75f;
                     MainGame.dm.Projectiles.Add(b);
                     MainGame.Camera.Center += Helper.PolarToVector2(3.5f * MainGame.rand.Next(2, 3), Owner.AimAngle + (float)Math.PI, 1, 1);
