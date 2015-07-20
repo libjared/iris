@@ -151,6 +151,14 @@ namespace Iris
                     int WEAPONID = msg.ReadInt32();
                     HandleNetPlayerWeaponSwitch(UID_WEPSWITCH, WEAPONID);
                     break;
+                case "BOMB":
+                    long UID_EXPLOSIVE = msg.ReadInt64();
+                    float xEXP = msg.ReadFloat();
+                    float yEXP = msg.ReadFloat();
+                    float EXPangle = msg.ReadFloat();
+                    BombInstance bomb = new BombInstance(UID_EXPLOSIVE, EXPangle, new Vector2f(xEXP, yEXP));
+                    HandleBombCreate(bomb, UID_EXPLOSIVE);
+                    break;
                 default:
                     Console.WriteLine("Unrecognized Game Message Recieved: {0}\n{1}", msg.ToString(), messageType);
                     break;
@@ -181,6 +189,7 @@ namespace Iris
                 plr.UpdateCollisionBox();
             }
         }
+
         private void HandleBulletCreate(Bullet b, long uid)
         {
             Actor shooter = ((Actor)dm.GetPlayerWithUID(uid));
@@ -188,6 +197,12 @@ namespace Iris
 
             MainGame.dm.GameObjects.Add(new GunSmoke(shooter.Core + Helper.PolarToVector2(32, shooter.AimAngle, 1, 1) + (shooter.Velocity), shooter.AimAngle));
             MainGame.dm.GameObjects.Add(new GunFlash(shooter.Core + Helper.PolarToVector2(32, shooter.AimAngle, 1, 1) + (shooter.Velocity), shooter.AimAngle));
+        }
+
+        private void HandleBombCreate(BombInstance b, long uid)
+        {
+            Actor shooter = ((Actor)dm.GetPlayerWithUID(uid));
+            MainGame.dm.Projectiles.Add(b);
         }
 
         private void HandleCoinCreate(int countCOIN, float xCOIN, float yCOIN)
@@ -249,6 +264,16 @@ namespace Iris
         {
             NetOutgoingMessage outGoingMessage = client.CreateMessage();
             outGoingMessage.Write("BULLET");
+            outGoingMessage.Write(b.Pos.X);
+            outGoingMessage.Write(b.Pos.Y);
+            outGoingMessage.Write(b.Angle);
+            client.SendMessage(outGoingMessage, NetDeliveryMethod.ReliableOrdered);
+        }
+
+        public void SendBombCreate(BombInstance b)
+        {
+            NetOutgoingMessage outGoingMessage = client.CreateMessage();
+            outGoingMessage.Write("BOMB");
             outGoingMessage.Write(b.Pos.X);
             outGoingMessage.Write(b.Pos.Y);
             outGoingMessage.Write(b.Angle);
