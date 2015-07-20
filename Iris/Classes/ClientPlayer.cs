@@ -97,7 +97,7 @@ namespace Iris
 
         private void RegenHealth()
         {
-            if (MainGame.rand.Next((MainGame.dm.clientCoins / 20)) == 0 && Health < 100)
+            if (MainGame.rand.Next(10 + (MainGame.dm.clientCoins / 20)) == 0 && Health < 100)
                 SetHealth(Health + 1);
         }
 
@@ -182,6 +182,9 @@ namespace Iris
             {
                 if (Health <= 0)
                 {
+                    MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("splat.wav"), 1f, .1f, 3));
+                    MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("SaD.wav"), 1f, .1f, 2));
+
                     if (Killer != null)
                         Gui.FragTexts.Add(new FragText(this.Killer.Name, this.Name, Content.GetTexture("skullIcon.png")));
 

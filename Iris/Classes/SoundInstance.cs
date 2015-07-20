@@ -12,7 +12,8 @@ namespace Iris
 {
     public class SoundInstance
     {
-        public static float volume = 10f;
+        public float baseVolume = 2;
+        public float volume = 1f;
         public Sound sound;
         float basePitch;
         float pitchVariance;
@@ -25,19 +26,32 @@ namespace Iris
             this.pitchVariance = pitchVariance;
         }
 
+        public SoundInstance(SoundBuffer sound, float basePitch, float pitchVariance, float volume)
+        {
+            this.sound = new Sound(sound);
+            this.basePitch = basePitch;
+            this.pitchVariance = pitchVariance;
+            this.volume = volume;
+        }
+
         public void Update()
         {
 
             if (!started)
             {
                 started = true;
-                float finalVariance = basePitch +
+                float finalVariance =
                    ((float)(MainGame.rand.Next((int)(pitchVariance * 100)) / 100f));
 
+                float pitch = basePitch + finalVariance;
+                if (pitch > 2)
+                    pitch = 2;
+                if (pitch < -1)
+                    pitch = -1;
+
                 sound.Loop = false;
-                sound.Pitch = 1;
-                sound.Volume = volume;
-                sound.Attenuation = 1f;
+                sound.Pitch = pitch;
+                sound.Volume = baseVolume * volume;
                 sound.Play();
             }
             if (sound.Status.Equals(SoundStatus.Stopped))

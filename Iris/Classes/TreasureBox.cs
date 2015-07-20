@@ -56,6 +56,7 @@ namespace Iris
                     Actor A = MainGame.dm.Players[i];
                     if (A.collisionBox.Contains((int)this.Pos.X, (int)this.Pos.Y - 4))
                     {
+                        MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("cashReg.wav"), 1f, .4f, 4));
                         DropMoney(goldCount);
                         goldDropped = true;
                         Texture = Content.GetTexture("treasureEmpty.png");

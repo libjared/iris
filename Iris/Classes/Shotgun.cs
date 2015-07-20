@@ -60,6 +60,8 @@ namespace Iris
             {
                 if (FireTimer <= 0)
                 {
+                    MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("shotgunSfx.wav"), 1f, .2f, 3));
+
                     //Console.WriteLine("Bang");
                     Bullet b0 = new Bullet(Owner.UID, Owner.AimAngle, Owner.Core + Helper.PolarToVector2(28, Owner.AimAngle, 1, 1));
                     Bullet b1 = new Bullet(Owner.UID, Owner.AimAngle - .1f, Owner.Core + Helper.PolarToVector2(28, Owner.AimAngle, 1, 1));
@@ -87,6 +89,7 @@ namespace Iris
             }
             else
             {
+                MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("dryFireSfx.wav"), 1f, .1f, 3));
                 if (ReloadTimer < 0)
                     ReloadTimer = 70;
             }

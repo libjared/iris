@@ -47,6 +47,8 @@ namespace Iris
             this.angle = angle;
             this.speed = speed;
 
+            
+            //MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("coin.wav"), .4f, .4f));
             velocity = speed * Helper.normalize(new Vector2f((float)Math.Cos(angle), (float)Math.Sin(angle))) + addVel;
         }
 
@@ -133,6 +135,7 @@ namespace Iris
                         {
                             MainGame.dm.clientCoins++;
                         }
+                        MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("coin.wav"), 1f, .2f));
                         MainGame.dm.GameObjects.Remove(this);
                         //Play pickup sound
                     }
