@@ -101,11 +101,26 @@ namespace Iris.Server
                 case "BOMB":
                     HandleBOMB(msg);
                     break;
+                case "KILLER":
+                    HandleKILLER(msg);
+                    break;
                 default:
                     Console.WriteLine(string.Format("Bad message type {0} from player {1}",
                         type, msg.SenderConnection.RemoteUniqueIdentifier));
                     break;
             }
+        }
+
+        private void HandleKILLER(NetIncomingMessage msg)
+        {
+            long owner = msg.SenderConnection.RemoteUniqueIdentifier;
+            long victim = msg.ReadInt64();
+
+            NetOutgoingMessage outMsg = server.CreateMessage();
+            outMsg.Write("KILLER");
+            outMsg.Write(owner);
+            outMsg.Write(victim);
+            server.SendToAll(outMsg, null, NetDeliveryMethod.ReliableOrdered, 0);
         }
 
         private void HandleBOMB(NetIncomingMessage msg)
