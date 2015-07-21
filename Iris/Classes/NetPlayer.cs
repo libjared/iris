@@ -52,8 +52,6 @@ namespace Iris
             HandleAnimationSetting();
             CheckProjectiles();
 
-
-
             oldPosition = Pos;
         }
 
@@ -119,8 +117,6 @@ namespace Iris
             {
                 if (Health <= 0)
                 {
-                    if (Killer != null)
-                        Gui.FragTexts.Add(new FragText(this.Killer.Name, this.Name, Content.GetTexture("skullIcon.png")));
                     Alive = false;
                     for (int i = 0; i < MainGame.gibCount; i++)
                     {

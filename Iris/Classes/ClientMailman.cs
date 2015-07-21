@@ -151,6 +151,11 @@ namespace Iris
                     int WEAPONID = msg.ReadInt32();
                     HandleNetPlayerWeaponSwitch(UID_WEPSWITCH, WEAPONID);
                     break;
+                case "KILLER":
+                    long UID_VICTIM = msg.ReadInt32();
+                    long UID_KILLER = msg.ReadInt64();
+                    HandleKillerMessage(UID_VICTIM, UID_KILLER);
+                    break;
                 case "BOMB":
                     long UID_EXPLOSIVE = msg.ReadInt64();
                     float xEXP = msg.ReadFloat();
@@ -238,6 +243,12 @@ namespace Iris
             dm.Players.Add(new NetPlayer(dm, uid));
         }
 
+        private void HandleKillerMessage(long victimUID,long killerUID)
+        {
+            Gui.FragTexts.Add(new FragText(MainGame.dm.GetPlayerWithUID(killerUID).Name,
+                MainGame.dm.GetPlayerWithUID(victimUID).Name, Content.GetTexture("skullIcon.png")));
+        }
+
         private void HandleJoinMessage(long uid)
         {
             dm.Players.Add(new NetPlayer(dm, uid));
@@ -307,6 +318,14 @@ namespace Iris
         {
             NetOutgoingMessage outGoingMessage = client.CreateMessage();
             outGoingMessage.Write("RESPAWN");
+            client.SendMessage(outGoingMessage, NetDeliveryMethod.ReliableOrdered);
+        }
+
+        public void SendKillerMessage(long killerUID)
+        {
+            NetOutgoingMessage outGoingMessage = client.CreateMessage();
+            outGoingMessage.Write("KILLER");
+            outGoingMessage.Write(killerUID);
             client.SendMessage(outGoingMessage, NetDeliveryMethod.ReliableOrdered);
         }
 

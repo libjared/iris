@@ -127,6 +127,8 @@ namespace Iris
             {
                 soundInstances[i].Update();
             }
+            if (soundInstances.Count > 200)
+                soundInstances.Clear(); // Oh shit, too many noises
         }
     }
 }

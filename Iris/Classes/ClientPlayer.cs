@@ -182,11 +182,9 @@ namespace Iris
             {
                 if (Health <= 0)
                 {
+                    MainGame.dm.Mailman.SendKillerMessage(this.Killer.UID);
                     MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("splat.wav"), 1f, .1f, 3));
                     MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("SaD.wav"), 1f, .1f, 2));
-
-                    if (Killer != null)
-                        Gui.FragTexts.Add(new FragText(this.Killer.Name, this.Name, Content.GetTexture("skullIcon.png")));
 
                     DropMoney(DropOnDeathCoins);
                     dm.clientCoins -= DropOnDeathCoins;

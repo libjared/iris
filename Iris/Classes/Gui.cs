@@ -132,6 +132,7 @@ namespace Iris
                 {
                     if (MainGame.dm.clientCoins > shotgunCost)
                     {
+                        MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("cashReg.wav"), 1, 0, 5));
                         MainGame.dm.clientCoins -= shotgunCost;
                         MainGame.dm.player.weapons[1] = (new Shotgun(MainGame.dm.player));
                         MainGame.dm.Mailman.sendWeaponSwitch(1);
@@ -143,6 +144,7 @@ namespace Iris
                 {
                     if (MainGame.dm.clientCoins > machinegunCost)
                     {
+                        MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("cashReg.wav"), 1, 0, 5));
                         MainGame.dm.clientCoins -= machinegunCost;
                         MainGame.dm.player.weapons[2] = (new MachineGun(MainGame.dm.player));
                         MainGame.dm.Mailman.sendWeaponSwitch(2);
@@ -154,6 +156,7 @@ namespace Iris
                 {
                     if (MainGame.dm.clientCoins > bombCost)
                     {
+                        MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("cashReg.wav"), 1, 0, 5));
                         MainGame.dm.clientCoins -= bombCost;
                         MainGame.dm.player.weapons[3] = (new BombWeapon(MainGame.dm.player));
                         MainGame.dm.Mailman.sendWeaponSwitch(3);
@@ -181,10 +184,10 @@ namespace Iris
             ammoBar.Scale = new Vector2f(1, -1f);
 
             if (MainGame.dm.player.weapon.Ammo > 0)
-                ammoBar.TextureRect = new IntRect(0, 10, (int)healthBar.Texture.Size.X, (int)(24 * ((float)MainGame.dm.player.weapon.Ammo / (float)MainGame.dm.player.weapon.MaxAmmo)));
+                ammoBar.TextureRect = new IntRect(0, 10, (int)healthBar.Texture.Size.X, (int)(24 * ((float)(MainGame.dm.player.weapon.Ammo / (float)MainGame.dm.player.weapon.MaxAmmo))));
             else
             {
-                ammoBar.TextureRect = new IntRect(0, 10, (int)healthBar.Texture.Size.X, (int)(24 * ((float)(70 - MainGame.dm.player.weapon.ReloadTimer) / MainGame.dm.player.weapon.ReloadSpeed)));
+                ammoBar.TextureRect = new IntRect(0, 10, (int)healthBar.Texture.Size.X, (int)(24 * ((float)(70 - (MainGame.dm.player.weapon.ReloadTimer / MainGame.dm.player.weapon.ReloadSpeed)))));
                 ammoBar.Color = Color.Red;//new Color(0, 0, 0, 170);
             }
 
