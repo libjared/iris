@@ -372,9 +372,9 @@ namespace Iris
                     }
                     else
                     {
-                        string completeMessage = MainGame.dm.player.Name + ": " + Draft.ToString();
+                        string completeMessage = Draft.ToString();
                         MainGame.dm.Mailman.SendChat(completeMessage);
-                        Chats.Insert(0, completeMessage);
+                        Chats.Insert(0, MainGame.dm.player.Name + ": " + completeMessage);
                     }
 
                     Draft.Clear();

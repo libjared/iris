@@ -225,13 +225,12 @@ namespace Iris
 
         private void HandleChatMessage(long uid, string message)
         {
-            //TODO: add gui chat
-            //if (dm.GetPlayerWithUID(uid) != null)
-            //{
-                //Actor p = dm.GetPlayerWithUID(uid);
-                Gui.Chats.Insert(0, message);
+            Actor who = dm.GetPlayerWithUID(uid);
+            if (who != null)
+            {
+                Gui.Chats.Insert(0, who.Name + ": " + message);
                 Gui.ChatCloseDelay = 300;
-            //}
+            }
         }
 
         private void HandleRespawnMessage(long uid)
