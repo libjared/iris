@@ -152,7 +152,7 @@ namespace Iris
                     HandleNetPlayerWeaponSwitch(UID_WEPSWITCH, WEAPONID);
                     break;
                 case "KILLER":
-                    long UID_VICTIM = msg.ReadInt32();
+                    long UID_VICTIM = msg.ReadInt64();
                     long UID_KILLER = msg.ReadInt64();
                     HandleKillerMessage(UID_VICTIM, UID_KILLER);
                     break;
