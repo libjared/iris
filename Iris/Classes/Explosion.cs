@@ -34,7 +34,7 @@ namespace Iris
 
                 foreach (Actor a in MainGame.dm.Players)
                 {
-                    if (a is ClientPlayer)
+                    if (a is ClientPlayer && a.Alive)
                     {
                         float angleBetween = Helper.angleBetween(this.Pos, a.Core);
                         if (Helper.Distance(a.Core, this.Pos) < 130)
