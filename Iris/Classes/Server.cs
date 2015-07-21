@@ -215,7 +215,7 @@ namespace Iris.Server
             outMsg.Write("NAME");
             outMsg.Write(msg.SenderConnection.RemoteUniqueIdentifier);
             outMsg.Write(newName);
-            server.SendToAll(outMsg, null, NetDeliveryMethod.ReliableOrdered, 0);
+            server.SendToAll(outMsg, msg.SenderConnection, NetDeliveryMethod.ReliableOrdered, 0);
         }
 
         private void HandleLIFE(NetIncomingMessage msg)
@@ -326,7 +326,7 @@ namespace Iris.Server
 
         public Player()
         {
-            Name = "Ass-tastic";
+            Name = "UNNAMED!";
             Life = 100;
         }
     }

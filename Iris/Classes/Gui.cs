@@ -365,11 +365,9 @@ namespace Iris
                         }
                         else
                         {
-                            MainGame.dm.Mailman.SendChat(MainGame.dm.player.Name + " has changed their name to " + newName);
                             Chats.Insert(0, "You have changed your name to " + newName);
                             MainGame.dm.player.Name = newName;
-                            MainGame.dm.player.Name = newName;
-                            MainGame.dm.Mailman.SendName(MainGame.dm.player.Name);
+                            MainGame.dm.Mailman.SendName(newName);
                         }
                     }
                     else
