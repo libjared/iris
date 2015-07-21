@@ -173,8 +173,14 @@ namespace Iris
 
         private void HandleNameMessage(long uid, string newName)
         {
-            if (dm.GetPlayerWithUID(uid) != null)
-                dm.GetPlayerWithUID(uid).Name = newName;
+            Actor who = dm.GetPlayerWithUID(uid);
+            if (who != null)
+            {
+                string oldName = who.Name;
+                who.Name = newName;
+                Gui.Chats.Insert(0, oldName + " has changed their name to " + newName);
+            }
+
         }
 
         private void HandlePosMessage(long uid, float x, float y, int facing, float aimAngle)
