@@ -42,6 +42,8 @@ namespace Iris
 
         public bool devMode = false;
 
+        public SoundInstance trainSound, trainSoundExterior, trainSoundInterior;
+
         public Deathmatch()
         {
             Projectiles = new List<Projectile>();
@@ -64,7 +66,9 @@ namespace Iris
             player.Pos = new Vector2f(46, 62);
             Players.Add(player);
 
-            MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("trainSpeed0.wav"), 1, 1, 15, true));
+            trainSoundExterior = new SoundInstance(Content.GetSound("trainSpeed2.wav"), 1, 1, 15, true);
+            trainSoundInterior = new SoundInstance(Content.GetSound("trainSpeed0.wav"), 1, 1, 15, true);
+            trainSound = trainSoundExterior;
 
             MainGame.Camera.Center = player.Pos - new Vector2f(0, 90);
         }
@@ -150,7 +154,7 @@ namespace Iris
             {
                 MainGame.Camera.Center += new Vector2f(MainGame.rand.Next(-4, 5) * shakeFactor / 5, MainGame.rand.Next(-4, 5) * shakeFactor / 5);
             }
-
+            trainSound.Update();
         }
 
         public void Draw()
@@ -206,10 +210,18 @@ namespace Iris
 
             if (player.Pos.Y > insideY)
             {
+                trainSoundExterior.volume = 15;
+                trainSound = trainSoundExterior;
+                trainSoundInterior.volume = 0;
                 interiorAlpha += (255f - interiorAlpha) * .1f;
             }
             else
+            {
+                trainSoundInterior.volume = 15;
                 interiorAlpha *= .95f;
+                trainSound = trainSoundInterior;
+                trainSoundExterior.volume = 0;
+            }
             Render.Draw(Content.GetTexture("mapInterior.png"), new Vector2f(0, 0), new Color(255, 255, 255, (byte)interiorAlpha), new Vector2f(0, 0), 1, 0f);
                // MainGame.window.Draw(new Sprite(Content.GetTexture("mapInterior.png")));
 

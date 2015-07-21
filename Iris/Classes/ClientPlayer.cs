@@ -533,7 +533,7 @@ namespace Iris
                 if (Helper.Distance(MainGame.dm.Projectiles[i].Pos, Core) < 20)
                 {
                     ouchTimer = 10;
-                    MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("hurt" + MainGame.rand.Next(1, 4) + ".wav"), .5f, 0, 4));
+                    MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("hurt" + MainGame.rand.Next(1, 4) + ".wav"), 1f, .1f, 4));
                     SetHealth(this.Health - MainGame.dm.Projectiles[i].Damage);
                     if (Health <= 0)
                     {
