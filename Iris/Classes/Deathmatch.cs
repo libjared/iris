@@ -39,7 +39,6 @@ namespace Iris
         public int shittyTimerDontUse = 0;
 
         public int clientCoins = 100;
-        public string clientName = "Newbie McGee";
 
         public bool devMode = false;
 
@@ -64,6 +63,8 @@ namespace Iris
             player = new ClientPlayer(this);
             player.Pos = new Vector2f(46, 62);
             Players.Add(player);
+
+            MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("trainSpeed0.wav"), 1, 1, 15, true));
 
             MainGame.Camera.Center = player.Pos - new Vector2f(0, 90);
         }

@@ -96,6 +96,7 @@ namespace Iris
             {
                 if (Helper.Distance(MainGame.dm.Projectiles[i].Pos, Core) < 20)
                 {
+                    this.Killer = MainGame.dm.Projectiles[i].Owner;
                     MainGame.dm.Projectiles[i].Destroy();
                     ouchTimer = 10;
                 }

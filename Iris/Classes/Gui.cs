@@ -211,7 +211,7 @@ namespace Iris
             Render.Draw(Content.GetTexture("gibHead.png"), new Vector2f(0, 3), Color.White, new Vector2f(0, 0), 1, 0f, 1.5f);
 
             Render.DrawString(Content.GetFont("PixelSix.ttf"), MainGame.dm.clientCoins + "", new Vector2f(35, 30), Color.White, .5f, true, 1);
-            Render.DrawString(Content.GetFont("PixelSix.ttf"), MainGame.dm.clientName, new Vector2f(2, 55), Color.White, .3f, false, 1);
+            Render.DrawString(Content.GetFont("PixelSix.ttf"), MainGame.dm.player.Name, new Vector2f(2, 55), Color.White, .3f, false, 1);
             Render.DrawString(Content.GetFont("PixelSix.ttf"), "[E] Shop", new Vector2f(2, 65), Color.White, .25f, false, 1);
 
             if (!MainGame.dm.player.Alive)
@@ -365,16 +365,16 @@ namespace Iris
                         }
                         else
                         {
-                            MainGame.dm.Mailman.SendChat(MainGame.dm.clientName + " has changed their name to " + newName);
+                            MainGame.dm.Mailman.SendChat(MainGame.dm.player.Name + " has changed their name to " + newName);
                             Chats.Insert(0, "You have changed your name to " + newName);
                             MainGame.dm.player.Name = newName;
-                            MainGame.dm.clientName = newName;
+                            MainGame.dm.player.Name = newName;
                             MainGame.dm.Mailman.SendName(MainGame.dm.player.Name);
                         }
                     }
                     else
                     {
-                        string completeMessage = MainGame.dm.clientName + ": " + Draft.ToString();
+                        string completeMessage = MainGame.dm.player.Name + ": " + Draft.ToString();
                         MainGame.dm.Mailman.SendChat(completeMessage);
                         Chats.Insert(0, completeMessage);
                     }

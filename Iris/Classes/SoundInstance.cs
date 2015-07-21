@@ -18,6 +18,7 @@ namespace Iris
         float basePitch;
         float pitchVariance;
         public bool started = false;
+        public bool looped = false;
 
         public SoundInstance(SoundBuffer sound, float basePitch, float pitchVariance)
         {
@@ -26,12 +27,13 @@ namespace Iris
             this.pitchVariance = pitchVariance;
         }
 
-        public SoundInstance(SoundBuffer sound, float basePitch, float pitchVariance, float volume)
+        public SoundInstance(SoundBuffer sound, float basePitch, float pitchVariance, float volume, bool looped = false)
         {
             this.sound = new Sound(sound);
             this.basePitch = basePitch;
             this.pitchVariance = pitchVariance;
             this.volume = volume;
+            this.looped = looped;
         }
 
         public void Update()
@@ -49,12 +51,12 @@ namespace Iris
                 if (pitch < -1)
                     pitch = -1;
 
-                sound.Loop = false;
+                sound.Loop = looped;
                 sound.Pitch = pitch;
                 sound.Volume = baseVolume * volume;
                 sound.Play();
             }
-            if (sound.Status.Equals(SoundStatus.Stopped))
+            if (sound.Status.Equals(SoundStatus.Stopped) && !looped)
             {
                 MainGame.soundInstances.Remove(this);
             }

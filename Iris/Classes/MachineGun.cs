@@ -59,7 +59,7 @@ namespace Iris
             {
                 if (FireTimer <= 0)
                 {
-                    MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("gunshot2.wav"), .7f, .1f, 4));
+                    MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("gunshot2.wav"), 1, .1f, 4));
 
                     //Console.WriteLine("Bang");
                     Bullet b = new Bullet(Owner.UID, Owner.AimAngle, Owner.Core + Helper.PolarToVector2(28, Owner.AimAngle, 1, 1));

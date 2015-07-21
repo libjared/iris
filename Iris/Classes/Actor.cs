@@ -23,8 +23,10 @@ namespace Iris
         public int ouchTimer;
         public IntRect collisionBox;
         public bool initialized;
+        public string Name = "Actor";
+
+
         public int Health { get; set; }
-        public string Name { get; set; }
         public long UID { get; set; }
         public bool OnGround { get; set; }
         public int JumpsLeft { get; set; }
