@@ -243,10 +243,14 @@ namespace Iris
             dm.Players.Add(new NetPlayer(dm, uid));
         }
 
-        private void HandleKillerMessage(long victimUID,long killerUID)
+        private void HandleKillerMessage(long victimUID, long killerUID)
         {
-            Gui.FragTexts.Add(new FragText(MainGame.dm.GetPlayerWithUID(killerUID).Name,
-                MainGame.dm.GetPlayerWithUID(victimUID).Name, Content.GetTexture("skullIcon.png")));
+            Actor killer = MainGame.dm.GetPlayerWithUID(killerUID);
+            Actor victim = MainGame.dm.GetPlayerWithUID(victimUID);
+            string killerName = killer != null ? killer.Name : "Universe";
+            string victimName = victim != null ? victim.Name : "Universe";
+            Gui.FragTexts.Add(new FragText(killerName, victimName,
+                Content.GetTexture("skullIcon.png")));
         }
 
         private void HandleJoinMessage(long uid)
