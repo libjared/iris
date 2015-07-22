@@ -39,16 +39,16 @@ namespace Iris
                         float angleBetween = Helper.angleBetween(this.Pos, a.Core);
                         if (Helper.Distance(a.Core, this.Pos) < 130)
                         {
-                            ((ClientPlayer)a).SetHealth(a.Health - 20);
+                            a.Health -= 20;
                             a.ouchTimer = 10;
                         }
                         if (Helper.Distance(a.Core, this.Pos) < 110)
                         {
-                            ((ClientPlayer)a).SetHealth(a.Health - 30);
+                            a.Health -= 30;
                             a.ouchTimer = 10;
                         }
                         if (Helper.Distance(a.Core, this.Pos) < 80)
-                            ((ClientPlayer)a).SetHealth(0);
+                            a.Health = 0;
                     }
                 }
                 damaged = true;

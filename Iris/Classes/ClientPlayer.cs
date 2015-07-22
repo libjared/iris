@@ -18,6 +18,7 @@ namespace Iris
         public int DropOnDeathCoins;
         public int respawnTimer;
         public int respawnLength = 5; //In seconds
+        public int oldHealth = 0;
 
         public int AMMO_Bullet;
 
@@ -29,7 +30,7 @@ namespace Iris
             MaxJumps = 2;
             JumpsLeft = MaxJumps;
             Alive = true;
-            SetHealth(100);
+            Health = 100;
             idle = new Animation(Content.GetTexture("idle.png"), 4, 120, 1, true);
             running = new Animation(Content.GetTexture("run.png"), 6, 50, 1, true);
             backpedal = new Animation(Content.GetTexture("run.png"), 6, 60, 1, false);
@@ -64,7 +65,10 @@ namespace Iris
             UpdatePosition();
 
             if (!Alive)
+            {
+                SendHealth();
                 return;
+            }
             UpdateCollisionBox();
             animation.Update();
             handleControls();
@@ -74,19 +78,17 @@ namespace Iris
             UpdateOnGround();
             UpdateCoinDropAmount();
             RegenHealth();
-
-
-
+            SendHealth();
 
             if (Input.isKeyTap(Keyboard.Key.K))
             {
-                SetHealth(0);
+                Health = 0;
                 Killer = this;
             }
 
             if (Pos.Y > 245)
             {
-                SetHealth(0);
+                Health = 0;
                 Killer = this;
             }
 
@@ -95,10 +97,19 @@ namespace Iris
 
         }
 
+        private void SendHealth()
+        {
+            if (oldHealth != Health)
+            {
+                dm.Mailman.SendHealth(Health);
+            }
+            oldHealth = Health;
+        }
+
         private void RegenHealth()
         {
             if (MainGame.rand.Next(10 + (MainGame.dm.clientCoins / 20)) == 0 && Health < 100)
-                SetHealth(Health + 1);
+                Health++;
         }
 
         private void UpdateCoinDropAmount()
@@ -518,12 +529,6 @@ namespace Iris
             }
         }
 
-        public void SetHealth(int h)
-        {
-            Health = h;
-            dm.Mailman.SendHealth(Health);
-        }
-
         private void CheckProjectiles()
         {
             for (int i = 0; i < MainGame.dm.Projectiles.Count; i++)
@@ -532,7 +537,7 @@ namespace Iris
                 {
                     ouchTimer = 10;
                     MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("hurt" + MainGame.rand.Next(1, 4) + ".wav"), 1f, .1f, 4));
-                    SetHealth(this.Health - MainGame.dm.Projectiles[i].Damage);
+                    Health -= MainGame.dm.Projectiles[i].Damage;
                     if (Health <= 0)
                     {
                         Killer = MainGame.dm.Projectiles[i].Owner;
