@@ -1,20 +1,24 @@
-﻿using SFML.Window;
-using SFML.System;
-using SFML.Graphics;
+using SFML.Window;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-
 namespace Iris
 {
     public class BombWeapon : Weapon
     {
+        const int BombThrowRadius = 28;
+        const float CrosshairFireExpand = 0.75f;
+        const float CameraRecoil = 3.5f;
+        const int CameraRecoilRandMin = 2;
+        const int CameraRecoilRandMax = 3;
+        const float ArmRecoil = -10f;
+
         public BombWeapon(Actor owner)
             : base(owner)
         {
-            this.texture = Content.GetTexture("bombWeapon.png");
+            texture = Content.GetTexture("bombWeapon.png");
             MaxAmmo = 2;
             FireSpeed = 30;
             ReloadSpeed = 1;
@@ -24,14 +28,17 @@ namespace Iris
 
         public override void Update()
         {
+            base.Update();
+
             ReloadSpeed = (MaxAmmo - Ammo) * 10;
             ReloadTimer--;
             FireTimer--;
 
+            //no bomb in hand when it was just thrown
             if (FireTimer > 0)
-                this.texture = null;
+                texture = null;
             else
-                this.texture = Content.GetTexture("bombWeapon.png");
+                texture = Content.GetTexture("bombWeapon.png");
 
             if (ReloadTimer == 0)
             {
@@ -42,19 +49,13 @@ namespace Iris
             {
                 MainGame.dm.GameObjects.Add(new Explosion(this.Owner.Core));
             }
-
-            base.Update();
-        }
-
-        public override void Draw()
-        {
-            base.Draw();
         }
 
         public override void Reload()
         {
             base.Reload();
 
+            //mid-clip reload
             if (Ammo != 0)
             {
                 ReloadTimer = ReloadSpeed;
@@ -66,37 +67,29 @@ namespace Iris
         {
             base.Fire();
 
-            if (Ammo > 0)
+            //if can fire
+            if (FireTimer <= 0)
             {
-                if (FireTimer <= 0)
-                {
-                    //Console.WriteLine("Bang");
-                    
-                    BombInstance b = new BombInstance(Owner.UID, Owner.AimAngle, Owner.Core + Helper.PolarToVector2(28, Owner.AimAngle, 1, 1));
-                    MainGame.dm.Mailman.SendBombCreate(b);
-                    Gui.CrosshairFireExpand = .75f;
-                    MainGame.dm.Projectiles.Add(b);
-                    MainGame.Camera.Center += Helper.PolarToVector2(3.5f * MainGame.rand.Next(2, 3), Owner.AimAngle + (float)Math.PI, 1, 1);
-                    ((ClientPlayer)Owner).holdDistance = -10f;
-                    //MainGame.dm.GameObjects.Add(new GunSmoke(Owner.Core + Helper.PolarToVector2(32, Owner.AimAngle, 1, 1) + (Owner.Velocity), Owner.AimAngle));
-                    //MainGame.dm.GameObjects.Add(new GunFlash(Owner.Core + Helper.PolarToVector2(32, Owner.AimAngle, 1, 1) + (Owner.Velocity), Owner.AimAngle));
-                    Ammo--;
+                BombInstance b = new BombInstance(Owner.UID, Owner.AimAngle, Owner.Core + Helper.PolarToVector2(BombThrowRadius, Owner.AimAngle, 1, 1));
+                MainGame.dm.Projectiles.Add(b);
+                MainGame.dm.Mailman.SendBombCreate(b);
+                Gui.CrosshairFireExpand = CrosshairFireExpand;
 
-                    if (Ammo == 0)
-                        if (ReloadTimer < 0)
-                            ReloadTimer = ReloadSpeed;
+                //two kinds of recoil
+                MainGame.Camera.Center +=
+                    Helper.PolarToVector2(CameraRecoil * MainGame.rand.Next(CameraRecoilRandMin, CameraRecoilRandMax),
+                                          Owner.AimAngle + (float)Math.PI, 1, 1);
+                ((ClientPlayer)Owner).holdDistance = ArmRecoil;
 
-                    FireTimer = FireSpeed;
-                    //MainGame.dm.Mailman.SendBulletCreate(b);
-                }
-            }
-            else
-            {
-                if (ReloadTimer < 0)
-                    ReloadTimer = 70;
+                Ammo--;
+
+                //auto reload
+                if (Ammo == 0)
+                    if (ReloadTimer < 0)
+                        ReloadTimer = ReloadSpeed;
+
+                FireTimer = FireSpeed;
             }
         }
-
-
     }
 }

@@ -1,11 +1,8 @@
-﻿using SFML.Window;
-using SFML.System;
 using SFML.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 
 namespace Iris
 {
@@ -16,7 +13,7 @@ namespace Iris
         public int Ammo; //Current ammo left
         public int MaxAmmo; //Default amount of ammo
         public int ReloadSpeed; //How long it takes to reload the weapon entirely
-        public int ReloadTimer; //Timer  of reloading
+        public int ReloadTimer; //Timer of reloading
         public Actor Owner; //The actor holding onto the weapon
         public Texture texture;
         public bool AutomaticFire;
