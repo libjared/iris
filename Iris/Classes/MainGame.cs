@@ -15,6 +15,7 @@ namespace Iris
         public static View Camera;
         public static View GuiCamera;
         public static Deathmatch dm;
+        public static MainMenu mm;
         public static Vector2f worldMousePos;
         public static DateTime oldDateTime;
         public static int gibCount = 20;

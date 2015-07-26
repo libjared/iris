@@ -65,6 +65,7 @@
     <Compile Include="Classes\Input.cs" />
     <Compile Include="Classes\MachineGun.cs" />
     <Compile Include="Classes\MainGame.cs" />
+    <Compile Include="Classes\MainMenu.cs" />
     <Compile Include="Classes\NetPlayer.cs" />
     <Compile Include="Classes\Actor.cs" />
     <Compile Include="Classes\Program.cs" />

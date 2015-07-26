@@ -156,6 +156,11 @@ namespace Iris
                     long UID_KILLER = msg.ReadInt64();
                     HandleKillerMessage(UID_VICTIM, UID_KILLER);
                     break;
+                case "LOOT":
+                    int LOOTx = msg.ReadInt32();
+                    int LOOTy = msg.ReadInt32();
+                    MainGame.dm.GameObjects.Add(new TreasureBox(new Vector2f(LOOTx, LOOTy)));
+                    break;
                 case "BOMB":
                     long UID_EXPLOSIVE = msg.ReadInt64();
                     float xEXP = msg.ReadFloat();
@@ -251,6 +256,9 @@ namespace Iris
             string victimName = victim != null ? victim.Name : "Universe";
             Gui.FragTexts.Add(new FragText(killerName, victimName,
                 Content.GetTexture("skullIcon.png")));
+
+            Gui.Chats.Insert(0, "[Server] Killer UID: " + killerName);
+            Gui.Chats.Insert(0, "[Server] Player UID: " + victimName);
         }
 
         private void HandleJoinMessage(long uid)
@@ -331,6 +339,9 @@ namespace Iris
             outGoingMessage.Write("KILLER");
             outGoingMessage.Write(killerUID);
             client.SendMessage(outGoingMessage, NetDeliveryMethod.ReliableOrdered);
+
+            Console.WriteLine(killerUID);
+            Console.WriteLine(MainGame.dm.player.UID);
         }
 
         public void SendName(string name)

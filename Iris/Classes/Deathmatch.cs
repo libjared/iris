@@ -42,6 +42,8 @@ namespace Iris
 
         public bool devMode = false;
 
+        public int roundTimeLeft;
+
         public SoundInstance trainSound, trainSoundExterior, trainSoundInterior;
 
         public Deathmatch()
