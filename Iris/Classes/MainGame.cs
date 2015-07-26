@@ -15,7 +15,8 @@ namespace Iris
         public static View Camera;
         public static View GuiCamera;
         public static Deathmatch dm;
-        public static MainMenu mm;
+        public static Menu mm;
+        public static Gamestate gamestate;
         public static Vector2f worldMousePos;
         public static DateTime oldDateTime;
         public static int gibCount = 20;
@@ -82,6 +83,8 @@ namespace Iris
             GuiCamera.Size = new Vector2f(800 / 2, 600 / 2);
             soundInstances = new List<SoundInstance>() { };
             dm = new Deathmatch();
+            mm = new Menu();
+            gamestate = mm;
         }
 
         private static void UpdateDraw(RenderWindow window)
@@ -95,12 +98,12 @@ namespace Iris
 
             Input.Update();
             updateWorldMousePos();
-            dm.Update();
-            Gui.Update();
+            gamestate.Update();
+           
 
-            dm.Draw();
+            gamestate.Draw();
             window.SetView(GuiCamera);
-            Gui.Draw();
+            
             window.SetView(Camera);
 
             window.Display();

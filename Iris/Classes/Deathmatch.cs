@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Iris
 {
-    public class Deathmatch
+    public class Deathmatch : Gamestate
     {
         public ClientMailman Mailman { get; set; }
         public ClientPlayer player;
@@ -46,7 +46,7 @@ namespace Iris
 
         public SoundInstance trainSound, trainSoundExterior, trainSoundInterior;
 
-        public Deathmatch()
+        public Deathmatch() : base()
         {
             Projectiles = new List<Projectile>();
             BackgroundImages = new List<Sprite>();
@@ -75,8 +75,9 @@ namespace Iris
             MainGame.Camera.Center = player.Pos - new Vector2f(0, 90);
         }
 
-        public void Update()
+        public override void Update()
         {
+            base.Update();
             shittyTimerDontUse++;
 
 
@@ -157,10 +158,12 @@ namespace Iris
                 MainGame.Camera.Center += new Vector2f(MainGame.rand.Next(-4, 5) * shakeFactor / 5, MainGame.rand.Next(-4, 5) * shakeFactor / 5);
             }
             trainSound.Update();
+            Gui.Update();
         }
 
-        public void Draw()
+        public override void Draw()
         {
+            base.Draw();
             //MainGame.Camera.Center = player.Pos - new Vector2f(0,90);
             
 
@@ -236,7 +239,7 @@ namespace Iris
             if (player.Pos.Y < insideY)
                 Render.Draw(Content.GetTexture("mapDecor.png"), new Vector2f(0, 0), new Color(255, 255, 255, (byte)(255 - interiorAlpha)), new Vector2f(0, 0), 1, 0f);
             //MainGame.window.Draw(mapSprite);
-           
+            Gui.Draw();
         }
 
         public bool MapCollide(int x, int y, CollideTypes types)
