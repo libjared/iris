@@ -8,6 +8,7 @@ namespace Iris
     {
         private NetClient client;
         private Deathmatch dm;
+        public static string ip = "giga.krash.net";
 
         public ClientMailman(Deathmatch dm)
         {
@@ -16,18 +17,25 @@ namespace Iris
 
         public void Disconnect()
         {
-            client.Disconnect("Bye");
+            try
+            {
+                client.Disconnect("Bye"); //Throws an exception when exiting from the menu
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
 
-        public void Connect()
+        public bool Connect()
         {
             NetPeerConfiguration config = new NetPeerConfiguration("bandit");
             config.EnableMessageType(NetIncomingMessageType.ConnectionLatencyUpdated);
             config.EnableMessageType(NetIncomingMessageType.ConnectionApproval);
-            string ip = "giga.krash.net"; //Jared's IP
             int port = 5635;
             client = new NetClient(config);
             client.Start();
+            
 
             //start processing messages
             try
@@ -37,7 +45,9 @@ namespace Iris
             catch (Exception)
             {
                 Console.WriteLine("Check your connection");
+                return false;
             }
+            return true;
         }
 
         public void HandleMessages()

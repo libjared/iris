@@ -55,7 +55,6 @@ namespace Iris
             BackgroundGameObjects = new List<GameObject>();
             Players = new List<Actor>();
             Mailman = new ClientMailman(this);
-            Mailman.Connect();
 
             shader = new RenderStates(new Shader(null, "Content/bgPrlx.frag"));
             Image mapImg = new Image("Content/mapCol.png");
