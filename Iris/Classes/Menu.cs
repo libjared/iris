@@ -104,8 +104,7 @@ namespace Iris
 
             Render.Draw(Content.GetTexture("mapDecor.png"), new Vector2f(trainPosX, -55), new Color(255, 255, 255, 200), new Vector2f(0, 0), 1, 0f, .03f);
 
-            Render.DrawString(Content.GetFont("OldNewspaperTypes.ttf"), "Box Car Bandits", new Vector2f(40, -150), Color.Black, 1f, true, 1);
-            Render.DrawString(Content.GetFont("OldNewspaperTypes.ttf"), "Box Car Bandits", new Vector2f(40, -149), Color.White, 1f, true, 1);
+            Render.Draw(Content.GetTexture("title.png"), new Vector2f(-50, -190), new Color(255, 255, 255, 240), new Vector2f(0, 0), 1, 0f, .4f);
 
             RectangleShape rectBG = new RectangleShape(new Vector2f(200, 110));
             rectBG.Position = new Vector2f(-50, 0);
@@ -213,16 +212,19 @@ namespace Iris
             if (ipField.Trim().Equals("Server IP"))
                 return;
 
-            Console.WriteLine(ipField);
             ClientMailman.ip = ipField;
 
             if (MainGame.dm.Mailman.Connect())
             {
                 MainGame.gamestate = MainGame.dm;
                 MainGame.window.TextEntered -= TextEnteredEvent;
-            }
 
-            ipField = "Failed to Connect";
+            }
+            else
+            {
+                MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("error.wav"), 1, 0, 10));
+                ipField = "Failed to Connect";
+            }
 
         }
 
