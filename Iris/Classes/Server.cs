@@ -8,9 +8,10 @@ namespace Iris.Server
 {
     class Server
     {
-        const int MS_BETWEEN = 16;
+        const int MS_BETWEEN_LOOT = 1000 * 10;
         private NetServer server;
         private AutoResetEvent quitter = new AutoResetEvent(false);
+        private Random rand = new Random();
 
         //local data
         List<Player> dActors = new List<Player>();
@@ -21,6 +22,7 @@ namespace Iris.Server
             cfg.Port = 5635;
             server = new NetServer(cfg);
             server.RegisterReceivedCallback(new SendOrPostCallback(GotLidgrenMessage), new SynchronizationContext());
+            var tim = new Timer(o => PlaceLoot(), null, 0, MS_BETWEEN_LOOT);
         }
 
         public void Start()
@@ -66,6 +68,16 @@ namespace Iris.Server
                 }
                 server.Recycle(msg);
             }
+        }
+
+        private void PlaceLoot()
+        {
+            int seed = rand.Next(int.MinValue, int.MaxValue);
+
+            NetOutgoingMessage outMsg = server.CreateMessage();
+            outMsg.Write("LOOT");
+            outMsg.Write(seed);
+            server.SendToAll(outMsg, null, NetDeliveryMethod.ReliableOrdered, 0);
         }
 
         private void HandleGameMessage(NetIncomingMessage msg)
