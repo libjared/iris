@@ -177,6 +177,7 @@ namespace Iris
                 case "LOOT":
                     Console.WriteLine("LOOT Recieved");
                     int LOOTseed = msg.ReadInt32();
+                    Console.WriteLine(LOOTseed);
                     Random rand = new Random(LOOTseed);
                     MainGame.dm.GameObjects.Add(new TreasureBox(new Vector2f(rand.Next(40,1600), 180)));
                     break;
