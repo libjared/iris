@@ -167,9 +167,9 @@ namespace Iris
                     HandleKillerMessage(UID_VICTIM, UID_KILLER);
                     break;
                 case "LOOT":
-                    int LOOTx = msg.ReadInt32();
-                    int LOOTy = msg.ReadInt32();
-                    MainGame.dm.GameObjects.Add(new TreasureBox(new Vector2f(LOOTx, LOOTy)));
+                    int LOOTseed = msg.ReadInt32();
+                    Random rand = new Random(LOOTseed);
+                    MainGame.dm.GameObjects.Add(new TreasureBox(new Vector2f(rand.Next(40,1800), 180)));
                     break;
                 case "BOMB":
                     long UID_EXPLOSIVE = msg.ReadInt64();
