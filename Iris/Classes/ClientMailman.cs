@@ -167,6 +167,7 @@ namespace Iris
                     HandleKillerMessage(UID_VICTIM, UID_KILLER);
                     break;
                 case "LOOT":
+                    Console.WriteLine("LOOT Recieved");
                     int LOOTseed = msg.ReadInt32();
                     Random rand = new Random(LOOTseed);
                     MainGame.dm.GameObjects.Add(new TreasureBox(new Vector2f(rand.Next(40,1800), 180)));
@@ -260,6 +261,10 @@ namespace Iris
 
         private void HandleKillerMessage(long victimUID, long killerUID)
         {
+            Console.WriteLine("Killer UID: " + killerUID);
+            Console.WriteLine("VICTIM UID: " + victimUID);
+            
+
             Actor killer = MainGame.dm.GetPlayerWithUID(killerUID);
             Actor victim = MainGame.dm.GetPlayerWithUID(victimUID);
             string killerName = killer != null ? killer.Name : "Universe";

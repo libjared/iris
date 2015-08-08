@@ -103,10 +103,10 @@ namespace Iris
                 CliffFace c = new CliffFace();
                 BackgroundGameObjects.Add(c);
             }
-            if (Input.isKeyTap(Keyboard.Key.C))
-            {
-                tunnelsTimer = 5;
-            }
+            //if (Input.isKeyTap(Keyboard.Key.C))
+            //{
+            //    tunnelsTimer = 5;
+            //}
 
             if (Input.isKeyTap(Keyboard.Key.T))
             {
