@@ -29,6 +29,8 @@ namespace Iris.Server
         {
             server.Start();
 
+            Console.WriteLine("Welcome to Iris");
+
             //block until quit
             quitter.WaitOne();
 
