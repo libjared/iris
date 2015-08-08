@@ -258,7 +258,7 @@ namespace Iris
 
         public void Init()
         {
-            if (!initialized && MainGame.dm.frameTimer > 180)
+            if (!initialized)
             {
                 initialized = true;
                 MainGame.dm.Mailman.SendName(MainGame.dm.player.Name);
