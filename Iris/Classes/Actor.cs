@@ -47,7 +47,6 @@ namespace Iris
         public Actor(Deathmatch dm)
         {
             Health = 100;
-            Name = "Actor";
             Pos = new Vector2f(0, 0);
             UID = 0;
             Texture = null;//new Texture();

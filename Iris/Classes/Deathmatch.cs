@@ -37,6 +37,7 @@ namespace Iris
         public float gravity = 0.5f;
         public float PlayerAimSphereRadius = 50;
         public int shittyTimerDontUse = 0;
+        public int frameTimer = 0;
 
         public int clientCoins = 100;
 
@@ -78,7 +79,7 @@ namespace Iris
         {
             base.Update();
             shittyTimerDontUse++;
-
+            frameTimer++;
 
             if (Input.isKeyDown(Keyboard.Key.F1))
             {

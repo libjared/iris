@@ -218,6 +218,7 @@ namespace Iris
             {
                 MainGame.gamestate = MainGame.dm;
                 MainGame.window.TextEntered -= TextEnteredEvent;
+                MainGame.dm.player.Name = usernameField;
 
             }
             else
