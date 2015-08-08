@@ -76,6 +76,8 @@ namespace Iris.Server
         {
             int seed = rand.Next(int.MinValue, int.MaxValue);
 
+            Console.WriteLine("LOOT");
+
             NetOutgoingMessage outMsg = server.CreateMessage();
             outMsg.Write("LOOT");
             outMsg.Write(seed);
