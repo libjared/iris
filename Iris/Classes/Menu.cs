@@ -25,6 +25,7 @@ namespace Iris
         private RectangleShape rectConnect;
         private RectangleShape rectIP;
         private RectangleShape rectUsername;
+        private bool submitted;
 
         public Menu()
             : base()
@@ -89,6 +90,19 @@ namespace Iris
             if (trainPosX > 400)
                 trainPosX = -250f;
 
+            if (!submitted)
+            {
+                UpdateMenuGui();
+            } else if (false) //server.isconnected
+            {
+                //MainGame.gamestate = MainGame.dm;
+                //MainGame.window.TextEntered -= TextEnteredEvent;
+                //MainGame.dm.player.Name = usernameField;
+            }
+        }
+
+        private void UpdateMenuGui()
+        {
             //handle paste
             if (Clipboard.ContainsText())
             {
@@ -208,24 +222,27 @@ namespace Iris
             rectBG.FillColor = new Color(10, 10, 10, 100);
             rectBG.Draw(MainGame.window, RenderStates.Default);
 
-            //menu username
-            rectUsername.FillColor = new Color(10, 10, 10, (byte)(composingUsername ? 150 : 50));
-            rectUsername.Draw(MainGame.window, RenderStates.Default);
+            if (!submitted)
+            {
+                //menu username
+                rectUsername.FillColor = new Color(10, 10, 10, (byte)(composingUsername ? 150 : 50));
+                rectUsername.Draw(MainGame.window, RenderStates.Default);
 
-            //menu ip
-            rectIP.FillColor = new Color(10, 10, 10, (byte)(composingIP ? 150 : 50));
-            rectIP.Draw(MainGame.window, RenderStates.Default);
+                //menu ip
+                rectIP.FillColor = new Color(10, 10, 10, (byte)(composingIP ? 150 : 50));
+                rectIP.Draw(MainGame.window, RenderStates.Default);
 
-            //menu connect button
-            rectConnect.FillColor = new Color(10, 255, 10,
-                (byte)(rectConnect.GetGlobalBounds().Contains(
-                (int)MainGame.worldMousePos.X, (int)MainGame.worldMousePos.Y) ? 150 : 70));
-            rectConnect.Draw(MainGame.window, RenderStates.Default);
+                //menu connect button
+                rectConnect.FillColor = new Color(10, 255, 10,
+                    (byte)(rectConnect.GetGlobalBounds().Contains(
+                    (int)MainGame.worldMousePos.X, (int)MainGame.worldMousePos.Y) ? 150 : 70));
+                rectConnect.Draw(MainGame.window, RenderStates.Default);
 
-            //text: username, ip, connect button
-            Render.DrawString(Content.GetFont("OldNewspaperTypes.ttf"), usernameField, new Vector2f(50, 15), Color.White, .3f, true, 1);
-            Render.DrawString(Content.GetFont("OldNewspaperTypes.ttf"), ipField, new Vector2f(50, 45), Color.White, .3f, true, 1);
-            Render.DrawString(Content.GetFont("OldNewspaperTypes.ttf"), "Connect", new Vector2f(50, 77), Color.White, .4f, true, 1);
+                //text: username, ip, connect button
+                Render.DrawString(Content.GetFont("OldNewspaperTypes.ttf"), usernameField, new Vector2f(50, 15), Color.White, .3f, true, 1);
+                Render.DrawString(Content.GetFont("OldNewspaperTypes.ttf"), ipField, new Vector2f(50, 45), Color.White, .3f, true, 1);
+                Render.DrawString(Content.GetFont("OldNewspaperTypes.ttf"), "Connect", new Vector2f(50, 77), Color.White, .4f, true, 1);
+            }
 
             //cursor
             Render.Draw(Content.GetTexture("cursorPointer.png"), MainGame.worldMousePos, Color.White, new Vector2f(0, 0), 1, 0f);
@@ -245,9 +262,7 @@ namespace Iris
 
             if (MainGame.dm.Mailman.Connect())
             {
-                MainGame.gamestate = MainGame.dm;
-                MainGame.window.TextEntered -= TextEnteredEvent;
-                MainGame.dm.player.Name = usernameField;
+                submitted = true;
             }
             else
             {
