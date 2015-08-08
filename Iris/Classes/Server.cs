@@ -12,6 +12,7 @@ namespace Iris.Server
         private NetServer server;
         private AutoResetEvent quitter = new AutoResetEvent(false);
         private Random rand = new Random();
+        private Timer lootTimer;
 
         //local data
         List<Player> dActors = new List<Player>();
@@ -22,7 +23,7 @@ namespace Iris.Server
             cfg.Port = 5635;
             server = new NetServer(cfg);
             server.RegisterReceivedCallback(new SendOrPostCallback(GotLidgrenMessage), new SynchronizationContext());
-            var tim = new Timer(o => PlaceLoot(), null, 0, MS_BETWEEN_LOOT);
+            lootTimer = new Timer(o => PlaceLoot(), null, 0, MS_BETWEEN_LOOT);
         }
 
         public void Start()
