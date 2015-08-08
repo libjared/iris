@@ -93,11 +93,11 @@ namespace Iris
             if (!submitted)
             {
                 UpdateMenuGui();
-            } else if (false) //server.isconnected
+            } else if (MainGame.dm.Mailman.FullyConnected)
             {
-                //MainGame.gamestate = MainGame.dm;
-                //MainGame.window.TextEntered -= TextEnteredEvent;
-                //MainGame.dm.player.Name = usernameField;
+                MainGame.window.TextEntered -= TextEnteredEvent;
+                MainGame.dm.player.Name = usernameField;
+                MainGame.gamestate = MainGame.dm;
             }
         }
 
@@ -242,6 +242,10 @@ namespace Iris
                 Render.DrawString(Content.GetFont("OldNewspaperTypes.ttf"), usernameField, new Vector2f(50, 15), Color.White, .3f, true, 1);
                 Render.DrawString(Content.GetFont("OldNewspaperTypes.ttf"), ipField, new Vector2f(50, 45), Color.White, .3f, true, 1);
                 Render.DrawString(Content.GetFont("OldNewspaperTypes.ttf"), "Connect", new Vector2f(50, 77), Color.White, .4f, true, 1);
+            }
+            else
+            {
+                Render.DrawString(Content.GetFont("OldNewspaperTypes.ttf"), "Connecting...", new Vector2f(50, 15), Color.White, .3f, true, 1);
             }
 
             //cursor

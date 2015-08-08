@@ -50,6 +50,14 @@ namespace Iris
             return true;
         }
 
+        public bool FullyConnected
+        {
+            get
+            {
+                return client.ConnectionsCount == 1;
+            }
+        }
+
         public void HandleMessages()
         {
             NetIncomingMessage msg;
