@@ -92,9 +92,10 @@ namespace Iris
 
         public static void Draw()
         {
+            MainGame.window.SetView(MainGame.GuiCamera);
             if (shopping)
             {
-                MainGame.window.SetView(MainGame.GuiCamera);
+                
                 RectangleShape rectBG = new RectangleShape(new Vector2f(200, 80));
                 rectBG.Position = new Vector2f(100, 10);
                 rectBG.FillColor = new Color(10, 10, 10, 150);
