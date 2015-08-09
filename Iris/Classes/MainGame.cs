@@ -134,6 +134,19 @@ namespace Iris
             if (soundInstances.Count > 200)
                 soundInstances.Clear(); // Oh shit, too many noises
         }
+
+        internal static bool containsProfanity(string newName)
+        {
+            return (newName.ToLower().Contains("fag") ||
+                           newName.ToLower().Contains("nigger") ||
+                           newName.ToLower().Contains("fuck") ||
+                           newName.ToLower().Contains("shit") ||
+                           newName.ToLower().Contains("cunt") ||
+                           newName.ToLower().Contains("ass") ||
+                           newName.ToLower().Contains("dick") ||
+                           newName.ToLower().Contains("penis") ||
+                           newName.ToLower().Contains("gay"));
+        }
     }
 }
 

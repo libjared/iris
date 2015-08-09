@@ -358,13 +358,7 @@ namespace Iris
                             newName = newName.Substring(0, maxNameCharacters);
 
 
-                        if (newName.ToLower().Contains("fag") ||
-                            newName.ToLower().Contains("nigger") ||
-                            newName.ToLower().Contains("fuck") ||
-                            newName.ToLower().Contains("shit") ||
-                            newName.ToLower().Contains("cunt") ||
-                            newName.ToLower().Contains("ass") ||
-                            newName.ToLower().Contains("gay"))
+                         if (MainGame.containsProfanity(newName))
                         {
                             Chats.Insert(0, "Nope.");
                         }

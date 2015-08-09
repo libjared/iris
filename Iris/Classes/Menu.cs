@@ -256,7 +256,7 @@ namespace Iris
         {
             get
             {
-                return ipField.Trim() != "Server IP" && usernameField.Trim() != "Username";
+                return ipField.Trim() != "Server IP" && usernameField.Trim() != "Username" && !MainGame.containsProfanity(usernameField);
             }
         }
 
