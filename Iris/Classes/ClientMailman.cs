@@ -178,7 +178,7 @@ namespace Iris
                     Console.WriteLine("LOOT Recieved");
                     int LOOTseed = msg.ReadInt32();
                     Random rand = new Random(LOOTseed);
-                    MainGame.dm.GameObjects.Add(new TreasureBox(new Vector2f(rand.Next(40,1800), 180)));
+                    MainGame.dm.GameObjects.Add(new TreasureBox(new Vector2f(rand.Next(40,1600), 180)));
                     break;
                 case "BOMB":
                     long UID_EXPLOSIVE = msg.ReadInt64();
