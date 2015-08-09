@@ -82,6 +82,7 @@ namespace Iris
             MainGame.dm.GameObjects.Add(new GunSmoke(new Vector2f(Pos.X, Pos.Y - 25),0));
             this.Texture = Content.GetTexture("treasureOpen.png");
             origin = new Vector2f(47, 67);
+            MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("dooropen.wav"), 1f, .4f, 10));
         }
 
         private void DropMoney(int count)

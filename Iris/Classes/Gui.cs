@@ -132,7 +132,7 @@ namespace Iris
 
                 if (Input.isKeyTap(Keyboard.Key.Num2))
                 {
-                    if (MainGame.dm.clientCoins > shotgunCost)
+                    if (MainGame.dm.clientCoins >= shotgunCost)
                     {
                         MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("cashReg.wav"), 1, 0, 5));
                         MainGame.dm.clientCoins -= shotgunCost;
@@ -144,7 +144,7 @@ namespace Iris
                 }
                 if (Input.isKeyTap(Keyboard.Key.Num3))
                 {
-                    if (MainGame.dm.clientCoins > machinegunCost)
+                    if (MainGame.dm.clientCoins >= machinegunCost)
                     {
                         MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("cashReg.wav"), 1, 0, 5));
                         MainGame.dm.clientCoins -= machinegunCost;
@@ -156,7 +156,7 @@ namespace Iris
                 }
                 if (Input.isKeyTap(Keyboard.Key.Num4))
                 {
-                    if (MainGame.dm.clientCoins > bombCost)
+                    if (MainGame.dm.clientCoins >= bombCost)
                     {
                         MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("cashReg.wav"), 1, 0, 5));
                         MainGame.dm.clientCoins -= bombCost;
