@@ -185,6 +185,17 @@ namespace Iris
                     }
                 }
             }
+
+
+            //Hit enter to connect as well
+            if (Input.isKeyDown(SFML.Window.Keyboard.Key.Return))
+            {
+                if (BoxesValid)
+                {
+                    Submit();
+                    MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("click.wav"), 1, 0, 5));
+                }
+            }
         }
 
         public override void Draw()

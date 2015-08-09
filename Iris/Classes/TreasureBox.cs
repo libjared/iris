@@ -14,6 +14,7 @@ namespace Iris
         bool opened = false;
         int openDelay = 60 * 8; //Timer until the chest opens
         int dropTimer = 60 * 1; //Timer until the opened chest despawns
+        int inactiveTimer = 60 * 20; //Timer until an untouched chest despawns
         int goldCount = 100;
         public bool goldDropped = false;
 
@@ -32,6 +33,9 @@ namespace Iris
 
         public override void Update()
         {
+            if (inactiveTimer < 0)
+                MainGame.dm.GameObjects.Remove(this);
+
             openDelay--;
             if (goldDropped)
                 dropTimer--;
@@ -40,6 +44,7 @@ namespace Iris
             {
                 if (!opened)
                     Open();
+                inactiveTimer--;
             }
 
             if (dropTimer < 0)
@@ -72,6 +77,8 @@ namespace Iris
 
         public override void Draw()
         {
+            if (inactiveTimer < 120 && inactiveTimer % 2 == 0)
+                return;
             Render.Draw(this.Texture, this.Pos + new Vector2f(0, 1), new Color(255,255,255,(byte)Alpha), origin, 1, 0f);
             base.Draw();
         }

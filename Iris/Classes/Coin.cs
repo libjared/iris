@@ -87,8 +87,12 @@ namespace Iris
                 //speed = 0;
                 velocity.Y *= -.55f;
                 velocity.X *= .6f;
+                
                 if (Math.Abs(velocity.Y) < .1f)
                     velocity.Y = 0;
+                //else
+                //    if (Math.Abs(velocity.Y) > .01f)
+                //        MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("coinDrop.wav"), 1f, 0, .2f));
             }
 
             if (!pickedUp)

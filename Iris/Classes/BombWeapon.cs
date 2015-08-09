@@ -20,7 +20,7 @@ namespace Iris
         {
             texture = Content.GetTexture("bombWeapon.png");
             MaxAmmo = 2;
-            FireSpeed = 30;
+            FireSpeed = 70;
             ReloadSpeed = 1;
             Ammo = MaxAmmo;
             AutomaticFire = false;
