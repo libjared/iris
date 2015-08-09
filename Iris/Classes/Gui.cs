@@ -112,21 +112,21 @@ namespace Iris
                 Render.Draw(Content.GetTexture("shotgun.png"), new Vector2f(140, 40), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins > shotgunCost ? 255 : 55)), new Vector2f(0, 0), 1, 0f);
                 if (MainGame.dm.player.weapons[1] == null)
                 {
-                    Render.DrawString(Content.GetFont("PixelSix.ttf"), "" + shotgunCost + "c", new Vector2f(165, 60), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins > shotgunCost ? 255 : 55)), .5f, true, 1);
+                    Render.DrawString(Content.GetFont("PixelSix.ttf"), "" + shotgunCost + "c", new Vector2f(165, 60), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins >= shotgunCost ? 255 : 55)), .5f, true, 1);
                     Render.DrawString(Content.GetFont("PixelSix.ttf"), "[2]", new Vector2f(165, 13), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins > shotgunCost ? 255 : 55)), .5f, true, 1);
                 }
 
                 Render.Draw(Content.GetTexture("machinegun.png"), new Vector2f(200, 40), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins > machinegunCost ? 255 : 55)), new Vector2f(0, 0), 1, 0f);
                 if (MainGame.dm.player.weapons[2] == null)
                 {
-                    Render.DrawString(Content.GetFont("PixelSix.ttf"), "" + machinegunCost + "c", new Vector2f(225, 60), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins > machinegunCost ? 255 : 55)), .5f, true, 1);
+                    Render.DrawString(Content.GetFont("PixelSix.ttf"), "" + machinegunCost + "c", new Vector2f(225, 60), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins >= machinegunCost ? 255 : 55)), .5f, true, 1);
                     Render.DrawString(Content.GetFont("PixelSix.ttf"), "[3]", new Vector2f(225, 13), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins > machinegunCost ? 255 : 55)), .5f, true, 1);
                 }
 
                 Render.Draw(Content.GetTexture("bomb.png"), new Vector2f(260, 40), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins > bombCost ? 255 : 55)), new Vector2f(0, 0), 1, 0f);
                 if (MainGame.dm.player.weapons[3] == null)
                 {
-                    Render.DrawString(Content.GetFont("PixelSix.ttf"), "" + bombCost + "c", new Vector2f(275, 60), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins > bombCost ? 255 : 55)), .5f, true, 1);
+                    Render.DrawString(Content.GetFont("PixelSix.ttf"), "" + bombCost + "c", new Vector2f(275, 60), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins >= bombCost ? 255 : 55)), .5f, true, 1);
                     Render.DrawString(Content.GetFont("PixelSix.ttf"), "[4]", new Vector2f(275, 13), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins > bombCost ? 255 : 55)), .5f, true, 1);
                 }
 
