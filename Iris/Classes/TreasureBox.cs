@@ -12,7 +12,7 @@ namespace Iris
     {
         Vector2f origin;
         bool opened = false;
-        int openDelay = 60 * 2; //Timer until the chest opens
+        int openDelay = 60 * 8; //Timer until the chest opens
         int dropTimer = 60 * 1; //Timer until the opened chest despawns
         int goldCount = 100;
         public bool goldDropped = false;
