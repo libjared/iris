@@ -180,6 +180,11 @@ namespace Iris
                     Random rand = new Random(LOOTseed);
                     MainGame.dm.GameObjects.Add(new TreasureBox(new Vector2f(rand.Next(40,1600), 180)));
                     break;
+                case "EMOTE":
+                    long UID_EMOTE = msg.ReadInt32();
+                    string EMOTE_TYPE = msg.ReadString();
+                    MainGame.dm.GameObjects.Add(new EmoteBubble(EMOTE_TYPE, MainGame.dm.GetPlayerWithUID(UID_EMOTE)));;
+                    break;
                 case "BOMB":
                     long UID_EXPLOSIVE = msg.ReadInt64();
                     float xEXP = msg.ReadFloat();
@@ -395,6 +400,14 @@ namespace Iris
         {
             NetPlayer np = MainGame.dm.GetPlayerWithUID(UID) as NetPlayer;
             np.weaponIndex = index;
+        }
+
+        internal void SendEmote(string e)
+        {
+            NetOutgoingMessage outGoingMessage = client.CreateMessage();
+            outGoingMessage.Write("EMOTE");
+            outGoingMessage.Write(e);
+            client.SendMessage(outGoingMessage, NetDeliveryMethod.ReliableOrdered);
         }
     }
 }

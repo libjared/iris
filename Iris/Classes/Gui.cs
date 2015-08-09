@@ -24,7 +24,7 @@ namespace Iris
         public static int maxCharacters = 50;
         public static int maxNameCharacters = 12;
         public static int FragTextRemoveTimer = 60 * 5;
-        public static bool shopping;
+        public static bool shopping, emoteMenuOpen;
 
         static Gui()
         {
@@ -73,8 +73,6 @@ namespace Iris
                     FragTexts.RemoveAt(0);
             }
 
-            if (Input.isKeyTap(Keyboard.Key.E))
-                shopping = !shopping;
 
             if (Chats.Count > 5)
                 Chats.RemoveAt(Chats.Count - 1);
@@ -85,6 +83,19 @@ namespace Iris
 
             if (ChatCloseDelay > 0)
                 ChatOpen = true;
+            
+            if (Input.isKeyTap(Keyboard.Key.E))
+            {
+                shopping = !shopping;
+                emoteMenuOpen = false;
+            }
+
+            if (Input.isKeyTap(Keyboard.Key.Q))
+            {
+                emoteMenuOpen = !emoteMenuOpen;
+                shopping = false;
+            }
+            
 
             CrosshairFireExpand *= .8f;
             MainGame.GuiCamera.Center = new Vector2f(MainGame.window.Size.X / 4, MainGame.window.Size.Y / 4);
@@ -93,6 +104,70 @@ namespace Iris
         public static void Draw()
         {
             MainGame.window.SetView(MainGame.GuiCamera);
+
+            
+
+            if (!shopping && !emoteMenuOpen)
+            {
+                string firstPlacePlayer = "Bear";
+                Render.DrawString(Content.GetFont("PixelSix.ttf"), "Highest Bounty: " + firstPlacePlayer, new Vector2f(200, 25),
+                    Color.White, .4f,
+                     true, 1);
+
+                Render.DrawString(Content.GetFont("PixelSix.ttf"), +MainGame.dm.roundTimeLeft + " Sec", new Vector2f(200, 3),
+                MainGame.dm.roundTimeLeft < 20 ? Color.Red : Color.White,
+                MainGame.dm.roundTimeLeft < 20 ? .8f : .7f,
+                 true, 1);
+            }
+
+            if (emoteMenuOpen)
+            {
+
+
+                RectangleShape rectBG = new RectangleShape(new Vector2f(200, 60));
+                rectBG.Position = new Vector2f(100, 10);
+                rectBG.FillColor = new Color(10, 10, 10, 150);
+                rectBG.Draw(MainGame.window, RenderStates.Default);
+
+                Render.Draw(Content.GetTexture("emote_cool.png"), new Vector2f(105, 35), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins > 0 ? 255 : 55)), new Vector2f(0, 0), 1, 0f);
+                Render.DrawString(Content.GetFont("PixelSix.ttf"), "[1]", new Vector2f(120, 13), new Color(255, 255, 255), .5f, true, 1);
+
+                Render.Draw(Content.GetTexture("emote_laugh.png"), new Vector2f(155, 35), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins > 0 ? 255 : 55)), new Vector2f(0, 0), 1, 0f);
+                Render.DrawString(Content.GetFont("PixelSix.ttf"), "[2]", new Vector2f(170, 13), new Color(255, 255, 255), .5f, true, 1);
+
+                Render.Draw(Content.GetTexture("emote_silly.png"), new Vector2f(205, 35), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins > 0 ? 255 : 55)), new Vector2f(0, 0), 1, 0f);
+                Render.DrawString(Content.GetFont("PixelSix.ttf"), "[3]", new Vector2f(220, 13), new Color(255, 255, 255), .5f, true, 1);
+
+                Render.Draw(Content.GetTexture("emote_shocked.png"), new Vector2f(255, 35), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins > 0 ? 255 : 55)), new Vector2f(0, 0), 1, 0f);
+                Render.DrawString(Content.GetFont("PixelSix.ttf"), "[4]", new Vector2f(270, 13), new Color(255, 255, 255), .5f, true, 1);
+
+                if (MainGame.dm.player.Alive)
+                {
+                    if (Input.isKeyTap(Keyboard.Key.Num1))
+                    {
+                        MainGame.dm.GameObjects.Add(new EmoteBubble("cool", MainGame.dm.player));
+                        MainGame.dm.Mailman.SendEmote("cool");
+                        emoteMenuOpen = false;
+                    }
+                    if (Input.isKeyTap(Keyboard.Key.Num2))
+                    {
+                        MainGame.dm.GameObjects.Add(new EmoteBubble("laugh", MainGame.dm.player));
+                        emoteMenuOpen = false;
+                    }
+                    if (Input.isKeyTap(Keyboard.Key.Num3))
+                    {
+                        MainGame.dm.GameObjects.Add(new EmoteBubble("silly", MainGame.dm.player));
+                        emoteMenuOpen = false;
+                    }
+                    if (Input.isKeyTap(Keyboard.Key.Num4))
+                    {
+                        MainGame.dm.GameObjects.Add(new EmoteBubble("shocked", MainGame.dm.player));
+                        emoteMenuOpen = false;
+                    }
+                }
+
+            }
+
             if (shopping)
             {
                 
@@ -218,6 +293,7 @@ namespace Iris
             Render.DrawString(Content.GetFont("PixelSix.ttf"), MainGame.dm.clientCoins + "", new Vector2f(35, 30), Color.White, .5f, true, 1);
             Render.DrawString(Content.GetFont("PixelSix.ttf"), MainGame.dm.player.Name, new Vector2f(2, 55), Color.White, .3f, false, 1);
             Render.DrawString(Content.GetFont("PixelSix.ttf"), "[E] Shop", new Vector2f(2, 65), Color.White, .25f, false, 1);
+            Render.DrawString(Content.GetFont("PixelSix.ttf"), "[Q] Emotes", new Vector2f(2, 75), Color.White, .25f, false, 1);
 
             if (!MainGame.dm.player.Alive)
             {
