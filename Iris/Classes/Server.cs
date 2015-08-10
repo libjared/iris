@@ -8,7 +8,7 @@ namespace Iris.Server
 {
     class Server
     {
-        const int MS_BETWEEN_LOOT = 1000 * 10;
+        const int MS_BETWEEN_LOOT = 1000 * 30;
         private NetServer server;
         private AutoResetEvent quitter = new AutoResetEvent(false);
         private Random rand = new Random();
@@ -76,8 +76,6 @@ namespace Iris.Server
         private void PlaceLoot()
         {
             int seed = rand.Next(int.MinValue, int.MaxValue);
-
-            Console.WriteLine("LOOT");
 
             NetOutgoingMessage outMsg = server.CreateMessage();
             outMsg.Write("LOOT");
