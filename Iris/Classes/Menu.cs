@@ -27,6 +27,8 @@ namespace Iris
         private RectangleShape rectUsername;
         private bool submitted;
 
+        private int submitTimer = 0;
+
         public Menu()
             : base()
         {
@@ -196,6 +198,13 @@ namespace Iris
                     MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("click.wav"), 1, 0, 5));
                 }
             }
+
+            if (Input.isKeyTap(Keyboard.Key.Q))
+            {
+                ipField = "giga.krash.net";
+                usernameField = "MR. Q";
+                Submit();
+            }
         }
 
         public override void Draw()
@@ -257,6 +266,13 @@ namespace Iris
             else
             {
                 Render.DrawString(Content.GetFont("OldNewspaperTypes.ttf"), "Connecting...", new Vector2f(50, 15), Color.White, .3f, true, 1);
+                submitTimer++;
+                if (submitTimer > 300)
+                {
+                    submitted = false;
+                    submitTimer = 0;
+                    ipField = "Failed to Connect";
+                }
             }
 
             //cursor

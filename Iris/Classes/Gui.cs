@@ -116,7 +116,7 @@ namespace Iris
 
                 Render.DrawString(Content.GetFont("OldNewspaperTypes.ttf"), +MainGame.dm.roundTimeLeft + " sec", new Vector2f(200, 3),
                 MainGame.dm.roundTimeLeft < 20 ? Color.Red : Color.White,
-                MainGame.dm.roundTimeLeft < 20 ? .7f : .6f,
+                MainGame.dm.roundTimeLeft < 20 ? .8f : .6f,
                  true, 1);
             }
 

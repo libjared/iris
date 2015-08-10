@@ -78,6 +78,8 @@ namespace Iris
         {
             base.Update();
             shittyTimerDontUse++;
+            if (MainGame.rand.Next(60) == 0)
+                roundTimeLeft--;
 
             if (Input.isKeyDown(Keyboard.Key.F1))
             {
