@@ -13,7 +13,7 @@ namespace Iris
     {
         private static RenderStates shader;
         public string usernameField = "Username";
-        public string ipField = "Server IP";
+        public string ipField = "giga.krash.net";
 
         public bool composingUsername = false;
         public bool composingIP = false;

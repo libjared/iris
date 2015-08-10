@@ -43,6 +43,8 @@ namespace Iris
         public bool devMode = false;
 
         public int roundTimeLeft = 60;
+        public int preRoundTimeLeft = 10;
+        public bool roundStarted = false;
 
         public SoundInstance trainSound, trainSoundExterior, trainSoundInterior;
 
