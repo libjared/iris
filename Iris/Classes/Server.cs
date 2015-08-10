@@ -121,6 +121,9 @@ namespace Iris.Server
                 case "KILLER":
                     HandleKILLER(msg);
                     break;
+                case "EMOTE":
+                    HandleKILLER(msg);
+                    break;
                 default:
                     Console.WriteLine(string.Format("Bad message type {0} from player {1}",
                         type, msg.SenderConnection.RemoteUniqueIdentifier));
@@ -137,6 +140,18 @@ namespace Iris.Server
             outMsg.Write("KILLER");
             outMsg.Write(owner);
             outMsg.Write(victim);
+            server.SendToAll(outMsg, null, NetDeliveryMethod.ReliableOrdered, 0);
+        }
+
+        private void HandleEMOTE(NetIncomingMessage msg)
+        {
+            long owner = msg.SenderConnection.RemoteUniqueIdentifier;
+            string emoteType = msg.ReadString();
+
+            NetOutgoingMessage outMsg = server.CreateMessage();
+            outMsg.Write("EMOTE");
+            outMsg.Write(owner);
+            outMsg.Write(emoteType);
             server.SendToAll(outMsg, null, NetDeliveryMethod.ReliableOrdered, 0);
         }
 
