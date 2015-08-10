@@ -20,12 +20,13 @@ namespace Iris
             : base(dm)
         {
             this.UID = UID;
-            idle = new Animation(Content.GetTexture("idle.png"), 4, 120, 1);
-            running = new Animation(Content.GetTexture("run.png"), 6, 60, 2);
-            backpedal = new Animation(Content.GetTexture("run.png"), 6, 60, 2, false);
-            jumpUp = new Animation(Content.GetTexture("jumpUp.png"), 1, 60, 0);
-            jumpDown = new Animation(Content.GetTexture("jumpDown.png"), 3, 60, -5);
+            idle = new Animation(Content.GetTexture(model.idleFile), 4, 120, 1);
+            running = new Animation(Content.GetTexture(model.runFile), 6, 60, 2);
+            backpedal = new Animation(Content.GetTexture(model.runFile), 6, 60, 2, false);
+            jumpUp = new Animation(Content.GetTexture(model.jumpUpFile), 1, 60, 0);
+            jumpDown = new Animation(Content.GetTexture(model.jumpDownFile), 3, 60, -5);
             animation = idle;
+
             Texture = Content.GetTexture("idle.png");
             Alive = true;
             //.Color = Color.Red;

@@ -22,6 +22,7 @@ namespace Iris
         public static int gibCount = 20;
         const double expectedTicks = (1000.0 / 63.0) * 10000.0;
         public static List<SoundInstance> soundInstances;
+        public static Model Char1Model, Char2Model;
         public static TimeSpan deltaTime
         {
             get
@@ -57,6 +58,32 @@ namespace Iris
 
         private static void LoadContentInitialize()
         {
+            Char1Model = new Model();
+            Char1Model.name = "Character 1 Model";
+            Char1Model.gibArmFile = "gibArm.png";
+            Char1Model.gibBodyFile = "gibBody.png";
+            Char1Model.gibHeadFile = "gibHead.png";
+            Char1Model.gibLowerLegFile = "gibLowerLeg.png";
+            Char1Model.gibUpperLegFile = "gibUpperLeg.png";
+            Char1Model.idleFile = "idle.png";
+            Char1Model.jumpDownFile = "jumpDown.png";
+            Char1Model.jumpUpFile = "jumpUp.png";
+            Char1Model.runFile = "run.png";
+            Char1Model.pistolHand = "pistolHand.png";
+
+            Char2Model = new Model();
+            Char2Model.name = "Character 1 Model";
+            Char2Model.gibArmFile = "char2_gibArm.png";
+            Char2Model.gibBodyFile = "char2_gibBody.png";
+            Char2Model.gibHeadFile = "char2_gibHead.png";
+            Char2Model.gibLowerLegFile = "char2_gibLowerLeg.png";
+            Char2Model.gibUpperLegFile = "char2_gibUpperLeg.png";
+            Char2Model.idleFile = "char2_idle.png";
+            Char2Model.jumpDownFile = "char2_jumpDown.png";
+            Char2Model.jumpUpFile = "char2_jumpUp.png";
+            Char2Model.runFile = "char2_run.png";
+            Char2Model.pistolHand = "char2_pistolHand.png";
+
             window = new RenderWindow(
                 new VideoMode(800, 600), "Project Iris", Styles.Resize);
 

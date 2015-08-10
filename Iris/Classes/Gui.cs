@@ -114,9 +114,9 @@ namespace Iris
                     Color.White, .4f,
                      true, 1);
 
-                Render.DrawString(Content.GetFont("PixelSix.ttf"), +MainGame.dm.roundTimeLeft + " Sec", new Vector2f(200, 3),
+                Render.DrawString(Content.GetFont("OldNewspaperTypes.ttf"), +MainGame.dm.roundTimeLeft + " sec", new Vector2f(200, 3),
                 MainGame.dm.roundTimeLeft < 20 ? Color.Red : Color.White,
-                MainGame.dm.roundTimeLeft < 20 ? .8f : .7f,
+                MainGame.dm.roundTimeLeft < 20 ? .7f : .6f,
                  true, 1);
             }
 
@@ -129,16 +129,16 @@ namespace Iris
                 rectBG.FillColor = new Color(10, 10, 10, 150);
                 rectBG.Draw(MainGame.window, RenderStates.Default);
 
-                Render.Draw(Content.GetTexture("emote_cool.png"), new Vector2f(105, 35), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins > 0 ? 255 : 55)), new Vector2f(0, 0), 1, 0f);
+                Render.Draw(Content.GetTexture("emote_cool.png"), new Vector2f(105, 35), Color.White, new Vector2f(0, 0), 1, 0f);
                 Render.DrawString(Content.GetFont("PixelSix.ttf"), "[1]", new Vector2f(120, 13), new Color(255, 255, 255), .5f, true, 1);
 
-                Render.Draw(Content.GetTexture("emote_laugh.png"), new Vector2f(155, 35), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins > 0 ? 255 : 55)), new Vector2f(0, 0), 1, 0f);
+                Render.Draw(Content.GetTexture("emote_laugh.png"), new Vector2f(155, 35), Color.White, new Vector2f(0, 0), 1, 0f);
                 Render.DrawString(Content.GetFont("PixelSix.ttf"), "[2]", new Vector2f(170, 13), new Color(255, 255, 255), .5f, true, 1);
 
-                Render.Draw(Content.GetTexture("emote_silly.png"), new Vector2f(205, 35), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins > 0 ? 255 : 55)), new Vector2f(0, 0), 1, 0f);
+                Render.Draw(Content.GetTexture("emote_silly.png"), new Vector2f(205, 35), Color.White, new Vector2f(0, 0), 1, 0f);
                 Render.DrawString(Content.GetFont("PixelSix.ttf"), "[3]", new Vector2f(220, 13), new Color(255, 255, 255), .5f, true, 1);
 
-                Render.Draw(Content.GetTexture("emote_shocked.png"), new Vector2f(255, 35), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins > 0 ? 255 : 55)), new Vector2f(0, 0), 1, 0f);
+                Render.Draw(Content.GetTexture("emote_shocked.png"), new Vector2f(255, 35), Color.White, new Vector2f(0, 0), 1, 0f);
                 Render.DrawString(Content.GetFont("PixelSix.ttf"), "[4]", new Vector2f(270, 13), new Color(255, 255, 255), .5f, true, 1);
 
                 if (MainGame.dm.player.Alive)
@@ -184,25 +184,25 @@ namespace Iris
                 Render.DrawString(Content.GetFont("PixelSix.ttf"), "Free", new Vector2f(120, 60), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins > 0 ? 255 : 55)), .5f, true, 1);
                 Render.DrawString(Content.GetFont("PixelSix.ttf"), "[1]", new Vector2f(120, 13), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins > 0 ? 255 : 55)), .5f, true, 1);
 
-                Render.Draw(Content.GetTexture("shotgun.png"), new Vector2f(140, 40), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins > shotgunCost ? 255 : 55)), new Vector2f(0, 0), 1, 0f);
+                Render.Draw(Content.GetTexture("shotgun.png"), new Vector2f(140, 40), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins >= shotgunCost ? 255 : 55)), new Vector2f(0, 0), 1, 0f);
                 if (MainGame.dm.player.weapons[1] == null)
                 {
                     Render.DrawString(Content.GetFont("PixelSix.ttf"), "" + shotgunCost + "c", new Vector2f(165, 60), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins >= shotgunCost ? 255 : 55)), .5f, true, 1);
-                    Render.DrawString(Content.GetFont("PixelSix.ttf"), "[2]", new Vector2f(165, 13), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins > shotgunCost ? 255 : 55)), .5f, true, 1);
+                    Render.DrawString(Content.GetFont("PixelSix.ttf"), "[2]", new Vector2f(165, 13), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins >= shotgunCost ? 255 : 55)), .5f, true, 1);
                 }
 
-                Render.Draw(Content.GetTexture("machinegun.png"), new Vector2f(200, 40), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins > machinegunCost ? 255 : 55)), new Vector2f(0, 0), 1, 0f);
+                Render.Draw(Content.GetTexture("machinegun.png"), new Vector2f(200, 40), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins >= machinegunCost ? 255 : 55)), new Vector2f(0, 0), 1, 0f);
                 if (MainGame.dm.player.weapons[2] == null)
                 {
                     Render.DrawString(Content.GetFont("PixelSix.ttf"), "" + machinegunCost + "c", new Vector2f(225, 60), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins >= machinegunCost ? 255 : 55)), .5f, true, 1);
-                    Render.DrawString(Content.GetFont("PixelSix.ttf"), "[3]", new Vector2f(225, 13), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins > machinegunCost ? 255 : 55)), .5f, true, 1);
+                    Render.DrawString(Content.GetFont("PixelSix.ttf"), "[3]", new Vector2f(225, 13), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins >= machinegunCost ? 255 : 55)), .5f, true, 1);
                 }
 
-                Render.Draw(Content.GetTexture("bomb.png"), new Vector2f(260, 40), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins > bombCost ? 255 : 55)), new Vector2f(0, 0), 1, 0f);
+                Render.Draw(Content.GetTexture("bomb.png"), new Vector2f(260, 40), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins >= bombCost ? 255 : 55)), new Vector2f(0, 0), 1, 0f);
                 if (MainGame.dm.player.weapons[3] == null)
                 {
                     Render.DrawString(Content.GetFont("PixelSix.ttf"), "" + bombCost + "c", new Vector2f(275, 60), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins >= bombCost ? 255 : 55)), .5f, true, 1);
-                    Render.DrawString(Content.GetFont("PixelSix.ttf"), "[4]", new Vector2f(275, 13), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins > bombCost ? 255 : 55)), .5f, true, 1);
+                    Render.DrawString(Content.GetFont("PixelSix.ttf"), "[4]", new Vector2f(275, 13), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins >= bombCost ? 255 : 55)), .5f, true, 1);
                 }
 
                 if (Input.isKeyTap(Keyboard.Key.Num2))
@@ -288,7 +288,7 @@ namespace Iris
 
 
             Render.Draw(Content.GetTexture("characterUI.png"), new Vector2f(0, 0), Color.White, new Vector2f(0, 0), 1, 0f);
-            Render.Draw(Content.GetTexture("gibHead.png"), new Vector2f(0, 3), Color.White, new Vector2f(0, 0), 1, 0f, 1.5f);
+            Render.Draw(Content.GetTexture(MainGame.dm.player.model.gibHeadFile), new Vector2f(0, 3), Color.White, new Vector2f(0, 0), 1, 0f, 1.5f);
 
             Render.DrawString(Content.GetFont("PixelSix.ttf"), MainGame.dm.clientCoins + "", new Vector2f(35, 30), Color.White, .5f, true, 1);
             Render.DrawString(Content.GetFont("PixelSix.ttf"), MainGame.dm.player.Name, new Vector2f(2, 55), Color.White, .3f, false, 1);

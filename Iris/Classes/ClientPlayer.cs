@@ -10,7 +10,6 @@ namespace Iris
 {
     public class ClientPlayer : Actor
     {
-        Animation idle, running, jumpUp, jumpDown, backpedal;
         public float holdDistance;
         public bool SoftDrop;
         public int deathTimer = 0;
@@ -19,27 +18,29 @@ namespace Iris
         public int respawnTimer;
         public int respawnLength = 5; //In seconds
         public int oldHealth = 0;
-
+        public Animation idle, running, jumpUp, jumpDown, backpedal;
         public int AMMO_Bullet;
 
         public ClientPlayer(Deathmatch dm)
             : base(dm)
         {
+            this.model = MainGame.Char2Model;
             Pos = new Vector2f(10, 10);
             Speed = .35f;
             MaxJumps = 2;
             JumpsLeft = MaxJumps;
             Alive = true;
             Health = 100;
-            idle = new Animation(Content.GetTexture("idle.png"), 4, 120, 1, true);
-            running = new Animation(Content.GetTexture("run.png"), 6, 50, 1, true);
-            backpedal = new Animation(Content.GetTexture("run.png"), 6, 60, 1, false);
-            jumpUp = new Animation(Content.GetTexture("jumpUp.png"), 1, 60, 0, true);
-            jumpDown = new Animation(Content.GetTexture("jumpDown.png"), 3, 60, -5, true);
-            animation = idle;
-            Texture = Content.GetTexture("idle.png");
+            Texture = Content.GetTexture(model.idleFile);
             deathTimer = 0;
             Killer = this;
+
+            idle = new Animation(Content.GetTexture(model.idleFile), 4, 120, 1);
+            running = new Animation(Content.GetTexture(model.runFile), 6, 60, 2);
+            backpedal = new Animation(Content.GetTexture(model.runFile), 6, 60, 2, false);
+            jumpUp = new Animation(Content.GetTexture(model.jumpUpFile), 1, 60, 0);
+            jumpDown = new Animation(Content.GetTexture(model.jumpDownFile), 3, 60, -5);
+            animation = idle;
 
             weapons = new List<Weapon>()
             {
@@ -62,6 +63,25 @@ namespace Iris
 
             dm.Mailman.SendPlayerPosMessage(UID, Pos, Facing, AimAngle);
 
+            if (Input.isKeyTap(Keyboard.Key.N))
+            {
+                this.model = MainGame.Char1Model;
+                idle = new Animation(Content.GetTexture(model.idleFile), 4, 120, 1);
+                running = new Animation(Content.GetTexture(model.runFile), 6, 60, 2);
+                backpedal = new Animation(Content.GetTexture(model.runFile), 6, 60, 2, false);
+                jumpUp = new Animation(Content.GetTexture(model.jumpUpFile), 1, 60, 0);
+                jumpDown = new Animation(Content.GetTexture(model.jumpDownFile), 3, 60, -5);
+            }
+            if (Input.isKeyTap(Keyboard.Key.M))
+            {
+                this.model = MainGame.Char2Model;
+                idle = new Animation(Content.GetTexture(model.idleFile), 4, 120, 1);
+                running = new Animation(Content.GetTexture(model.runFile), 6, 60, 2);
+                backpedal = new Animation(Content.GetTexture(model.runFile), 6, 60, 2, false);
+                jumpUp = new Animation(Content.GetTexture(model.jumpUpFile), 1, 60, 0);
+                jumpDown = new Animation(Content.GetTexture(model.jumpDownFile), 3, 60, -5);
+            }
+
             UpdatePosition();
 
             if (!Alive)
@@ -69,6 +89,7 @@ namespace Iris
                 SendHealth();
                 return;
             }
+
             UpdateCollisionBox();
             animation.Update();
             handleControls();
@@ -142,7 +163,7 @@ namespace Iris
             this.Texture = animation.Texture;
 
             Render.renderStates = Actor.shader;
-            Texture pistolHand = Content.GetTexture("pistolHand.png");
+            Texture pistolHand = Content.GetTexture(model.pistolHand);
             Texture weaponTexture = weapon.texture;
 
             if (ouchTimer > 0)
@@ -212,29 +233,29 @@ namespace Iris
                         MainGame.dm.GameObjects.Add(g);
                     }
 
-                    MainGame.dm.GameObjects.Add(new Gib(new Texture(Content.GetTexture("gibHead.png")), Core - new Vector2f(0, 4), 3,
+                    MainGame.dm.GameObjects.Add(new Gib(new Texture(Content.GetTexture(model.gibHeadFile)), Core - new Vector2f(0, 4), 3,
                         Helper.angleBetween(Core, Core - new Vector2f(0, 4)) + (float)Math.PI));
 
-                    MainGame.dm.GameObjects.Add(new Gib(new Texture(Content.GetTexture("gibBody.png")), Core - new Vector2f(0, 1), 2,
+                    MainGame.dm.GameObjects.Add(new Gib(new Texture(Content.GetTexture(model.gibBodyFile)), Core - new Vector2f(0, 1), 2,
                         Helper.angleBetween(Core, Core - new Vector2f(1, 2)) + (float)Math.PI));
 
-                    MainGame.dm.GameObjects.Add(new Gib(new Texture(Content.GetTexture("gibUpperLeg.png")), Core + new Vector2f(0, 1), 3.2f,
+                    MainGame.dm.GameObjects.Add(new Gib(new Texture(Content.GetTexture(model.gibUpperLegFile)), Core + new Vector2f(0, 1), 3.2f,
                         Helper.angleBetween(Core, Core - new Vector2f(.5f, 1)) + (float)Math.PI));
 
-                    MainGame.dm.GameObjects.Add(new Gib(new Texture(Content.GetTexture("gibUpperLeg.png")), Core + new Vector2f(0, 1), 3.2f,
+                    MainGame.dm.GameObjects.Add(new Gib(new Texture(Content.GetTexture(model.gibUpperLegFile)), Core + new Vector2f(0, 1), 3.2f,
                         Helper.angleBetween(Core, Core - new Vector2f(-.5f, 1)) + (float)Math.PI));
 
 
-                    MainGame.dm.GameObjects.Add(new Gib(new Texture(Content.GetTexture("gibLowerLeg.png")), Core + new Vector2f(0, 1), 3.2f,
+                    MainGame.dm.GameObjects.Add(new Gib(new Texture(Content.GetTexture(model.gibLowerLegFile)), Core + new Vector2f(0, 1), 3.2f,
                         Helper.angleBetween(Core, Core - new Vector2f(.15f, 3)) + (float)Math.PI));
 
-                    MainGame.dm.GameObjects.Add(new Gib(new Texture(Content.GetTexture("gibLowerLeg.png")), Core + new Vector2f(0, 1), 3.2f,
+                    MainGame.dm.GameObjects.Add(new Gib(new Texture(Content.GetTexture(model.gibLowerLegFile)), Core + new Vector2f(0, 1), 3.2f,
                         Helper.angleBetween(Core, Core - new Vector2f(-.20f, 2)) + (float)Math.PI));
 
-                    MainGame.dm.GameObjects.Add(new Gib(new Texture(Content.GetTexture("gibArm.png")), Core + new Vector2f(0, 1), 3.2f,
+                    MainGame.dm.GameObjects.Add(new Gib(new Texture(Content.GetTexture(model.gibArmFile)), Core + new Vector2f(0, 1), 3.2f,
                         Helper.angleBetween(Core, Core - new Vector2f(.04f, 3)) + (float)Math.PI));
 
-                    MainGame.dm.GameObjects.Add(new Gib(new Texture(Content.GetTexture("gibArm.png")), Core + new Vector2f(0, 1), 3.2f,
+                    MainGame.dm.GameObjects.Add(new Gib(new Texture(Content.GetTexture(model.gibArmFile)), Core + new Vector2f(0, 1), 3.2f,
                         Helper.angleBetween(Core, Core - new Vector2f(-.55f, 2)) + (float)Math.PI));
 
                     //MainGame.dm.Players.Remove(this);

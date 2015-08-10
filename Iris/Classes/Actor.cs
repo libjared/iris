@@ -24,6 +24,7 @@ namespace Iris
         public IntRect collisionBox;
         public bool initialized;
         public string Name = "Actor";
+        public Model model;
 
 
         public int Health { get; set; }
