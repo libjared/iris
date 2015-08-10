@@ -109,15 +109,25 @@ namespace Iris
 
             if (!shopping && !emoteMenuOpen)
             {
-                string firstPlacePlayer = "Bear";
-                Render.DrawString(Content.GetFont("PixelSix.ttf"), "Highest Bounty: " + firstPlacePlayer, new Vector2f(200, 25),
-                    Color.White, .4f,
-                     true, 1);
+                if (MainGame.dm.roundStarted)
+                {
+                    string firstPlacePlayer = "Bear";
+                    Render.DrawString(Content.GetFont("PixelSix.ttf"), "Highest Bounty: " + firstPlacePlayer, new Vector2f(200, 25),
+                        Color.White, .4f,
+                         true, 1);
 
-                Render.DrawString(Content.GetFont("OldNewspaperTypes.ttf"), +MainGame.dm.roundTimeLeft + " sec", new Vector2f(200, 3),
-                MainGame.dm.roundTimeLeft < 20 ? Color.Red : Color.White,
-                MainGame.dm.roundTimeLeft < 20 ? .8f : .6f,
-                 true, 1);
+                    Render.DrawString(Content.GetFont("OldNewspaperTypes.ttf"), +MainGame.dm.roundTimeLeft + " sec", new Vector2f(200, 3),
+                    MainGame.dm.roundTimeLeft < 20 ? Color.Red : Color.White,
+                    MainGame.dm.roundTimeLeft < 20 ? .8f : .6f,
+                     true, 1);
+                }
+                else
+                { 
+                    Render.DrawString(Content.GetFont("OldNewspaperTypes.ttf"), "Round Starts in " +MainGame.dm.preRoundTimeLeft + " sec", new Vector2f(200, 3),
+                          MainGame.dm.preRoundTimeLeft < 20 ? Color.White : Color.White,
+                          MainGame.dm.preRoundTimeLeft < 20 ? .5f : .5f,
+                          true, 1);
+                }
             }
 
             if (emoteMenuOpen)
