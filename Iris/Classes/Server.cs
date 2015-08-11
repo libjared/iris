@@ -120,7 +120,7 @@ namespace Iris.Server
                     HandleKILLER(msg);
                     break;
                 case "EMOTE":
-                    HandleKILLER(msg);
+                    HandleEMOTE(msg);
                     break;
                 default:
                     Console.WriteLine(string.Format("Bad message type {0} from player {1}",

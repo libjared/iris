@@ -19,6 +19,7 @@ namespace Iris
         public NetPlayer(Deathmatch dm, long UID)
             : base(dm)
         {
+            model = MainGame.Char1Model;
             this.UID = UID;
             idle = new Animation(Content.GetTexture(model.idleFile), 4, 120, 1);
             running = new Animation(Content.GetTexture(model.runFile), 6, 60, 2);
