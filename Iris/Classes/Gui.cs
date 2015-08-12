@@ -155,23 +155,30 @@ namespace Iris
                 {
                     if (Input.isKeyTap(Keyboard.Key.Num1))
                     {
-                        MainGame.dm.GameObjects.Add(new EmoteBubble("cool", MainGame.dm.player));
-                        MainGame.dm.Mailman.SendEmote("cool");
+                        string s = "cool";
+                        MainGame.dm.GameObjects.Add(new EmoteBubble(s, MainGame.dm.player));
+                        MainGame.dm.Mailman.SendEmote(s);
                         emoteMenuOpen = false;
                     }
                     if (Input.isKeyTap(Keyboard.Key.Num2))
                     {
-                        MainGame.dm.GameObjects.Add(new EmoteBubble("laugh", MainGame.dm.player));
+                        string s = "laugh";
+                        MainGame.dm.GameObjects.Add(new EmoteBubble(s, MainGame.dm.player));
+                        MainGame.dm.Mailman.SendEmote(s);
                         emoteMenuOpen = false;
                     }
                     if (Input.isKeyTap(Keyboard.Key.Num3))
                     {
-                        MainGame.dm.GameObjects.Add(new EmoteBubble("silly", MainGame.dm.player));
+                        string s = "silly";
+                        MainGame.dm.GameObjects.Add(new EmoteBubble(s, MainGame.dm.player));
+                        MainGame.dm.Mailman.SendEmote(s);
                         emoteMenuOpen = false;
                     }
                     if (Input.isKeyTap(Keyboard.Key.Num4))
                     {
-                        MainGame.dm.GameObjects.Add(new EmoteBubble("shocked", MainGame.dm.player));
+                        string s = "shocked";
+                        MainGame.dm.GameObjects.Add(new EmoteBubble(s, MainGame.dm.player));
+                        MainGame.dm.Mailman.SendEmote(s);
                         emoteMenuOpen = false;
                     }
                 }
