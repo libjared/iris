@@ -225,7 +225,7 @@ namespace Iris
             
             if (plr != null) //stale POS message, player is already gone?
             {
-                Console.WriteLine(plr.Name);
+                //Console.WriteLine(plr.Name);
                 plr.Pos = new Vector2f(x, y);
                 plr.Facing = facing;
                 plr.AimAngle = aimAngle;
