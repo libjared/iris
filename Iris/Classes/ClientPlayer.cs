@@ -299,33 +299,37 @@ namespace Iris
 
             try
             {
-                if (Input.isKeyTap(Keyboard.Key.Num1))
+                if (!Gui.emoteMenuOpen)
                 {
-                    weapon = weapons[0];
-                    MainGame.dm.Mailman.sendWeaponSwitch(0);
-                }
-                if (Input.isKeyTap(Keyboard.Key.Num2))
-                {
-                    if (weapons[1] != null)
+                    if (Input.isKeyTap(Keyboard.Key.Num1))
                     {
-                        weapon = weapons[1];
-                        MainGame.dm.Mailman.sendWeaponSwitch(1);
+
+                        weapon = weapons[0];
+                        MainGame.dm.Mailman.sendWeaponSwitch(0);
                     }
-                }
-                if (Input.isKeyTap(Keyboard.Key.Num3))
-                {
-                    if (weapons[2] != null)
+                    if (Input.isKeyTap(Keyboard.Key.Num2))
                     {
-                        weapon = weapons[2];
-                        MainGame.dm.Mailman.sendWeaponSwitch(2);
+                        if (weapons[1] != null)
+                        {
+                            weapon = weapons[1];
+                            MainGame.dm.Mailman.sendWeaponSwitch(1);
+                        }
                     }
-                }
-                if (Input.isKeyTap(Keyboard.Key.Num4))
-                {
-                    if (weapons[3] != null)
+                    if (Input.isKeyTap(Keyboard.Key.Num3))
                     {
-                        weapon = weapons[3];
-                        MainGame.dm.Mailman.sendWeaponSwitch(3);
+                        if (weapons[2] != null)
+                        {
+                            weapon = weapons[2];
+                            MainGame.dm.Mailman.sendWeaponSwitch(2);
+                        }
+                    }
+                    if (Input.isKeyTap(Keyboard.Key.Num4))
+                    {
+                        if (weapons[3] != null)
+                        {
+                            weapon = weapons[3];
+                            MainGame.dm.Mailman.sendWeaponSwitch(3);
+                        }
                     }
                 }
             }
