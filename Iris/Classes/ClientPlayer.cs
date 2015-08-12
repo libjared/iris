@@ -81,14 +81,14 @@ namespace Iris
                 jumpUp = new Animation(Content.GetTexture(model.jumpUpFile), 1, 60, 0);
                 jumpDown = new Animation(Content.GetTexture(model.jumpDownFile), 3, 60, -5);
             }
-            if (Input.isKeyTap(Keyboard.Key.B))
-            {
-                foreach (Actor a in MainGame.dm.Players)
-                {
-                    Console.WriteLine(a.Name + ": " + a.UID);
-                }
+            //if (Input.isKeyTap(Keyboard.Key.B))
+            //{
+            //    foreach (Actor a in MainGame.dm.Players)
+            //    {
+            //        Console.WriteLine(a.Name + ": " + a.UID);
+            //    }
 
-            }
+            //}
 
             UpdatePosition();
 

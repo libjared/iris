@@ -84,13 +84,13 @@ namespace Iris
             if (ChatCloseDelay > 0)
                 ChatOpen = true;
             
-            if (Input.isKeyTap(Keyboard.Key.E))
+            if (Input.isKeyTap(Keyboard.Key.C))
             {
                 shopping = !shopping;
                 emoteMenuOpen = false;
             }
 
-            if (Input.isKeyTap(Keyboard.Key.Q))
+            if (Input.isKeyTap(Keyboard.Key.X))
             {
                 emoteMenuOpen = !emoteMenuOpen;
                 shopping = false;
@@ -309,8 +309,8 @@ namespace Iris
 
             Render.DrawString(Content.GetFont("PixelSix.ttf"), MainGame.dm.clientCoins + "", new Vector2f(35, 30), Color.White, .5f, true, 1);
             Render.DrawString(Content.GetFont("PixelSix.ttf"), MainGame.dm.player.Name, new Vector2f(2, 55), Color.White, .3f, false, 1);
-            Render.DrawString(Content.GetFont("PixelSix.ttf"), "[E] Shop", new Vector2f(2, 65), Color.White, .25f, false, 1);
-            Render.DrawString(Content.GetFont("PixelSix.ttf"), "[Q] Emotes", new Vector2f(2, 75), Color.White, .25f, false, 1);
+            Render.DrawString(Content.GetFont("PixelSix.ttf"), "[C] Shop", new Vector2f(2, 65), Color.White, .25f, false, 1);
+            Render.DrawString(Content.GetFont("PixelSix.ttf"), "[X] Emotes", new Vector2f(2, 75), Color.White, .25f, false, 1);
 
             if (!MainGame.dm.player.Alive)
             {
