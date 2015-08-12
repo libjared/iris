@@ -294,7 +294,7 @@ namespace Iris.Server
             outMsg.Write(newY);
             outMsg.Write(facing);
             outMsg.Write(angle);
-            server.SendToAll(outMsg, null, NetDeliveryMethod.ReliableUnordered, 0);
+            server.SendToAll(outMsg, msg.SenderConnection, NetDeliveryMethod.ReliableUnordered, 0);
         }
 
         private Player GetPlayerFromUID(long remoteUniqueIdentifier)
