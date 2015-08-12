@@ -35,6 +35,7 @@ namespace Iris
             int port = 5635;
             client = new NetClient(config);
             client.Start();
+            MainGame.dm.player.UID = MainGame.dm.Mailman.client.UniqueIdentifier;
             
 
             //start processing messages
@@ -182,7 +183,7 @@ namespace Iris
                     MainGame.dm.GameObjects.Add(new TreasureBox(new Vector2f(rand.Next(40,1600), 180)));
                     break;
                 case "EMOTE":
-                    long UID_EMOTE = msg.ReadInt32();
+                    long UID_EMOTE = msg.ReadInt64();
                     string EMOTE_TYPE = msg.ReadString();
                     MainGame.dm.GameObjects.Add(new EmoteBubble(EMOTE_TYPE, MainGame.dm.GetPlayerWithUID(UID_EMOTE)));;
                     break;
@@ -221,8 +222,10 @@ namespace Iris
         private void HandlePosMessage(long uid, float x, float y, int facing, float aimAngle)
         {
             Actor plr = dm.GetPlayerWithUID(uid);
+            
             if (plr != null) //stale POS message, player is already gone?
             {
+                Console.WriteLine(plr.Name);
                 plr.Pos = new Vector2f(x, y);
                 plr.Facing = facing;
                 plr.AimAngle = aimAngle;
