@@ -15,8 +15,8 @@ namespace Iris
         {
             this.texture = Content.GetTexture("revolver.png");
             MaxAmmo = 8;
-            FireSpeed = 15;
-            ReloadSpeed = 70;
+            FireSpeed = 10;
+            ReloadSpeed = 90;
             Ammo = MaxAmmo;
             AutomaticFire = false;
         }

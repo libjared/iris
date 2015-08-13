@@ -224,38 +224,47 @@ namespace Iris
 
                 if (Input.isKeyTap(Keyboard.Key.Num2))
                 {
-                    if (MainGame.dm.clientCoins >= shotgunCost)
+                    if (MainGame.dm.player.weapons[1] == null)
                     {
-                        MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("cashReg.wav"), 1, 0, 5));
-                        MainGame.dm.clientCoins -= shotgunCost;
-                        MainGame.dm.player.weapons[1] = (new Shotgun(MainGame.dm.player));
-                        MainGame.dm.Mailman.sendWeaponSwitch(1);
-                        MainGame.dm.player.weapon = MainGame.dm.player.weapons[1];
-                        shopping = false;
+                        if (MainGame.dm.clientCoins >= shotgunCost)
+                        {
+                            MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("cashReg.wav"), 1, 0, 5));
+                            MainGame.dm.clientCoins -= shotgunCost;
+                            MainGame.dm.player.weapons[1] = (new Shotgun(MainGame.dm.player));
+                            MainGame.dm.Mailman.sendWeaponSwitch(1);
+                            MainGame.dm.player.weapon = MainGame.dm.player.weapons[1];
+                            shopping = false;
+                        }
                     }
                 }
                 if (Input.isKeyTap(Keyboard.Key.Num3))
                 {
-                    if (MainGame.dm.clientCoins >= machinegunCost)
+                    if (MainGame.dm.player.weapons[2] == null)
                     {
-                        MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("cashReg.wav"), 1, 0, 5));
-                        MainGame.dm.clientCoins -= machinegunCost;
-                        MainGame.dm.player.weapons[2] = (new MachineGun(MainGame.dm.player));
-                        MainGame.dm.Mailman.sendWeaponSwitch(2);
-                        MainGame.dm.player.weapon = MainGame.dm.player.weapons[2];
-                        shopping = false;
+                        if (MainGame.dm.clientCoins >= machinegunCost)
+                        {
+                            MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("cashReg.wav"), 1, 0, 5));
+                            MainGame.dm.clientCoins -= machinegunCost;
+                            MainGame.dm.player.weapons[2] = (new MachineGun(MainGame.dm.player));
+                            MainGame.dm.Mailman.sendWeaponSwitch(2);
+                            MainGame.dm.player.weapon = MainGame.dm.player.weapons[2];
+                            shopping = false;
+                        }
                     }
                 }
                 if (Input.isKeyTap(Keyboard.Key.Num4))
                 {
-                    if (MainGame.dm.clientCoins >= bombCost)
+                    if (MainGame.dm.player.weapons[3] == null)
                     {
-                        MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("cashReg.wav"), 1, 0, 5));
-                        MainGame.dm.clientCoins -= bombCost;
-                        MainGame.dm.player.weapons[3] = (new BombWeapon(MainGame.dm.player));
-                        MainGame.dm.Mailman.sendWeaponSwitch(3);
-                        MainGame.dm.player.weapon = MainGame.dm.player.weapons[3];
-                        shopping = false;
+                        if (MainGame.dm.clientCoins >= bombCost)
+                        {
+                            MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("cashReg.wav"), 1, 0, 5));
+                            MainGame.dm.clientCoins -= bombCost;
+                            MainGame.dm.player.weapons[3] = (new BombWeapon(MainGame.dm.player));
+                            MainGame.dm.Mailman.sendWeaponSwitch(3);
+                            MainGame.dm.player.weapon = MainGame.dm.player.weapons[3];
+                            shopping = false;
+                        }
                     }
                 }
             }
