@@ -9,10 +9,13 @@ namespace Iris.Server
     class Server
     {
         const int LOOT_INTERVAL = 1000 * 30;
+        const int TIME_INTERVAL = 1000;
         private NetServer server;
         private AutoResetEvent quitter = new AutoResetEvent(false);
         private Random rand = new Random();
+        private DateTime gameStarted;
         private Timer lootTimer;
+        private Timer timeTimer;
 
         //local data
         List<Player> dActors = new List<Player>();
@@ -23,7 +26,9 @@ namespace Iris.Server
             cfg.Port = 5635;
             server = new NetServer(cfg);
             server.RegisterReceivedCallback(new SendOrPostCallback(GotLidgrenMessage), new SynchronizationContext());
+            gameStarted = DateTime.Now;
             lootTimer = new Timer(o => PlaceLoot(), null, 0, LOOT_INTERVAL);
+            timeTimer = new Timer(o => UpdateTime(), null, 0, TIME_INTERVAL);
         }
 
         public void Start()
@@ -81,6 +86,21 @@ namespace Iris.Server
             outMsg.Write("LOOT");
             outMsg.Write(seed);
             server.SendToAll(outMsg, null, NetDeliveryMethod.ReliableOrdered, 0);
+        }
+
+        private void UpdateTime()
+        {
+            //tell every client the time
+            //to account for latency, subtract the standard by rtt / 2
+            float secondsSinceStart = (float)((DateTime.Now - gameStarted).TotalSeconds);
+            foreach (NetConnection client in server.Connections)
+            {
+                float adjustedTime = secondsSinceStart - (client.AverageRoundtripTime / 2f);
+                NetOutgoingMessage outMsg = server.CreateMessage();
+                outMsg.Write("TIME");
+                outMsg.Write(adjustedTime);
+                server.SendMessage(outMsg, client, NetDeliveryMethod.ReliableOrdered);
+            }
         }
 
         private void HandleGameMessage(NetIncomingMessage msg)
