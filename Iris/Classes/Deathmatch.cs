@@ -42,8 +42,8 @@ namespace Iris
 
         public bool devMode = false;
 
-        public int roundTimeLeft = 60;
-        public int preRoundTimeLeft = 10;
+        public float roundTimeLeft = 60;
+        public float preRoundTimeLeft = 10;
         public bool roundStarted = false;
 
         public SoundInstance trainSound, trainSoundExterior, trainSoundInterior;
@@ -80,8 +80,7 @@ namespace Iris
         {
             base.Update();
             shittyTimerDontUse++;
-            if (MainGame.rand.Next(60) == 0)
-                roundTimeLeft--;
+            roundStarted = true;
 
             if (Input.isKeyDown(Keyboard.Key.F1))
             {

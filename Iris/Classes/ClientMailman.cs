@@ -195,6 +195,10 @@ namespace Iris
                     BombInstance bomb = new BombInstance(UID_EXPLOSIVE, EXPangle, new Vector2f(xEXP, yEXP));
                     HandleBombCreate(bomb, UID_EXPLOSIVE);
                     break;
+                case "TIME":
+                    float TIME_MESSAGE = msg.ReadFloat();
+                    HandleTimeMessage(TIME_MESSAGE);
+                    break;
                 default:
                     Console.WriteLine("Unrecognized Game Message Recieved: {0}\n{1}", msg.ToString(), messageType);
                     break;
@@ -242,6 +246,12 @@ namespace Iris
             MainGame.dm.GameObjects.Add(new GunSmoke(shooter.Core + Helper.PolarToVector2(32, shooter.AimAngle, 1, 1) + (shooter.Velocity), shooter.AimAngle));
             MainGame.dm.GameObjects.Add(new GunFlash(shooter.Core + Helper.PolarToVector2(32, shooter.AimAngle, 1, 1) + (shooter.Velocity), shooter.AimAngle));
         }
+
+        private void HandleTimeMessage(float TIME_MESSAGE)
+        {
+            MainGame.dm.roundTimeLeft = (float)((int)((60 * 3) - (TIME_MESSAGE % (60 * 3))));
+        }
+
 
         private void HandleBombCreate(BombInstance b, long uid)
         {
