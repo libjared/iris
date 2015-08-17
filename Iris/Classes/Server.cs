@@ -8,7 +8,7 @@ namespace Iris.Server
 {
     class Server
     {
-        const int MS_BETWEEN_LOOT = 1000 * 30;
+        const int LOOT_INTERVAL = 1000 * 30;
         private NetServer server;
         private AutoResetEvent quitter = new AutoResetEvent(false);
         private Random rand = new Random();
@@ -23,7 +23,7 @@ namespace Iris.Server
             cfg.Port = 5635;
             server = new NetServer(cfg);
             server.RegisterReceivedCallback(new SendOrPostCallback(GotLidgrenMessage), new SynchronizationContext());
-            lootTimer = new Timer(o => PlaceLoot(), null, 0, MS_BETWEEN_LOOT);
+            lootTimer = new Timer(o => PlaceLoot(), null, 0, LOOT_INTERVAL);
         }
 
         public void Start()
