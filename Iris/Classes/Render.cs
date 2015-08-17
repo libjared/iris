@@ -17,7 +17,7 @@ namespace Iris
             DrawGenericTexture(texture, position, color, origin, facing, rotation, null, scale, flipVert, flipHoriz);
         }
 
-        public static void DrawString(Font font, String message, Vector2f position, Color color, float scale, bool centered, float layer = 0.0f)
+        public static void DrawString(Font font, String message, Vector2f position, Color color, float scale, bool centered, float layer = 0.0f, bool rightJust = false)
         {
             Text text = new Text(message, font);
             text.Scale = new Vector2f(scale, scale);
@@ -25,6 +25,8 @@ namespace Iris
             text.Color = color;
             if (centered)
                 text.Position = new Vector2f(text.Position.X - ((text.GetLocalBounds().Width * scale) / 2), text.Position.Y);
+            if (rightJust)
+                text.Position = new Vector2f(text.Position.X - ((text.GetLocalBounds().Width * scale)), text.Position.Y);
 
             MainGame.window.Draw(text);
         }

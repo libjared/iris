@@ -66,6 +66,7 @@ namespace Iris
             if (Input.isKeyTap(Keyboard.Key.N))
             {
                 this.model = MainGame.Char1Model;
+                this.model.name = "char1";
                 idle = new Animation(Content.GetTexture(model.idleFile), 4, 120, 1);
                 running = new Animation(Content.GetTexture(model.runFile), 6, 60, 2);
                 backpedal = new Animation(Content.GetTexture(model.runFile), 6, 60, 2, false);
@@ -75,6 +76,7 @@ namespace Iris
             if (Input.isKeyTap(Keyboard.Key.M))
             {
                 this.model = MainGame.Char2Model;
+                this.model.name = "char2";
                 idle = new Animation(Content.GetTexture(model.idleFile), 4, 120, 1);
                 running = new Animation(Content.GetTexture(model.runFile), 6, 60, 2);
                 backpedal = new Animation(Content.GetTexture(model.runFile), 6, 60, 2, false);
@@ -291,6 +293,7 @@ namespace Iris
             {
                 initialized = true;
                 MainGame.dm.Mailman.SendName(MainGame.dm.player.Name);
+                MainGame.dm.Mailman.SendModel(model.name);
             }
         }
 
@@ -415,6 +418,15 @@ namespace Iris
             {
                 dm.GameObjects.Add(new TreasureBox(this.Pos));
             }
+        }
+
+        public void UpdateToCurrentModel()
+        {
+            idle = new Animation(Content.GetTexture(model.idleFile), 4, 120, 1);
+            running = new Animation(Content.GetTexture(model.runFile), 6, 60, 2);
+            backpedal = new Animation(Content.GetTexture(model.runFile), 6, 60, 2, false);
+            jumpUp = new Animation(Content.GetTexture(model.jumpUpFile), 1, 60, 0);
+            jumpDown = new Animation(Content.GetTexture(model.jumpDownFile), 3, 60, -5);
         }
 
         public void handleAnimationSetting()

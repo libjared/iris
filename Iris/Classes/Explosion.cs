@@ -14,11 +14,11 @@ namespace Iris
         bool damaged = false;
         public Actor Owner;
 
-        public Explosion(Vector2f center)
-        {
-            this.Pos = center;
-            animation = new Animation(Content.GetTexture("explosion.png"), 6, 30, 0);
-        }
+        //public Explosion(Vector2f center)
+        //{
+        //    this.Pos = center;
+        //    animation = new Animation(Content.GetTexture("explosion.png"), 6, 30, 0);
+        //}
 
         public Explosion(Vector2f center, Actor Owner)
         {
@@ -41,14 +41,19 @@ namespace Iris
                         {
                             a.Health -= 20;
                             a.ouchTimer = 10;
+                            a.Killer = this.Owner;
                         }
                         if (Helper.Distance(a.Core, this.Pos) < 110)
                         {
                             a.Health -= 30;
                             a.ouchTimer = 10;
+                            a.Killer = this.Owner;
                         }
                         if (Helper.Distance(a.Core, this.Pos) < 80)
+                        {
                             a.Health = 0;
+                            a.Killer = this.Owner;
+                        }
                     }
                 }
                 damaged = true;

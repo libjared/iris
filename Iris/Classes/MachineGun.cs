@@ -16,7 +16,7 @@ namespace Iris
         {
             this.texture = Content.GetTexture("machinegun.png");
             MaxAmmo = 15;
-            FireSpeed = 8;
+            FireSpeed = 11;
             ReloadSpeed = 140;
             Ammo = MaxAmmo;
             AutomaticFire = true;

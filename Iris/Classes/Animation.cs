@@ -30,6 +30,9 @@ namespace Iris
 
         public void Update()
         {
+            if (Duration <= 0)
+                return;
+
             timer += 700f;// (float)MainGame.deltaTime.TotalMinutes;
 
             //Console.WriteLine(frame);
@@ -48,10 +51,10 @@ namespace Iris
                         Frame = Count - 1;
                 }
 
-                
 
-                    
-                
+
+
+
                 timer = 0;
             }
             //Console.WriteLine(intRect.Width);

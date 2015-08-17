@@ -44,11 +44,6 @@ namespace Iris
             {
                 Ammo = MaxAmmo;
             }
-
-            if (Input.isMouseButtonTap(Mouse.Button.Right))
-            {
-                MainGame.dm.GameObjects.Add(new Explosion(this.Owner.Core));
-            }
         }
 
         public override void Reload()

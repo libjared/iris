@@ -384,6 +384,15 @@ namespace Iris
             client.SendMessage(outGoingMessage, NetDeliveryMethod.ReliableOrdered);
         }
 
+        public void SendModel(string modelName)
+        {
+            NetOutgoingMessage outGoingMessage = client.CreateMessage();
+            outGoingMessage.Write("MODEL");
+            outGoingMessage.Write(modelName);
+            client.SendMessage(outGoingMessage, NetDeliveryMethod.ReliableOrdered);
+        }
+
+
         public void SendChat(string message)
         {
             NetOutgoingMessage outGoingMessage = client.CreateMessage();

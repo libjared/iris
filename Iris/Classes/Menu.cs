@@ -11,6 +11,8 @@ namespace Iris
 {
     public class Menu : Gamestate
     {
+        int stage = 0;
+
         private static RenderStates shader;
         public string usernameField = "Username";
         public string ipField = "giga.krash.net";
@@ -27,11 +29,20 @@ namespace Iris
         private RectangleShape rectUsername;
         private bool submitted;
 
+        private Texture currentCursor, defaultCursor, hoverCursor;
+
         private int submitTimer = 0;
+
+        Animation char1, char2;
 
         public Menu()
             : base()
         {
+            hoverCursor = Content.GetTexture("cursorHover.png");
+            defaultCursor = Content.GetTexture("cursorPointer.png");
+            currentCursor = defaultCursor;
+            char1 = new Animation(Content.GetTexture("idle.png"), 4, 0, 0, true);
+            char2 = new Animation(Content.GetTexture("char2_idle.png"), 4, 0, 0, true);
             shader = new RenderStates(new Shader(null, "Content/bgPrlx.frag"));
 
             rectConnect = new RectangleShape()
@@ -95,7 +106,8 @@ namespace Iris
             if (!submitted)
             {
                 UpdateMenuGui();
-            } else if (MainGame.dm.Mailman.FullyConnected)
+            }
+            else if (MainGame.dm.Mailman.FullyConnected)
             {
                 MainGame.window.TextEntered -= TextEnteredEvent;
                 MainGame.dm.player.Name = usernameField;
@@ -105,119 +117,126 @@ namespace Iris
 
         private void UpdateMenuGui()
         {
-            //handle paste
-            if (Clipboard.ContainsText())
+
+            if (stage == 0)
             {
-                if (Input.isKeyDown(Keyboard.Key.LControl) && Input.isKeyTap(Keyboard.Key.V))
+                //handle paste
+                if (Clipboard.ContainsText())
                 {
-                    activeField.Append(Clipboard.GetText());
+                    if (Input.isKeyDown(Keyboard.Key.LControl) && Input.isKeyTap(Keyboard.Key.V))
+                    {
+                        activeField.Append(Clipboard.GetText());
+                    }
                 }
-            }
 
-            //max length for any active field
-            if (activeField.Length > 20)
-            {
-                activeField.Remove(20, activeField.Length - 20);
-            }
+                //max length for any active field
+                if (activeField.Length > 20)
+                {
+                    activeField.Remove(20, activeField.Length - 20);
+                }
 
-            //tab switching
-            if (Input.isKeyTap(Keyboard.Key.Tab))
-            {
+                //tab switching
+                if (Input.isKeyTap(Keyboard.Key.Tab))
+                {
+                    if (composingUsername)
+                    {
+                        MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("click.wav"), 1, 0, 5));
+                        composingUsername = false;
+                        composingIP = true;
+                    }
+                    else if (composingIP)
+                    {
+                        MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("click.wav"), 1, 0, 5));
+                        composingUsername = false;
+                        composingIP = false;
+                    }
+
+                    activeField.Clear();
+                }
+
+                //update the textboxes display
+                if (composingIP)
+                    ipField = activeField.ToString();
                 if (composingUsername)
+                    usernameField = activeField.ToString();
+
+                //reset click
+                if (Input.isMouseButtonTap(Mouse.Button.Left))
                 {
-                    MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("click.wav"), 1, 0, 5));
-                    composingUsername = false;
-                    composingIP = true;
-                }
-                else if (composingIP)
-                {
-                    MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("click.wav"), 1, 0, 5));
                     composingUsername = false;
                     composingIP = false;
-                }
+                    if (usernameField.Trim().Equals(""))
+                        usernameField = "Username";
+                    if (ipField.Trim().Equals(""))
+                        ipField = "Server IP";
+                    activeField.Clear();
 
-                activeField.Clear();
-            }
+                    MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("click.wav"), 1, 0, 5));
 
-            //update the textboxes display
-            if (composingIP)
-                ipField = activeField.ToString();
-            if (composingUsername)
-                usernameField = activeField.ToString();
-
-            //reset click
-            if (Input.isMouseButtonTap(Mouse.Button.Left))
-            {
-                composingUsername = false;
-                composingIP = false;
-                if (usernameField.Trim().Equals(""))
-                    usernameField = "Username";
-                if (ipField.Trim().Equals(""))
-                    ipField = "Server IP";
-                activeField.Clear();
-
-                MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("click.wav"), 1, 0, 5));
-
-                //click to activate username textbox
-                if (rectUsername.GetGlobalBounds().Contains(MainGame.worldMousePos.X, MainGame.worldMousePos.Y))
-                {
-                    composingUsername = true;
-                    if (usernameField.Equals("Username"))
+                    //click to activate username textbox
+                    if (rectUsername.GetGlobalBounds().Contains(MainGame.worldMousePos.X, MainGame.worldMousePos.Y))
                     {
-                        usernameField = "";
+                        composingUsername = true;
+                        if (usernameField.Equals("Username"))
+                        {
+                            usernameField = "";
+                        }
+                    }
+
+                    //else, click to activate ip textbox
+                    else if (rectIP.GetGlobalBounds().Contains(MainGame.worldMousePos.X, MainGame.worldMousePos.Y))
+                    {
+                        composingIP = true;
+                        if (ipField.Equals("Server IP"))
+                        {
+                            ipField = "";
+                        }
+                    }
+
+                    //else, click to activate connect button
+                    else if (rectConnect.GetGlobalBounds().Contains(MainGame.worldMousePos.X, MainGame.worldMousePos.Y))
+                    {
+                        if (BoxesValid)
+                        {
+                            stage = 1;
+                        }
                     }
                 }
 
-                //else, click to activate ip textbox
-                else if (rectIP.GetGlobalBounds().Contains(MainGame.worldMousePos.X, MainGame.worldMousePos.Y))
-                {
-                    composingIP = true;
-                    if (ipField.Equals("Server IP"))
-                    {
-                        ipField = "";
-                    }
-                }
 
-                //else, click to activate connect button
-                else if (rectConnect.GetGlobalBounds().Contains(MainGame.worldMousePos.X, MainGame.worldMousePos.Y))
+                //Hit enter to connect as well
+                if (Input.isKeyDown(SFML.Window.Keyboard.Key.Return))
                 {
                     if (BoxesValid)
                     {
-                        Submit();
+                        stage = 1;
+                        MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("click.wav"), 1, 0, 5));
                     }
                 }
-            }
 
-
-            //Hit enter to connect as well
-            if (Input.isKeyDown(SFML.Window.Keyboard.Key.Return))
-            {
-                if (BoxesValid)
+                if (Input.isKeyTap(Keyboard.Key.Q))
                 {
+                    ipField = "giga.krash.net";
+                    usernameField = "Quick Draw McGraw";
                     Submit();
-                    MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("click.wav"), 1, 0, 5));
                 }
-            }
+                if (Input.isKeyTap(Keyboard.Key.Num1))
+                {
+                    ipField = "giga.krash.net";
+                    usernameField = "Quick Draw McGraw";
 
-            if (Input.isKeyTap(Keyboard.Key.Q))
-            {
-                ipField = "giga.krash.net";
-                usernameField = "Quick Draw McGraw";
-                Submit();
-            }
-            if (Input.isKeyTap(Keyboard.Key.Num1))
-            {
-                ipField = "giga.krash.net";
-                usernameField = "Quick Draw McGraw";
-
-                MainGame.window.TextEntered -= TextEnteredEvent;
-                MainGame.dm.player.Name = usernameField;
-                MainGame.gamestate = MainGame.dm;
+                    MainGame.window.TextEntered -= TextEnteredEvent;
+                    MainGame.dm.player.Name = usernameField;
+                    MainGame.gamestate = MainGame.dm;
+                }
             }
         }
 
         public override void Draw()
         {
+            //Reset cursor
+            currentCursor = defaultCursor;
+
             //blue sky
             MainGame.window.SetView(MainGame.window.DefaultView);
             shader.Shader.SetParameter("offsetY", MainGame.Camera.Center.Y);
@@ -245,47 +264,94 @@ namespace Iris
             //title
             Render.Draw(Content.GetTexture("title.png"), new Vector2f(-50, -190), new Color(255, 255, 255, 240), new Vector2f(0, 0), 1, 0f, .4f);
 
-            //menubox
-            RectangleShape rectBG = new RectangleShape(new Vector2f(200, 110));
-            rectBG.Position = new Vector2f(-50, 0);
-            rectBG.FillColor = new Color(10, 10, 10, 100);
-            rectBG.Draw(MainGame.window, RenderStates.Default);
 
-            if (!submitted)
+            if (stage == 0)
             {
-                //menu username
-                rectUsername.FillColor = new Color(10, 10, 10, (byte)(composingUsername ? 150 : 50));
-                rectUsername.Draw(MainGame.window, RenderStates.Default);
+                //menubox
+                RectangleShape rectBG = new RectangleShape(new Vector2f(200, 110));
+                rectBG.Position = new Vector2f(-50, 0);
+                rectBG.FillColor = new Color(10, 10, 10, 100);
+                rectBG.Draw(MainGame.window, RenderStates.Default);
 
-                //menu ip
-                rectIP.FillColor = new Color(10, 10, 10, (byte)(composingIP ? 150 : 50));
-                rectIP.Draw(MainGame.window, RenderStates.Default);
-
-                //menu connect button
-                rectConnect.FillColor = new Color(10, 255, 10,
-                    (byte)(rectConnect.GetGlobalBounds().Contains(
-                    (int)MainGame.worldMousePos.X, (int)MainGame.worldMousePos.Y) ? 150 : 70));
-                rectConnect.Draw(MainGame.window, RenderStates.Default);
-
-                //text: username, ip, connect button
-                Render.DrawString(Content.GetFont("OldNewspaperTypes.ttf"), usernameField, new Vector2f(50, 15), Color.White, .3f, true, 1);
-                Render.DrawString(Content.GetFont("OldNewspaperTypes.ttf"), ipField, new Vector2f(50, 45), Color.White, .3f, true, 1);
-                Render.DrawString(Content.GetFont("OldNewspaperTypes.ttf"), "Connect", new Vector2f(50, 77), Color.White, .4f, true, 1);
-            }
-            else
-            {
-                Render.DrawString(Content.GetFont("OldNewspaperTypes.ttf"), "Connecting...", new Vector2f(50, 15), Color.White, .3f, true, 1);
-                submitTimer++;
-                if (submitTimer > 300)
+                if (!submitted)
                 {
-                    submitted = false;
-                    submitTimer = 0;
-                    ipField = "Failed to Connect";
+                    //menu username
+                    rectUsername.FillColor = new Color(10, 10, 10, (byte)(composingUsername ? 150 : 50));
+                    rectUsername.Draw(MainGame.window, RenderStates.Default);
+
+                    //menu ip
+                    rectIP.FillColor = new Color(10, 10, 10, (byte)(composingIP ? 150 : 50));
+                    rectIP.Draw(MainGame.window, RenderStates.Default);
+
+                    //menu connect button
+                    rectConnect.FillColor = new Color(10, 255, 10,
+                        (byte)(rectConnect.GetGlobalBounds().Contains(
+                        (int)MainGame.worldMousePos.X, (int)MainGame.worldMousePos.Y) ? 150 : 70));
+                    rectConnect.Draw(MainGame.window, RenderStates.Default);
+
+                    //text: username, ip, connect button
+                    Render.DrawString(Content.GetFont("OldNewspaperTypes.ttf"), usernameField, new Vector2f(50, 15), Color.White, .3f, true, 1);
+                    Render.DrawString(Content.GetFont("OldNewspaperTypes.ttf"), ipField, new Vector2f(50, 45), Color.White, .3f, true, 1);
+                    Render.DrawString(Content.GetFont("OldNewspaperTypes.ttf"), "Connect", new Vector2f(50, 77), Color.White, .4f, true, 1);
+                }
+                else
+                {
+                    Render.DrawString(Content.GetFont("OldNewspaperTypes.ttf"), "Connecting...", new Vector2f(50, 15), Color.White, .3f, true, 1);
+                    submitTimer++;
+                    if (submitTimer > 300)
+                    {
+                        submitted = false;
+                        submitTimer = 0;
+                        ipField = "Failed to Connect";
+                    }
                 }
             }
+            if (stage == 1)
+            {
+                RectangleShape rectBG = new RectangleShape(new Vector2f(200, 110));
+                rectBG.Position = new Vector2f(-50, 0);
+                rectBG.FillColor = new Color(10, 10, 10, 100);
+                rectBG.Draw(MainGame.window, RenderStates.Default);
 
+                //char1.Update();
+                //char2.Update();
+
+                Render.DrawAnimation(char1.Texture, new Vector2f(-0, 5), Color.White, new Vector2f(0, 0), 1, char1.Count, char1.Frame);
+                Render.DrawAnimation(char2.Texture, new Vector2f(100, 5), Color.White, new Vector2f(0, 0), -1, char2.Count, char2.Frame);
+
+                //Render.Draw(Content.GetTexture("gibHead.png"), new Vector2f(40, 10), Color.White, new Vector2f(0, 0), 1, 0, 2);
+                //Render.Draw(Content.GetTexture("char2_gibHead.png"), new Vector2f(0, 10), Color.White, new Vector2f(0, 0), 1, 0, 2);
+
+                FloatRect leftRect = new FloatRect(new Vector2f(0, 5), new Vector2f(20, 55));
+                FloatRect rightRect = new FloatRect(new Vector2f(75, 5), new Vector2f(20, 55));
+
+                if (leftRect.Contains(MainGame.worldMousePos.X, MainGame.worldMousePos.Y))
+                {
+                    currentCursor = hoverCursor;
+                    if (Input.isMouseButtonTap(Mouse.Button.Left))
+                    {
+                        Submit();
+                        MainGame.dm.player.model = MainGame.Char1Model;
+                        MainGame.dm.player.UpdateToCurrentModel();
+                    }
+                }
+                if (rightRect.Contains(MainGame.worldMousePos.X, MainGame.worldMousePos.Y))
+                {
+                    currentCursor = hoverCursor;
+                    if (Input.isMouseButtonTap(Mouse.Button.Left))
+                    {
+                        Submit();
+                        MainGame.dm.player.model = MainGame.Char2Model;
+                        MainGame.dm.player.UpdateToCurrentModel();
+                    }
+                }
+
+
+                rectConnect.Draw(MainGame.window, RenderStates.Default);
+                Render.DrawString(Content.GetFont("OldNewspaperTypes.ttf"), "Select Character", new Vector2f(50, 77), Color.White, .4f, true, 1);
+            }
             //cursor
-            Render.Draw(Content.GetTexture("cursorPointer.png"), MainGame.worldMousePos, Color.White, new Vector2f(0, 0), 1, 0f);
+            Render.Draw(currentCursor, MainGame.worldMousePos, Color.White, new Vector2f(0, 0), 1, 0f);
         }
 
         public bool BoxesValid
@@ -299,6 +365,7 @@ namespace Iris
         public void Submit()
         {
             ClientMailman.ip = ipField;
+            stage = 1;
 
             if (MainGame.dm.Mailman.Connect())
             {

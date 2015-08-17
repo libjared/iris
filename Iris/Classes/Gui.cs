@@ -125,7 +125,7 @@ namespace Iris
                 { 
                     Render.DrawString(Content.GetFont("OldNewspaperTypes.ttf"), "Round Starts in " +MainGame.dm.preRoundTimeLeft + " sec", new Vector2f(200, 3),
                           MainGame.dm.preRoundTimeLeft < 20 ? Color.White : Color.White,
-                          MainGame.dm.preRoundTimeLeft < 20 ? .5f : .5f,
+                          MainGame.dm.preRoundTimeLeft < 20 ? .35f : .35f,
                           true, 1);
                 }
             }
@@ -298,8 +298,7 @@ namespace Iris
 
             //Render.Draw(Content.GetTexture("healthBarVert.png"), mouse, Color.White, crosshairOrigin, 1, 0, 1 + CrosshairFireExpand);
             //Render.Draw(Content.GetTexture("ammoBarVert.png"), mouse, Color.White, crosshairOrigin, 1, 0, 1 + CrosshairFireExpand);
-            Render.Draw(Content.GetTexture("crosshair.png"), mouse, Color.White, crosshairOrigin, 1, 0, 1 + CrosshairFireExpand);
-            Render.Draw(Content.GetTexture("crosshairBars.png"), mouse, Color.White, crosshairOrigin, 1, 0, 1);
+           
 
 
 
@@ -349,10 +348,7 @@ namespace Iris
                     Render.DrawString(font, Chats[i], new Vector2f(10, 265 - (i * 15)), Color.White, .35f, false, 1);
                 }
 
-
-
                 //int subStringStart = Draft.Length > 50 ? Draft.Length - 50 : 0;
-
 
                 Render.DrawString(font, Draft.ToString(), new Vector2f(10, 283), Color.White, .35f, false, 1);
 
@@ -371,15 +367,27 @@ namespace Iris
 
                 Font font = Content.GetFont("OldNewspaperTypes.ttf");
                 Text textKiller = new Text(FragTexts[i].killer.ToString(), font);
-                Text textVictim = new Text(FragTexts[i].killer.ToString(), font);
+                Text textVictim = new Text(FragTexts[i].victim.ToString(), font);
+                float scale = .25f;
+                int topY = 20;
 
-                Render.DrawString(font, FragTexts[i].killer, new Vector2f(rightX - (textVictim.GetLocalBounds().Width * .35f) -
-                    (textKiller.GetLocalBounds().Width * .35f) - (FragTexts[i].icon.Size.X + (spacing * 2)), 10 + i * 15), Color.White, .35f, false, 1);
+                Render.DrawString(font, FragTexts[i].killer, new Vector2f(rightX - (textVictim.GetLocalBounds().Width * scale) -
+                    (textKiller.GetLocalBounds().Width * scale) - (FragTexts[i].icon.Size.X + (spacing * 2)), topY + i * 15), Color.White, scale, false, 0);
 
-                Render.Draw(FragTexts[i].icon, new Vector2f(rightX - (textVictim.GetLocalBounds().Width * .35f) - (FragTexts[i].icon.Size.X + spacing), 13 + i * 15), Color.White, new Vector2f(0, 0), 1, 0);
+                Render.Draw(FragTexts[i].icon, new Vector2f(rightX - (textVictim.GetLocalBounds().Width * scale) - (FragTexts[i].icon.Size.X + spacing), topY + 2 + i * 15), Color.White, new Vector2f(0, 0), 1, 0);
 
 
-                Render.DrawString(font, FragTexts[i].victim, new Vector2f(rightX - (textVictim.GetLocalBounds().Width * .35f), 10 + i * 15), Color.White, .35f, false, 1);
+                Render.DrawString(font, FragTexts[i].victim, new Vector2f(rightX - (textVictim.GetLocalBounds().Width * scale), topY + i * 15), Color.White, scale, false, 0);
+
+
+                //Font font = Content.GetFont("OldNewspaperTypes.ttf");
+                //Text textKiller = new Text(FragTexts[i].killer.ToString(), font);
+                //Text textVictim = new Text(FragTexts[i].victim.ToString(), font);
+                //float scale = .3f;
+
+                //Render.DrawString(font, FragTexts[i].victim, new Vector2f(rightX, 20), Color.White, scale, false, 0, true);
+                //Render.Draw(FragTexts[i].icon, new Vector2f(rightX - (textVictim.GetLocalBounds().Width * scale) - spacing, 27), Color.White, (Vector2f)FragTexts[i].icon.Size / 2, 1, 0f);
+                //Render.DrawString(font, FragTexts[i].killer, new Vector2f(rightX - (textKiller.GetLocalBounds().Width * scale) - (spacing * 2), 20), Color.White, scale, false, 0, true);
             }
 
             if (MainGame.dm.tunnel)
@@ -485,6 +493,9 @@ namespace Iris
                     Composing = false;
                 }
             }
+
+            Render.Draw(Content.GetTexture("crosshair.png"), mouse, Color.White, crosshairOrigin, 1, 0, 1 + CrosshairFireExpand);
+            Render.Draw(Content.GetTexture("crosshairBars.png"), mouse, Color.White, crosshairOrigin, 1, 0, 1);
         }
     }
 }
