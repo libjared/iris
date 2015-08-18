@@ -142,11 +142,26 @@ namespace Iris.Server
                 case "EMOTE":
                     HandleEMOTE(msg);
                     break;
+                case "MODEL":
+                    HandleMODEL(msg);
+                    break;
                 default:
                     Console.WriteLine(string.Format("Bad message type {0} from player {1}",
                         type, msg.SenderConnection.RemoteUniqueIdentifier));
                     break;
             }
+        }
+
+        private void HandleMODEL(NetIncomingMessage msg)
+        {
+            long owner = msg.SenderConnection.RemoteUniqueIdentifier;
+            string model = msg.ReadString();
+
+            NetOutgoingMessage outMsg = server.CreateMessage();
+            outMsg.Write("MODEL");
+            outMsg.Write(owner);
+            outMsg.Write(model);
+            server.SendToAll(outMsg, msg.SenderConnection, NetDeliveryMethod.ReliableOrdered, 0);
         }
 
         private void HandleKILLER(NetIncomingMessage msg)
