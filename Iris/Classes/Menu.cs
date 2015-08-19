@@ -99,6 +99,8 @@ namespace Iris
         public override void Update()
         {
             //move the train
+            //Reset cursor
+            currentCursor = defaultCursor;
             trainPosX += .7f;
             if (trainPosX > 400)
                 trainPosX = -250f;
@@ -160,6 +162,20 @@ namespace Iris
                 if (composingUsername)
                     usernameField = activeField.ToString();
 
+                if (rectUsername.GetGlobalBounds().Contains(MainGame.worldMousePos.X, MainGame.worldMousePos.Y))
+                {
+                    currentCursor = hoverCursor;
+                }
+                if (rectIP.GetGlobalBounds().Contains(MainGame.worldMousePos.X, MainGame.worldMousePos.Y))
+                {
+                    currentCursor = hoverCursor;
+                }
+                if (rectConnect.GetGlobalBounds().Contains(MainGame.worldMousePos.X, MainGame.worldMousePos.Y))
+                {
+                    currentCursor = hoverCursor;
+                }
+
+
                 //reset click
                 if (Input.isMouseButtonTap(Mouse.Button.Left))
                 {
@@ -176,6 +192,7 @@ namespace Iris
                     //click to activate username textbox
                     if (rectUsername.GetGlobalBounds().Contains(MainGame.worldMousePos.X, MainGame.worldMousePos.Y))
                     {
+                        currentCursor = hoverCursor;
                         composingUsername = true;
                         if (usernameField.Equals("Username"))
                         {
@@ -234,8 +251,7 @@ namespace Iris
 
         public override void Draw()
         {
-            //Reset cursor
-            currentCursor = defaultCursor;
+            
 
             //blue sky
             MainGame.window.SetView(MainGame.window.DefaultView);

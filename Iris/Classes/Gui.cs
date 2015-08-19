@@ -121,13 +121,6 @@ namespace Iris
                     MainGame.dm.roundTimeLeft < 20 ? .7f : .6f,
                      true, 1);
                 }
-                else
-                { 
-                    Render.DrawString(Content.GetFont("OldNewspaperTypes.ttf"), "Round Starts in " +MainGame.dm.preRoundTimeLeft + " sec", new Vector2f(200, 3),
-                          MainGame.dm.preRoundTimeLeft < 20 ? Color.White : Color.White,
-                          MainGame.dm.preRoundTimeLeft < 20 ? .35f : .35f,
-                          true, 1);
-                }
             }
 
             if (emoteMenuOpen)

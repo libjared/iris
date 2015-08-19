@@ -63,26 +63,26 @@ namespace Iris
 
             dm.Mailman.SendPlayerPosMessage(UID, Pos, Facing, AimAngle);
 
-            if (Input.isKeyTap(Keyboard.Key.N))
-            {
-                this.model = MainGame.Char1Model;
-                this.model.name = "char1";
-                idle = new Animation(Content.GetTexture(model.idleFile), 4, 120, 1);
-                running = new Animation(Content.GetTexture(model.runFile), 6, 60, 2);
-                backpedal = new Animation(Content.GetTexture(model.runFile), 6, 60, 2, false);
-                jumpUp = new Animation(Content.GetTexture(model.jumpUpFile), 1, 60, 0);
-                jumpDown = new Animation(Content.GetTexture(model.jumpDownFile), 3, 60, -5);
-            }
-            if (Input.isKeyTap(Keyboard.Key.M))
-            {
-                this.model = MainGame.Char2Model;
-                this.model.name = "char2";
-                idle = new Animation(Content.GetTexture(model.idleFile), 4, 120, 1);
-                running = new Animation(Content.GetTexture(model.runFile), 6, 60, 2);
-                backpedal = new Animation(Content.GetTexture(model.runFile), 6, 60, 2, false);
-                jumpUp = new Animation(Content.GetTexture(model.jumpUpFile), 1, 60, 0);
-                jumpDown = new Animation(Content.GetTexture(model.jumpDownFile), 3, 60, -5);
-            }
+            //if (Input.isKeyTap(Keyboard.Key.N))
+            //{
+            //    this.model = MainGame.Char1Model;
+            //    this.model.name = "char1";
+            //    idle = new Animation(Content.GetTexture(model.idleFile), 4, 120, 1);
+            //    running = new Animation(Content.GetTexture(model.runFile), 6, 60, 2);
+            //    backpedal = new Animation(Content.GetTexture(model.runFile), 6, 60, 2, false);
+            //    jumpUp = new Animation(Content.GetTexture(model.jumpUpFile), 1, 60, 0);
+            //    jumpDown = new Animation(Content.GetTexture(model.jumpDownFile), 3, 60, -5);
+            //}
+            //if (Input.isKeyTap(Keyboard.Key.M))
+            //{
+            //    this.model = MainGame.Char2Model;
+            //    this.model.name = "char2";
+            //    idle = new Animation(Content.GetTexture(model.idleFile), 4, 120, 1);
+            //    running = new Animation(Content.GetTexture(model.runFile), 6, 60, 2);
+            //    backpedal = new Animation(Content.GetTexture(model.runFile), 6, 60, 2, false);
+            //    jumpUp = new Animation(Content.GetTexture(model.jumpUpFile), 1, 60, 0);
+            //    jumpDown = new Animation(Content.GetTexture(model.jumpDownFile), 3, 60, -5);
+            //}
             //if (Input.isKeyTap(Keyboard.Key.B))
             //{
             //    foreach (Actor a in MainGame.dm.Players)

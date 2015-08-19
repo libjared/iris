@@ -36,7 +36,7 @@ namespace Iris
             client = new NetClient(config);
             client.Start();
             MainGame.dm.player.UID = MainGame.dm.Mailman.client.UniqueIdentifier;
-            
+
 
             //start processing messages
             try
@@ -180,12 +180,12 @@ namespace Iris
                     int LOOTseed = msg.ReadInt32();
                     Console.WriteLine(LOOTseed);
                     Random rand = new Random(LOOTseed);
-                    MainGame.dm.GameObjects.Add(new TreasureBox(new Vector2f(rand.Next(40,1600), 180)));
+                    MainGame.dm.GameObjects.Add(new TreasureBox(new Vector2f(rand.Next(40, 1600), 180)));
                     break;
                 case "EMOTE":
                     long UID_EMOTE = msg.ReadInt64();
                     string EMOTE_TYPE = msg.ReadString();
-                    MainGame.dm.GameObjects.Add(new EmoteBubble(EMOTE_TYPE, MainGame.dm.GetPlayerWithUID(UID_EMOTE)));;
+                    MainGame.dm.GameObjects.Add(new EmoteBubble(EMOTE_TYPE, MainGame.dm.GetPlayerWithUID(UID_EMOTE))); ;
                     break;
                 case "BOMB":
                     long UID_EXPLOSIVE = msg.ReadInt64();
@@ -198,6 +198,11 @@ namespace Iris
                 case "TIME":
                     float TIME_MESSAGE = msg.ReadFloat();
                     HandleTimeMessage(TIME_MESSAGE);
+                    break;
+                case "MODEL":
+                    long UID_MODEL = msg.ReadInt64();
+                    string MODEL_STR = msg.ReadString();
+                    HandleModel(UID_MODEL, MODEL_STR);
                     break;
                 default:
                     Console.WriteLine("Unrecognized Game Message Recieved: {0}\n{1}", msg.ToString(), messageType);
@@ -226,7 +231,7 @@ namespace Iris
         private void HandlePosMessage(long uid, float x, float y, int facing, float aimAngle)
         {
             Actor plr = dm.GetPlayerWithUID(uid);
-            
+
             if (plr != null) //stale POS message, player is already gone?
             {
                 //Console.WriteLine(plr.Name);
@@ -249,7 +254,7 @@ namespace Iris
 
         private void HandleTimeMessage(float TIME_MESSAGE)
         {
-            MainGame.dm.roundTimeLeft = (float)((int)((60 * 3) - (TIME_MESSAGE % (60 * 3))));
+            MainGame.dm.roundTimeLeft = 5 + (float)((int)((60 * 3) - (TIME_MESSAGE % (60 * 3))));
         }
 
 
@@ -290,7 +295,7 @@ namespace Iris
         {
             Console.WriteLine("Killer UID: " + killerUID);
             Console.WriteLine("VICTIM UID: " + victimUID);
-            
+
 
             Actor killer = MainGame.dm.GetPlayerWithUID(killerUID);
             Actor victim = MainGame.dm.GetPlayerWithUID(victimUID);
@@ -402,6 +407,20 @@ namespace Iris
             client.SendMessage(outGoingMessage, NetDeliveryMethod.ReliableOrdered);
         }
 
+        private void HandleModel(long uid, string modelName)
+        {
+            Actor a = MainGame.dm.GetPlayerWithUID(uid);
+            switch (modelName)
+            {
+                case "Character_1_Model":
+                    a.model = MainGame.Char1Model;
+                    break;
+                case "Character_2_Model":
+                    a.model = MainGame.Char2Model;
+                    break;
+
+            }
+        }
 
         public void SendChat(string message)
         {

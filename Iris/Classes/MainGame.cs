@@ -59,7 +59,7 @@ namespace Iris
         private static void LoadContentInitialize()
         {
             Char1Model = new Model();
-            Char1Model.name = "Character 1 Model";
+            Char1Model.name = "Character_1_Model";
             Char1Model.gibArmFile = "gibArm.png";
             Char1Model.gibBodyFile = "gibBody.png";
             Char1Model.gibHeadFile = "gibHead.png";
@@ -72,7 +72,7 @@ namespace Iris
             Char1Model.pistolHand = "pistolHand.png";
 
             Char2Model = new Model();
-            Char2Model.name = "Character 1 Model";
+            Char2Model.name = "Character_2_Model";
             Char2Model.gibArmFile = "char2_gibArm.png";
             Char2Model.gibBodyFile = "char2_gibBody.png";
             Char2Model.gibHeadFile = "char2_gibHead.png";
