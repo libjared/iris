@@ -61,6 +61,7 @@ namespace Iris
             base.Update();
             Init();
 
+            dm.Mailman.SendGoldCount(gold);
             dm.Mailman.SendPlayerPosMessage(UID, Pos, Facing, AimAngle);
 
             //if (Input.isKeyTap(Keyboard.Key.N))
@@ -139,13 +140,13 @@ namespace Iris
 
         private void RegenHealth()
         {
-            if (MainGame.rand.Next(20 + (MainGame.dm.clientCoins / 20)) == 0 && Health < 100)
+            if (MainGame.rand.Next(20 + (MainGame.dm.player.gold / 20)) == 0 && Health < 100)
                 Health++;
         }
 
         private void UpdateCoinDropAmount()
         {
-            DropOnDeathCoins = (int)(dm.clientCoins * .50f);
+            DropOnDeathCoins = (int)(dm.player.gold * .50f);
         }
 
         public override void UpdateCollisionBox()
@@ -230,7 +231,7 @@ namespace Iris
                     MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("SaD.wav"), 1f, .1f, 2));
 
                     DropMoney(DropOnDeathCoins);
-                    dm.clientCoins -= DropOnDeathCoins;
+                    dm.player.gold -= DropOnDeathCoins;
                     Health = 0;
                     Alive = false;
                     for (int i = 0; i < MainGame.gibCount; i++)

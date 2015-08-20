@@ -237,15 +237,6 @@ namespace Iris
                     usernameField = "Quick Draw McGraw";
                     Submit();
                 }
-                if (Input.isKeyTap(Keyboard.Key.Num1))
-                {
-                    ipField = "giga.krash.net";
-                    usernameField = "Quick Draw McGraw";
-
-                    MainGame.window.TextEntered -= TextEnteredEvent;
-                    MainGame.dm.player.Name = usernameField;
-                    MainGame.gamestate = MainGame.dm;
-                }
             }
         }
 

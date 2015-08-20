@@ -188,6 +188,18 @@ namespace Iris.Server
             server.SendToAll(outMsg, null, NetDeliveryMethod.ReliableOrdered, 0);
         }
 
+        private void HandleGOLDCOUNT(NetIncomingMessage msg)
+        {
+            long owner = msg.SenderConnection.RemoteUniqueIdentifier;
+            int goldCount = msg.ReadInt32();
+
+            NetOutgoingMessage outMsg = server.CreateMessage();
+            outMsg.Write("GOLDCOUNT");
+            outMsg.Write(owner);
+            outMsg.Write(goldCount);
+            server.SendToAll(outMsg, null, NetDeliveryMethod.ReliableOrdered, 0);
+        }
+
         private void HandleBOMB(NetIncomingMessage msg)
         {
             long owner = msg.SenderConnection.RemoteUniqueIdentifier;
@@ -403,6 +415,7 @@ namespace Iris.Server
         public long UID { get; set; }
         public string Name { get; set; }
         public int Life { get; set; }
+        public string ModelName { get; set; }
 
         public Player()
         {

@@ -137,7 +137,7 @@ namespace Iris
                     {
                         if (A is ClientPlayer)
                         {
-                            MainGame.dm.clientCoins++;
+                            MainGame.dm.player.gold++;
                         }
                         MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("coin.wav"), 1f, .2f));
                         MainGame.dm.GameObjects.Remove(this);

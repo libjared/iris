@@ -25,6 +25,7 @@ namespace Iris
         public static int maxNameCharacters = 12;
         public static int FragTextRemoveTimer = 60 * 5;
         public static bool shopping, emoteMenuOpen;
+        public static List<Actor> highscore = new List<Actor>();
 
         static Gui()
         {
@@ -62,6 +63,16 @@ namespace Iris
 
         public static void Update()
         {
+            highscore.Sort(delegate (Actor x, Actor y)
+            {
+                if (x.gold == y.gold) return 0;
+                else if (x.gold < y.gold) return -1;
+                else if (x.gold > y.gold) return 1;
+                else return x.gold.CompareTo(y.gold);
+            });
+
+            Console.WriteLine(highscore.ToString());
+
             ChatCloseDelay--;
             if (FragTexts.Count > 0)
                 FragTextRemoveTimer--;
@@ -190,39 +201,39 @@ namespace Iris
                 int machinegunCost = 275;
                 int bombCost = 325;
 
-                Render.Draw(Content.GetTexture("revolver.png"), new Vector2f(100, 40), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins > 0 ? 255 : 55)), new Vector2f(0, 0), 1, 0f);
-                Render.DrawString(Content.GetFont("PixelSix.ttf"), "Free", new Vector2f(120, 60), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins > 0 ? 255 : 55)), .5f, true, 1);
-                Render.DrawString(Content.GetFont("PixelSix.ttf"), "[1]", new Vector2f(120, 13), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins > 0 ? 255 : 55)), .5f, true, 1);
+                Render.Draw(Content.GetTexture("revolver.png"), new Vector2f(100, 40), new Color(255, 255, 255, (byte)(MainGame.dm.player.gold > 0 ? 255 : 55)), new Vector2f(0, 0), 1, 0f);
+                Render.DrawString(Content.GetFont("PixelSix.ttf"), "Free", new Vector2f(120, 60), new Color(255, 255, 255, (byte)(MainGame.dm.player.gold > 0 ? 255 : 55)), .5f, true, 1);
+                Render.DrawString(Content.GetFont("PixelSix.ttf"), "[1]", new Vector2f(120, 13), new Color(255, 255, 255, (byte)(MainGame.dm.player.gold > 0 ? 255 : 55)), .5f, true, 1);
 
-                Render.Draw(Content.GetTexture("shotgun.png"), new Vector2f(140, 40), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins >= shotgunCost ? 255 : 55)), new Vector2f(0, 0), 1, 0f);
+                Render.Draw(Content.GetTexture("shotgun.png"), new Vector2f(140, 40), new Color(255, 255, 255, (byte)(MainGame.dm.player.gold >= shotgunCost ? 255 : 55)), new Vector2f(0, 0), 1, 0f);
                 if (MainGame.dm.player.weapons[1] == null)
                 {
-                    Render.DrawString(Content.GetFont("PixelSix.ttf"), "" + shotgunCost + "c", new Vector2f(165, 60), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins >= shotgunCost ? 255 : 55)), .5f, true, 1);
-                    Render.DrawString(Content.GetFont("PixelSix.ttf"), "[2]", new Vector2f(165, 13), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins >= shotgunCost ? 255 : 55)), .5f, true, 1);
+                    Render.DrawString(Content.GetFont("PixelSix.ttf"), "" + shotgunCost + "c", new Vector2f(165, 60), new Color(255, 255, 255, (byte)(MainGame.dm.player.gold >= shotgunCost ? 255 : 55)), .5f, true, 1);
+                    Render.DrawString(Content.GetFont("PixelSix.ttf"), "[2]", new Vector2f(165, 13), new Color(255, 255, 255, (byte)(MainGame.dm.player.gold >= shotgunCost ? 255 : 55)), .5f, true, 1);
                 }
 
-                Render.Draw(Content.GetTexture("machinegun.png"), new Vector2f(200, 40), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins >= machinegunCost ? 255 : 55)), new Vector2f(0, 0), 1, 0f);
+                Render.Draw(Content.GetTexture("machinegun.png"), new Vector2f(200, 40), new Color(255, 255, 255, (byte)(MainGame.dm.player.gold >= machinegunCost ? 255 : 55)), new Vector2f(0, 0), 1, 0f);
                 if (MainGame.dm.player.weapons[2] == null)
                 {
-                    Render.DrawString(Content.GetFont("PixelSix.ttf"), "" + machinegunCost + "c", new Vector2f(225, 60), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins >= machinegunCost ? 255 : 55)), .5f, true, 1);
-                    Render.DrawString(Content.GetFont("PixelSix.ttf"), "[3]", new Vector2f(225, 13), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins >= machinegunCost ? 255 : 55)), .5f, true, 1);
+                    Render.DrawString(Content.GetFont("PixelSix.ttf"), "" + machinegunCost + "c", new Vector2f(225, 60), new Color(255, 255, 255, (byte)(MainGame.dm.player.gold >= machinegunCost ? 255 : 55)), .5f, true, 1);
+                    Render.DrawString(Content.GetFont("PixelSix.ttf"), "[3]", new Vector2f(225, 13), new Color(255, 255, 255, (byte)(MainGame.dm.player.gold >= machinegunCost ? 255 : 55)), .5f, true, 1);
                 }
 
-                Render.Draw(Content.GetTexture("bomb.png"), new Vector2f(260, 40), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins >= bombCost ? 255 : 55)), new Vector2f(0, 0), 1, 0f);
+                Render.Draw(Content.GetTexture("bomb.png"), new Vector2f(260, 40), new Color(255, 255, 255, (byte)(MainGame.dm.player.gold >= bombCost ? 255 : 55)), new Vector2f(0, 0), 1, 0f);
                 if (MainGame.dm.player.weapons[3] == null)
                 {
-                    Render.DrawString(Content.GetFont("PixelSix.ttf"), "" + bombCost + "c", new Vector2f(275, 60), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins >= bombCost ? 255 : 55)), .5f, true, 1);
-                    Render.DrawString(Content.GetFont("PixelSix.ttf"), "[4]", new Vector2f(275, 13), new Color(255, 255, 255, (byte)(MainGame.dm.clientCoins >= bombCost ? 255 : 55)), .5f, true, 1);
+                    Render.DrawString(Content.GetFont("PixelSix.ttf"), "" + bombCost + "c", new Vector2f(275, 60), new Color(255, 255, 255, (byte)(MainGame.dm.player.gold >= bombCost ? 255 : 55)), .5f, true, 1);
+                    Render.DrawString(Content.GetFont("PixelSix.ttf"), "[4]", new Vector2f(275, 13), new Color(255, 255, 255, (byte)(MainGame.dm.player.gold >= bombCost ? 255 : 55)), .5f, true, 1);
                 }
 
                 if (Input.isKeyTap(Keyboard.Key.Num2))
                 {
                     if (MainGame.dm.player.weapons[1] == null)
                     {
-                        if (MainGame.dm.clientCoins >= shotgunCost)
+                        if (MainGame.dm.player.gold >= shotgunCost)
                         {
                             MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("cashReg.wav"), 1, 0, 5));
-                            MainGame.dm.clientCoins -= shotgunCost;
+                            MainGame.dm.player.gold -= shotgunCost;
                             MainGame.dm.player.weapons[1] = (new Shotgun(MainGame.dm.player));
                             MainGame.dm.Mailman.sendWeaponSwitch(1);
                             MainGame.dm.player.weapon = MainGame.dm.player.weapons[1];
@@ -234,10 +245,10 @@ namespace Iris
                 {
                     if (MainGame.dm.player.weapons[2] == null)
                     {
-                        if (MainGame.dm.clientCoins >= machinegunCost)
+                        if (MainGame.dm.player.gold >= machinegunCost)
                         {
                             MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("cashReg.wav"), 1, 0, 5));
-                            MainGame.dm.clientCoins -= machinegunCost;
+                            MainGame.dm.player.gold -= machinegunCost;
                             MainGame.dm.player.weapons[2] = (new MachineGun(MainGame.dm.player));
                             MainGame.dm.Mailman.sendWeaponSwitch(2);
                             MainGame.dm.player.weapon = MainGame.dm.player.weapons[2];
@@ -249,10 +260,10 @@ namespace Iris
                 {
                     if (MainGame.dm.player.weapons[3] == null)
                     {
-                        if (MainGame.dm.clientCoins >= bombCost)
+                        if (MainGame.dm.player.gold >= bombCost)
                         {
                             MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("cashReg.wav"), 1, 0, 5));
-                            MainGame.dm.clientCoins -= bombCost;
+                            MainGame.dm.player.gold -= bombCost;
                             MainGame.dm.player.weapons[3] = (new BombWeapon(MainGame.dm.player));
                             MainGame.dm.Mailman.sendWeaponSwitch(3);
                             MainGame.dm.player.weapon = MainGame.dm.player.weapons[3];
@@ -308,7 +319,7 @@ namespace Iris
             Render.Draw(Content.GetTexture("characterUI.png"), new Vector2f(0, 0), Color.White, new Vector2f(0, 0), 1, 0f);
             Render.Draw(Content.GetTexture(MainGame.dm.player.model.gibHeadFile), new Vector2f(0, 3), Color.White, new Vector2f(0, 0), 1, 0f, 1.5f);
 
-            Render.DrawString(Content.GetFont("PixelSix.ttf"), MainGame.dm.clientCoins + "", new Vector2f(35, 30), Color.White, .5f, true, 1);
+            Render.DrawString(Content.GetFont("PixelSix.ttf"), MainGame.dm.player.gold + "", new Vector2f(35, 30), Color.White, .5f, true, 1);
             Render.DrawString(Content.GetFont("PixelSix.ttf"), MainGame.dm.player.Name, new Vector2f(2, 55), Color.White, .3f, false, 1);
             Render.DrawString(Content.GetFont("PixelSix.ttf"), "[C] Shop", new Vector2f(2, 65), Color.White, .25f, false, 1);
             Render.DrawString(Content.GetFont("PixelSix.ttf"), "[X] Emotes", new Vector2f(2, 75), Color.White, .25f, false, 1);

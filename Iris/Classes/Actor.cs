@@ -25,6 +25,7 @@ namespace Iris
         public bool initialized;
         public string Name = "Actor";
         public Model model;
+        public int gold;
 
 
         public int Health { get; set; }

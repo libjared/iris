@@ -38,8 +38,6 @@ namespace Iris
         public float PlayerAimSphereRadius = 50;
         public int shittyTimerDontUse = 0;
 
-        public int clientCoins = 100;
-
         public bool devMode = false;
 
         public float roundTimeLeft = 60;
@@ -84,7 +82,7 @@ namespace Iris
 
             if (Input.isKeyDown(Keyboard.Key.F1))
             {
-                clientCoins = 10000;
+                player.gold = 10000;
                 player.MaxJumps = 10000000;
                 player.Health = 1000000;
             }

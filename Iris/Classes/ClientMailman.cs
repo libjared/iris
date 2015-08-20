@@ -200,9 +200,16 @@ namespace Iris
                     HandleTimeMessage(TIME_MESSAGE);
                     break;
                 case "MODEL":
+                    Console.WriteLine("Model");
                     long UID_MODEL = msg.ReadInt64();
                     string MODEL_STR = msg.ReadString();
+                    Console.WriteLine(MODEL_STR);
                     HandleModel(UID_MODEL, MODEL_STR);
+                    break;
+                case "GOLDCOUNT":
+                    long UID_GOLDCOUNT = msg.ReadInt64();
+                    int goldCount = msg.ReadInt32();
+                    HandleGoldCountMessage(UID_GOLDCOUNT, goldCount);
                     break;
                 default:
                     Console.WriteLine("Unrecognized Game Message Recieved: {0}\n{1}", msg.ToString(), messageType);
@@ -214,6 +221,18 @@ namespace Iris
         {
             if (dm.GetPlayerWithUID(uid) != null)
                 dm.GetPlayerWithUID(uid).Health = health;
+        }
+
+        private void HandleLifeGOLDCOUNT(long uid, int gold)
+        {
+            if (dm.GetPlayerWithUID(uid) != null)
+                dm.GetPlayerWithUID(uid).gold = gold;
+        }
+
+        private void HandleGoldCountMessage(long uid, int gold)
+        {
+            if (dm.GetPlayerWithUID(uid) != null)
+                dm.GetPlayerWithUID(uid).gold = gold;
         }
 
         private void HandleNameMessage(long uid, string newName)
@@ -256,7 +275,6 @@ namespace Iris
         {
             MainGame.dm.roundTimeLeft = 5 + (float)((int)((60 * 3) - (TIME_MESSAGE % (60 * 3))));
         }
-
 
         private void HandleBombCreate(BombInstance b, long uid)
         {
@@ -380,6 +398,14 @@ namespace Iris
             client.SendMessage(outGoingMessage, NetDeliveryMethod.ReliableOrdered);
         }
 
+        public void SendGoldCount(int gold)
+        {
+            NetOutgoingMessage outGoingMessage = client.CreateMessage();
+            outGoingMessage.Write("GOLDCOUNT");
+            outGoingMessage.Write(gold);
+            client.SendMessage(outGoingMessage, NetDeliveryMethod.ReliableOrdered);
+        }
+
         public void SendKillerMessage(long killerUID)
         {
             NetOutgoingMessage outGoingMessage = client.CreateMessage();
@@ -409,14 +435,18 @@ namespace Iris
 
         private void HandleModel(long uid, string modelName)
         {
-            Actor a = MainGame.dm.GetPlayerWithUID(uid);
+            NetPlayer a =  (NetPlayer)MainGame.dm.GetPlayerWithUID(uid);
+            Console.WriteLine(a.Name);
+            Console.WriteLine(modelName);
             switch (modelName)
             {
                 case "Character_1_Model":
                     a.model = MainGame.Char1Model;
+                    a.UpdateToCurrentModel();
                     break;
                 case "Character_2_Model":
                     a.model = MainGame.Char2Model;
+                    a.UpdateToCurrentModel();
                     break;
 
             }
@@ -451,5 +481,7 @@ namespace Iris
             outGoingMessage.Write(e);
             client.SendMessage(outGoingMessage, NetDeliveryMethod.ReliableOrdered);
         }
+
+
     }
 }

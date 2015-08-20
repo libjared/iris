@@ -65,7 +65,7 @@ namespace Iris
             Core = Pos - new Vector2f(-1, 35);
             this.Texture = animation.Texture;
             Render.renderStates = Actor.shader;
-            Texture pistolHand = Content.GetTexture("pistolHand.png");
+            Texture pistolHand = Content.GetTexture(model.pistolHand);
             Texture weaponTexture = weapon.texture;
 
             if (ouchTimer > 0)
@@ -223,6 +223,15 @@ namespace Iris
             hit.Destroy();
             //Probably wont do anything
             base.OnProjectileHit(hit);
+        }
+
+        public void UpdateToCurrentModel()
+        {
+            idle = new Animation(Content.GetTexture(model.idleFile), 4, 120, 1);
+            running = new Animation(Content.GetTexture(model.runFile), 6, 60, 2);
+            backpedal = new Animation(Content.GetTexture(model.runFile), 6, 60, 2, false);
+            jumpUp = new Animation(Content.GetTexture(model.jumpUpFile), 1, 60, 0);
+            jumpDown = new Animation(Content.GetTexture(model.jumpDownFile), 3, 60, -5);
         }
     }
 }
