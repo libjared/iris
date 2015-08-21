@@ -63,6 +63,7 @@ namespace Iris
 
         public static void Update()
         {
+            highscore = MainGame.dm.Players;
             highscore.Sort(delegate (Actor x, Actor y)
             {
                 if (x.gold == y.gold) return 0;
@@ -71,8 +72,11 @@ namespace Iris
                 else return x.gold.CompareTo(y.gold);
             });
 
-            Console.WriteLine(highscore.ToString());
-
+            foreach (Actor a in highscore)
+            {
+                Console.WriteLine(a.gold);
+            }
+            
             ChatCloseDelay--;
             if (FragTexts.Count > 0)
                 FragTextRemoveTimer--;
