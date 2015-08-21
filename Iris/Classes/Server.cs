@@ -145,6 +145,9 @@ namespace Iris.Server
                 case "MODEL":
                     HandleMODEL(msg);
                     break;
+                case "GOLDCOUNT":
+                    HandleGOLDCOUNT(msg);
+                    break;
                 default:
                     Console.WriteLine(string.Format("Bad message type {0} from player {1}",
                         type, msg.SenderConnection.RemoteUniqueIdentifier));
