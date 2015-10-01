@@ -126,7 +126,7 @@ namespace Iris
             {
                 if (MainGame.dm.roundStarted)
                 {
-                    string firstPlacePlayer = "Bear";
+                    string firstPlacePlayer = MainGame.dm.Players.OrderByDescending(x => x.gold).ToList()[0].Name;
                     Render.DrawString(Content.GetFont("PixelSix.ttf"), "Highest Bounty: " + firstPlacePlayer, new Vector2f(200, 25),
                         Color.White, .4f,
                          true, 1);
