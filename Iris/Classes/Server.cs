@@ -200,7 +200,7 @@ namespace Iris.Server
             outMsg.Write("GOLDCOUNT");
             outMsg.Write(owner);
             outMsg.Write(goldCount);
-            server.SendToAll(outMsg, null, NetDeliveryMethod.ReliableOrdered, 0);
+            server.SendToAll(outMsg, msg.SenderConnection, NetDeliveryMethod.ReliableOrdered, 0);
         }
 
         private void HandleBOMB(NetIncomingMessage msg)
