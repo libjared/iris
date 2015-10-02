@@ -40,9 +40,11 @@ namespace Iris
 
         public bool devMode = false;
 
-        public float roundTimeLeft = 60;
+        public float roundTimeLeft = 9001;
         public float preRoundTimeLeft = 10;
         public bool roundStarted = false;
+
+        public Actor firstPlacePlayer;
 
         public SoundInstance trainSound, trainSoundExterior, trainSoundInterior;
 
@@ -80,6 +82,26 @@ namespace Iris
             shittyTimerDontUse++;
             roundStarted = true;
 
+            //Console.WriteLine(roundTimeLeft);
+
+            if (roundTimeLeft % 60 == 0 && !tunnel)
+                tunnelsTimer = 3;
+
+            if (roundTimeLeft < 20)
+            {
+                player.gold = 100;
+                for(int i =0; i< GameObjects.Count; i++)
+                {
+                    if (GameObjects[i] is Coin)
+                        GameObjects.RemoveAt(i);
+                }
+
+            }
+            
+
+            if (roundTimeLeft > 10)
+                firstPlacePlayer = MainGame.dm.Players.OrderByDescending(x => x.gold).ThenBy(x => (int)x.UID).ToList()[0];
+
             if (Input.isKeyDown(Keyboard.Key.F1))
             {
                 player.gold = 10000;
@@ -95,13 +117,14 @@ namespace Iris
             }
 
             if (tunnelsTimer > 0)
-            if (shittyTimerDontUse % (60 * 2) == 0) { 
-            //if (Input.isKeyTap(Keyboard.Key.C))
-            //{
-                tunnelsTimer--;
-                CliffFace c = new CliffFace();
-                BackgroundGameObjects.Add(c);
-            }
+                if (shittyTimerDontUse % (60 * 2) == 0)
+                {
+                    //if (Input.isKeyTap(Keyboard.Key.C))
+                    //{
+                    tunnelsTimer--;
+                    CliffFace c = new CliffFace();
+                    BackgroundGameObjects.Add(c);
+                }
             //if (Input.isKeyTap(Keyboard.Key.C))
             //{
             //    tunnelsTimer = 5;
@@ -164,7 +187,7 @@ namespace Iris
         {
             base.Draw();
             //MainGame.Camera.Center = player.Pos - new Vector2f(0,90);
-            
+
 
             Vector2f focus = player.Core +
                 new Vector2f(Input.screenMousePos.X - MainGame.WindowSize.X / 2,
@@ -207,7 +230,7 @@ namespace Iris
             BackgroundTracks.ForEach(p => { p.Draw(MainGame.window, RenderStates.Default); });
             HandleBackground();
 
-          
+
 
             MainGame.window.Draw(new Sprite(Content.GetTexture("mapDecor.png")));
             int insideY = 65;
@@ -216,7 +239,7 @@ namespace Iris
             {
                 //trainSoundExterior.volume = 1;
                 trainSound = trainSoundExterior;
-               // trainSoundInterior.volume = 0;
+                // trainSoundInterior.volume = 0;
                 interiorAlpha += (255f - interiorAlpha) * .1f;
             }
             else
@@ -227,7 +250,7 @@ namespace Iris
                 //trainSoundExterior.volume = 0;
             }
             Render.Draw(Content.GetTexture("mapInterior.png"), new Vector2f(0, 0), new Color(255, 255, 255, (byte)interiorAlpha), new Vector2f(0, 0), 1, 0f);
-               // MainGame.window.Draw(new Sprite(Content.GetTexture("mapInterior.png")));
+            // MainGame.window.Draw(new Sprite(Content.GetTexture("mapInterior.png")));
 
             Players.ForEach(p => { p.Draw(); });
             Projectiles.ForEach(p => { p.Draw(); });
@@ -355,7 +378,7 @@ namespace Iris
             }
 
         }
-      
+
     }
 
     [Flags]

@@ -74,9 +74,9 @@ namespace Iris
 
             foreach (Actor a in highscore)
             {
-                Console.WriteLine(a.gold);
+                //Console.WriteLine(a.gold);
             }
-            
+
             ChatCloseDelay--;
             if (FragTexts.Count > 0)
                 FragTextRemoveTimer--;
@@ -98,7 +98,7 @@ namespace Iris
 
             if (ChatCloseDelay > 0)
                 ChatOpen = true;
-            
+
             if (Input.isKeyTap(Keyboard.Key.C))
             {
                 shopping = !shopping;
@@ -110,7 +110,7 @@ namespace Iris
                 emoteMenuOpen = !emoteMenuOpen;
                 shopping = false;
             }
-            
+
 
             CrosshairFireExpand *= .8f;
             MainGame.GuiCamera.Center = new Vector2f(MainGame.window.Size.X / 4, MainGame.window.Size.Y / 4);
@@ -120,28 +120,57 @@ namespace Iris
         {
             MainGame.window.SetView(MainGame.GuiCamera);
 
-            
+
 
             if (!shopping && !emoteMenuOpen)
             {
                 if (MainGame.dm.roundStarted)
                 {
-                    string firstPlacePlayer = MainGame.dm.Players.OrderByDescending(x => x.gold).ToList()[0].Name;
-                    Render.DrawString(Content.GetFont("PixelSix.ttf"), "Highest Bounty: " + firstPlacePlayer, new Vector2f(200, 25),
-                        Color.White, .4f,
-                         true, 1);
+                    float fakeTime = MainGame.dm.roundTimeLeft - 10;
+                    if (fakeTime > 10)
+                    {
+                        if (fakeTime < 2500) //The timer will start at an
+                        {
+                            Color c = Color.White;
+                            if (MainGame.dm.firstPlacePlayer.UID == MainGame.dm.player.UID)
+                                c = Color.Yellow; //Changing this makes your name a different color if you're winning
+                            Render.DrawString(Content.GetFont("PixelSix.ttf"), "Highest Bounty: " + MainGame.dm.firstPlacePlayer.Name, new Vector2f(200, 25),
+                                c, .4f,
+                                 true, 1);
 
-                    Render.DrawString(Content.GetFont("OldNewspaperTypes.ttf"), +MainGame.dm.roundTimeLeft + " sec", new Vector2f(200, 3),
-                    MainGame.dm.roundTimeLeft < 20 ? Color.Red : Color.White,
-                    MainGame.dm.roundTimeLeft < 20 ? .7f : .6f,
-                     true, 1);
+
+                            Render.DrawString(Content.GetFont("OldNewspaperTypes.ttf"), +fakeTime - 10 + " sec", new Vector2f(200, 3),
+                            fakeTime < 30 ? Color.Yellow : Color.White,
+                            fakeTime < 30 ? .7f : .6f,
+                             true, 1);
+                        }
+                    }
+                    else
+                    {
+                        Render.DrawString(Content.GetFont("OldNewspaperTypes.ttf"), +MainGame.dm.roundTimeLeft - 10 + " sec", new Vector2f(200, 3),
+                           Color.Yellow,
+                           .6f,
+                            true, 1);
+
+                        string t = MainGame.dm.firstPlacePlayer.Name + " wins the round!";
+                        Color c = Color.White;
+                        if (MainGame.dm.firstPlacePlayer.UID == MainGame.dm.player.UID)
+                            c = Color.Yellow;
+                        Render.DrawString(Content.GetFont("PixelSix.ttf"),t, new Vector2f(200, 25),
+                           c, .4f,
+                            true, 1);
+                        Render.DrawString(Content.GetFont("PixelSix.ttf"), "Starting New Round", new Vector2f(200, 35),
+                           Color.White, .4f,
+                            true, 1);
+                        
+                    }
+
+
                 }
             }
 
             if (emoteMenuOpen)
             {
-
-
                 RectangleShape rectBG = new RectangleShape(new Vector2f(200, 60));
                 rectBG.Position = new Vector2f(100, 10);
                 rectBG.FillColor = new Color(10, 10, 10, 150);
@@ -195,7 +224,7 @@ namespace Iris
 
             if (shopping)
             {
-                
+
                 RectangleShape rectBG = new RectangleShape(new Vector2f(200, 80));
                 rectBG.Position = new Vector2f(100, 10);
                 rectBG.FillColor = new Color(10, 10, 10, 150);
@@ -306,7 +335,7 @@ namespace Iris
 
             //Render.Draw(Content.GetTexture("healthBarVert.png"), mouse, Color.White, crosshairOrigin, 1, 0, 1 + CrosshairFireExpand);
             //Render.Draw(Content.GetTexture("ammoBarVert.png"), mouse, Color.White, crosshairOrigin, 1, 0, 1 + CrosshairFireExpand);
-           
+
 
 
 
@@ -425,7 +454,7 @@ namespace Iris
                         if (!box.goldDropped)
                             Render.Draw(Content.GetTexture("treasureBubble.png"), drawPos, Color.White, new Vector2f(0, 0), flip, 0f);
                     }
-                   
+
                 }
             }
 
@@ -476,7 +505,7 @@ namespace Iris
                             newName = newName.Substring(0, maxNameCharacters);
 
 
-                         if (MainGame.containsProfanity(newName))
+                        if (MainGame.containsProfanity(newName))
                         {
                             Chats.Insert(0, "Nope.");
                         }

@@ -273,7 +273,7 @@ namespace Iris
 
         private void HandleTimeMessage(float TIME_MESSAGE)
         {
-            MainGame.dm.roundTimeLeft = 5 + (float)((int)((60 * 3) - (TIME_MESSAGE % (60 * 3))));
+            MainGame.dm.roundTimeLeft = 10 + (float)((int)((60 * 3) - (TIME_MESSAGE % (60 * 3))));
         }
 
         private void HandleBombCreate(BombInstance b, long uid)
