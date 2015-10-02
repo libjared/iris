@@ -149,7 +149,7 @@ namespace Iris
                     else
                     {
                         Render.DrawString(Content.GetFont("OldNewspaperTypes.ttf"), +MainGame.dm.roundTimeLeft - 10 + " sec", new Vector2f(200, 3),
-                           Color.Yellow,
+                           Color.Green,
                            .6f,
                             true, 1);
 
@@ -430,7 +430,7 @@ namespace Iris
 
             if (MainGame.dm.tunnel)
             {
-                Render.Draw(Content.GetTexture("caution.png"), new Vector2f(350, 190), Color.White, new Vector2f(0, 0), 1, 0f);
+                Render.Draw(Content.GetTexture("caution.png"), new Vector2f(350, 110), Color.White, new Vector2f(0, 0), 1, 0f);
             }
 
             for (int i = 0; i < MainGame.dm.GameObjects.Count; i++)

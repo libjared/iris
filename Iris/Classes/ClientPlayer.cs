@@ -26,7 +26,7 @@ namespace Iris
         {
             this.model = MainGame.Char2Model;
             Pos = new Vector2f(10, 10);
-            Speed = .35f;
+            Speed = 2f;
             MaxJumps = 2;
             JumpsLeft = MaxJumps;
             Alive = true;
@@ -60,6 +60,8 @@ namespace Iris
             HandleDeath();
             base.Update();
             Init();
+
+
 
             dm.Mailman.SendGoldCount(gold);
             dm.Mailman.SendPlayerPosMessage(UID, Pos, Facing, AimAngle);
@@ -375,7 +377,6 @@ namespace Iris
                     weapon.Fire();
                 }
             }
-
             if (Input.isKeyTap(Keyboard.Key.W) || Input.isKeyTap(Keyboard.Key.Space))
             {
                 if (OnGround || (JumpsLeft > 0)) // && Velocity.Y > 0))
@@ -391,7 +392,7 @@ namespace Iris
             }
             if (Input.isKeyDown(Keyboard.Key.A))
             {
-                this.Velocity.X -= 2;
+                this.Velocity.X -= Speed;
             }
             SoftDrop = Input.isKeyDown(Keyboard.Key.S);
             bool downKey = Input.isKeyTap(Keyboard.Key.S);
@@ -402,7 +403,7 @@ namespace Iris
 
             if (Input.isKeyDown(Keyboard.Key.D))
             {
-                this.Velocity.X += 2;
+                this.Velocity.X += Speed;
             }
 
             Facing = 1;
@@ -482,9 +483,14 @@ namespace Iris
                 Velocity.Y = dm.gravity * 12;
             }
 
+            Speed = 2;
+            if (Input.isKeyDown(Keyboard.Key.LShift))
+            {
+                Speed = 3f;
+            }
             //horizontal decay, up to a maximum
             Velocity.X *= .75f;
-            Velocity.X = Helper.ClampSigned(2f, Velocity.X);
+            Velocity.X = Helper.ClampSigned(Speed, Velocity.X);
 
             //truncate tiny velocities
             if (Math.Abs(Velocity.X) < 1) Velocity.X = 0;

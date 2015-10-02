@@ -85,7 +85,10 @@ namespace Iris
             //Console.WriteLine(roundTimeLeft);
 
             if (roundTimeLeft % 60 == 0 && !tunnel)
+            {
+                tunnel = true;
                 tunnelsTimer = 3;
+            }
 
             if (roundTimeLeft < 20)
             {
@@ -119,6 +122,8 @@ namespace Iris
             if (tunnelsTimer > 0)
                 if (shittyTimerDontUse % (60 * 2) == 0)
                 {
+                    if (!tunnel)
+                        MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("TrainWhistle.wav"), 1, 0, 8));
                     //if (Input.isKeyTap(Keyboard.Key.C))
                     //{
                     tunnelsTimer--;
