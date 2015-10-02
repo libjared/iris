@@ -139,7 +139,8 @@ namespace Iris
                                  true, 1);
 
 
-                            Render.DrawString(Content.GetFont("OldNewspaperTypes.ttf"), +fakeTime - 10 + " sec", new Vector2f(200, 3),
+                            Render.DrawString(Content.GetFont("OldNewspaperTypes.ttf"), + (int)(fakeTime - 10)/60 + ":" + 
+                                String.Format("{0:D2}", (int)(fakeTime - 10) % 60) + " sec", new Vector2f(200, 3),
                             fakeTime < 30 ? Color.Yellow : Color.White,
                             fakeTime < 30 ? .7f : .6f,
                              true, 1);
