@@ -28,10 +28,16 @@ namespace Iris
         {
             lifeRemaining--;
             if (MainGame.dm.MapCollide((int)Pos.X, (int)Pos.Y + (int)Velocity.Y * 2 + 7, CollideTypes.Hard))
-                this.Speed = 0;
+            {
+                this.Speed *= .7f;
+                this.Velocity.Y *= -.8f;
+            }
 
             if (Velocity.Y > 0 && MainGame.dm.MapCollide((int)Pos.X, (int)Pos.Y + 7, CollideTypes.HardOrSoft))
-                this.Speed = 0;
+            {
+                this.Speed *= .7f;
+                this.Velocity.Y *= -.8f;
+            }
 
             if (Pos.Y > 215 || lifeRemaining < 0)
             {

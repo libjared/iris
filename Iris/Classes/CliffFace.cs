@@ -34,26 +34,26 @@ namespace Iris
                 wooshed = true;
             }
 
-            foreach (Actor a in MainGame.dm.Players)
+
+            Actor a = MainGame.dm.player;
+            if (a.Pos.X > this.Pos.X + xKill &&
+                a.Pos.Y < this.Pos.Y + yKill &&
+                a.Pos.X < this.Pos.X + this.Texture.Size.X * 2 - xKill)
             {
-                if (a.Pos.X > this.Pos.X + xKill &&
-                    a.Pos.Y < this.Pos.Y + yKill &&
-                    a.Pos.X < this.Pos.X + this.Texture.Size.X * 2 - xKill)
-                {
-                    //a.Pos.X -= 345;
-                    a.Health = 0;
-                }
+                a.Health = 0;
             }
+
+        
 
 
             base.Update();
-        }
-
-        public override void Draw()
-        {
-            Render.Draw(this.Texture, this.Pos, Color.White, new Vector2f(0, 0), 1, 0f, 1);
-            Render.Draw(this.Texture, this.Pos + new Vector2f(this.Texture.Size.X * 2,0), Color.White, new Vector2f(0, 0), 1, 0f, 1, false, true);
-            base.Draw();
-        }
     }
+
+    public override void Draw()
+    {
+        Render.Draw(this.Texture, this.Pos, Color.White, new Vector2f(0, 0), 1, 0f, 1);
+        Render.Draw(this.Texture, this.Pos + new Vector2f(this.Texture.Size.X * 2, 0), Color.White, new Vector2f(0, 0), 1, 0f, 1, false, true);
+        base.Draw();
+    }
+}
 }

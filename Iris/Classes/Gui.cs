@@ -105,7 +105,7 @@ namespace Iris
                 emoteMenuOpen = false;
             }
 
-            if (Input.isKeyTap(Keyboard.Key.X))
+            if (Input.isKeyTap(Keyboard.Key.V))
             {
                 emoteMenuOpen = !emoteMenuOpen;
                 shopping = false;
@@ -356,7 +356,7 @@ namespace Iris
             Render.DrawString(Content.GetFont("PixelSix.ttf"), MainGame.dm.player.gold + "", new Vector2f(35, 30), Color.White, .5f, true, 1);
             Render.DrawString(Content.GetFont("PixelSix.ttf"), MainGame.dm.player.Name, new Vector2f(2, 55), Color.White, .3f, false, 1);
             Render.DrawString(Content.GetFont("PixelSix.ttf"), "[C] Shop", new Vector2f(2, 65), Color.White, .25f, false, 1);
-            Render.DrawString(Content.GetFont("PixelSix.ttf"), "[X] Emotes", new Vector2f(2, 75), Color.White, .25f, false, 1);
+            Render.DrawString(Content.GetFont("PixelSix.ttf"), "[V] Emotes", new Vector2f(2, 75), Color.White, .25f, false, 1);
 
             if (!MainGame.dm.player.Alive)
             {
@@ -489,35 +489,35 @@ namespace Iris
                 }
                 else
                 {
-                    if (Draft.ToString().IndexOf("/setname") == 0)
-                    {
-                        string newName = "";
+                    //if (Draft.ToString().IndexOf("/setname") == 0)
+                    //{
+                    //    string newName = "";
 
-                        try
-                        {
-                            newName = Draft.ToString().Substring(9).Trim();
-                        }
-                        catch (Exception)
-                        {
-                            Chats.Insert(0, "Oops!");
-                            return;
-                        }
-                        if (newName.Length > maxNameCharacters)
-                            newName = newName.Substring(0, maxNameCharacters);
+                    //    try
+                    //    {
+                    //        newName = Draft.ToString().Substring(9).Trim();
+                    //    }
+                    //    catch (Exception)
+                    //    {
+                    //        Chats.Insert(0, "Oops!");
+                    //        return;
+                    //    }
+                    //    if (newName.Length > maxNameCharacters)
+                    //        newName = newName.Substring(0, maxNameCharacters);
 
 
-                        if (MainGame.containsProfanity(newName))
-                        {
-                            Chats.Insert(0, "Nope.");
-                        }
-                        else
-                        {
-                            Chats.Insert(0, "You have changed your name to " + newName);
-                            MainGame.dm.player.Name = newName;
-                            MainGame.dm.Mailman.SendName(newName);
-                        }
-                    }
-                    else
+                    //    if (MainGame.containsProfanity(newName))
+                    //    {
+                    //        Chats.Insert(0, "Nope.");
+                    //    }
+                    //    else
+                    //    {
+                    //        Chats.Insert(0, "You have changed your name to " + newName);
+                    //        MainGame.dm.player.Name = newName;
+                    //        MainGame.dm.Mailman.SendName(newName);
+                    //    }
+                    //}
+                    //else
                     {
                         string completeMessage = Draft.ToString();
                         MainGame.dm.Mailman.SendChat(completeMessage);

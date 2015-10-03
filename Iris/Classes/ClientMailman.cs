@@ -311,8 +311,8 @@ namespace Iris
 
         private void HandleKillerMessage(long victimUID, long killerUID)
         {
-            Console.WriteLine("Killer UID: " + killerUID);
-            Console.WriteLine("VICTIM UID: " + victimUID);
+            //Console.WriteLine("Killer UID: " + killerUID);
+            //Console.WriteLine("VICTIM UID: " + victimUID);
 
 
             Actor killer = MainGame.dm.GetPlayerWithUID(killerUID);
@@ -322,8 +322,8 @@ namespace Iris
             Gui.FragTexts.Add(new FragText(killerName, victimName,
                 Content.GetTexture("skullIcon.png")));
 
-            Gui.Chats.Insert(0, "[Server] Killer UID: " + killerName);
-            Gui.Chats.Insert(0, "[Server] Player UID: " + victimName);
+            //Gui.Chats.Insert(0, "[Server] Killer UID: " + killerName);
+            //Gui.Chats.Insert(0, "[Server] Player UID: " + victimName);
         }
 
         private void HandleJoinMessage(long uid)

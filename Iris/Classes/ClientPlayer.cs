@@ -218,6 +218,15 @@ namespace Iris
             col.Size = new Vector2f(collisionBox.Width, collisionBox.Height);
             col.FillColor = Color.White;
             col.OutlineColor = Color.Red;
+
+            FloatRect bgRect = new FloatRect(new Vector2f(this.Core.X, this.Core.Y - 20), new Vector2f(100, 20));
+
+            //RectangleShape rectBG = new RectangleShape();
+            //rectBG.Position = new Vector2f(100, 10);
+            //rectBG.FillColor = new Color(10, 10, 10, 150);
+            //rectBG.Draw(MainGame.window, RenderStates.Default);
+
+            Render.DrawString(Content.GetFont("PixelSix.ttf"), this.Name.Substring(0,11), this.Core - new Vector2f(0,40), Color.White, .3f, true, 1);
             //MainGame.window.Draw(col); //Draw players collision box
         }
 

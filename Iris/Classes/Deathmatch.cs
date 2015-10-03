@@ -90,7 +90,7 @@ namespace Iris
                 tunnelsTimer = 3;
             }
 
-            if (roundTimeLeft < 20)
+            if (roundTimeLeft < 15)
             {
                 player.gold = 100;
                 for(int i =0; i< GameObjects.Count; i++)
@@ -102,7 +102,7 @@ namespace Iris
             }
             
 
-            if (roundTimeLeft > 10)
+            if (roundTimeLeft > 15)
                 firstPlacePlayer = MainGame.dm.Players.OrderByDescending(x => x.gold).ThenBy(x => (int)x.UID).ToList()[0];
 
             if (Input.isKeyDown(Keyboard.Key.F1))
