@@ -35,12 +35,22 @@ namespace Iris.Server
         {
             server.Start();
 
+            Console.WriteLine("Built at [{0}]", GetSelfBuildDate());
             Console.WriteLine("Welcome to Iris");
 
             //block until quit
             quitter.WaitOne();
 
             Console.WriteLine("Exiting");
+        }
+
+        private string GetSelfBuildDate()
+        {
+            var asm = System.Reflection.Assembly.GetExecutingAssembly();
+            string loc = asm.Location;
+
+            var dateMod = System.IO.File.GetLastWriteTime(loc);
+            return dateMod.ToString();
         }
 
         public void GotLidgrenMessage(object peer)
@@ -402,8 +412,8 @@ namespace Iris.Server
                 newbieState.Write(plr.UID);
 
                 newbieState.Write("NAME");
-                newbieState.Write(plr.UID); //long uid
-                newbieState.Write(plr.Name); //string name
+                newbieState.Write(plr.UID);
+                newbieState.Write(plr.Name);
 
                 newbieState.Write("LIFE");
                 newbieState.Write(plr.UID);
