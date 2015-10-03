@@ -160,6 +160,9 @@ namespace Iris.Server
             long owner = msg.SenderConnection.RemoteUniqueIdentifier;
             string model = msg.ReadString();
 
+            //save
+            GetPlayerFromUID(msg.SenderConnection.RemoteUniqueIdentifier).ModelName = model;
+
             NetOutgoingMessage outMsg = server.CreateMessage();
             outMsg.Write("MODEL");
             outMsg.Write(owner);
@@ -405,6 +408,10 @@ namespace Iris.Server
                 newbieState.Write("LIFE");
                 newbieState.Write(plr.UID);
                 newbieState.Write(plr.Life);
+
+                newbieState.Write("MODEL");
+                newbieState.Write(plr.UID);
+                newbieState.Write(plr.ModelName);
             }
 
             newbieState.Write("MULTI_OFF");
