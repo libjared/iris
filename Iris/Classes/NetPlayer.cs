@@ -16,8 +16,8 @@ namespace Iris
         public int animPadding; //Wait a slight bit before changing animations since position may be unreliable
         public int weaponIndex = 0;
 
-            public NetPlayer(Deathmatch dm, long UID)
-            : base(dm)
+        public NetPlayer(Deathmatch dm, long UID)
+        : base(dm)
         {
             model = MainGame.Char1Model;
             this.UID = UID;
@@ -86,9 +86,10 @@ namespace Iris
                 Texture.Size.Y - animation.YOffset), Facing, animation.Count, animation.Frame, 1);
             Render.renderStates = null;
 
-            Render.DrawString(Content.GetFont("Font1.ttf"), Name, Core - new Vector2f(0, 40), Color.White, .3f, true, 1);
+            //Render.DrawString(Content.GetFont("Font1.ttf"), Name, Core - new Vector2f(0, 40), Color.White, .3f, true, 1);
 
-            Render.DrawString(Content.GetFont("PixelSix.ttf"), this.Name.Substring(0, 11), this.Core - new Vector2f(0, 40), Color.White, .3f, true, 1);
+            if (!Name.Equals(null))
+                Render.DrawString(Content.GetFont("PixelSix.ttf"), Name, this.Core - new Vector2f(0, 40), Color.White, .3f, true, 1);
 
             base.Draw();
         }

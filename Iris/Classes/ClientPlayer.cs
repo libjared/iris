@@ -226,7 +226,7 @@ namespace Iris
             //rectBG.FillColor = new Color(10, 10, 10, 150);
             //rectBG.Draw(MainGame.window, RenderStates.Default);
 
-            Render.DrawString(Content.GetFont("PixelSix.ttf"), this.Name.Substring(0,11), this.Core - new Vector2f(0,40), Color.White, .3f, true, 1);
+            Render.DrawString(Content.GetFont("PixelSix.ttf"), this.Name, this.Core - new Vector2f(0,40), Color.White, .3f, true, 1);
             //MainGame.window.Draw(col); //Draw players collision box
         }
 
