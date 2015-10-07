@@ -67,12 +67,17 @@ namespace Iris
                 switch (msg.MessageType)
                 {
                     case NetIncomingMessageType.ConnectionApproval:
+                    case NetIncomingMessageType.ConnectionLatencyUpdated:
+                        break;
                     case NetIncomingMessageType.VerboseDebugMessage:
                     case NetIncomingMessageType.DebugMessage:
                     case NetIncomingMessageType.WarningMessage:
                     case NetIncomingMessageType.ErrorMessage:
+                        Console.WriteLine("[{0}]: {1}", msg.MessageType, msg.ReadString());
                         break;
-                    case NetIncomingMessageType.ConnectionLatencyUpdated:
+                    case NetIncomingMessageType.StatusChanged:
+                        NetConnectionStatus status = (NetConnectionStatus)msg.ReadByte();
+                        Console.WriteLine("[{0}]: {1}", msg.MessageType, status);
                         break;
                     case NetIncomingMessageType.Data:
                         //multiple game messages in a single packet
