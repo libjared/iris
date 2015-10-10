@@ -20,6 +20,7 @@ namespace Iris
         public int oldHealth = 0;
         public Animation idle, running, jumpUp, jumpDown, backpedal;
         public int AMMO_Bullet;
+        public int ItemType;
 
         public ClientPlayer(Deathmatch dm)
             : base(dm)
@@ -60,11 +61,6 @@ namespace Iris
             HandleDeath();
             base.Update();
             Init();
-
-            if (Input.isKeyTap(Keyboard.Key.E))
-            {
-                dm.GameObjects.Add(new Mine(this.Pos, this));
-            }
 
 
             dm.Mailman.SendGoldCount(gold);
@@ -354,7 +350,23 @@ namespace Iris
 
             }
 
-            if (Mouse.IsButtonPressed(Mouse.Button.Right))
+            if (Input.isKeyTap(Keyboard.Key.E))
+            {
+                switch(ItemType)
+                {
+                    case 1:
+                        MainGame.dm.Mailman.SendLandMineCreate(MainGame.rand.Next(100000), this.Pos, this.UID);
+                        break;
+                    case 2:
+                        MainGame.dm.Mailman.SendGeneratorCreate(2, this.Pos);
+                        break;
+                    case 3:
+                        MainGame.dm.Mailman.SendGeneratorCreate(3, this.Pos);
+                        break;
+                }
+            }
+
+                if (Mouse.IsButtonPressed(Mouse.Button.Right))
             {
                 CrosshairCameraRatio = 1f;
                 dm.PlayerAimSphereRadius = 175f;

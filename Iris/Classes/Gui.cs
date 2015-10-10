@@ -365,6 +365,7 @@ namespace Iris
                 else
                 {
                     Render.DrawString(Content.GetFont("PixelSix.ttf"), "Respawn!", new Vector2f(200, 45), Color.White, .9f, true, 1);
+                    Render.DrawString(Content.GetFont("PixelSix.ttf"), "[Left Shift]", new Vector2f(200, 75), Color.White, .4f, true, 1);
                 }
             }
 

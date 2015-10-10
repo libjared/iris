@@ -220,7 +220,12 @@ namespace Iris
                     long UID_MINEOWNER = msg.ReadInt64();
                     float xMINE = msg.ReadFloat();
                     float yMINE = msg.ReadFloat();
-                    HandleLandMineMessage(UID_MINEOWNER, xMINE, yMINE);
+                    int MINE_ID = msg.ReadInt32();
+                    HandleLandMineMessage(UID_MINEOWNER, xMINE, yMINE, MINE_ID);
+                    break;
+                case "LANDMINE_TRIGGER":
+                    int LANDMINEID = msg.ReadInt32();
+                    HandleLandMineTriggerMessage(LANDMINEID);
                     break;
                 case "GENERATOR":
                     //long UID_MINEOWNER = msg.ReadInt64();
@@ -253,10 +258,27 @@ namespace Iris
                 dm.GetPlayerWithUID(uid).gold = gold;
         }
 
-        private void HandleLandMineMessage(long uid, float x, float y)
+
+        private void HandleLandMineTriggerMessage(int LANDMINE_ID)
+        {
+            foreach (GameObject g in MainGame.dm.GameObjects)
+            {
+                if (g is Mine)
+                {
+                    if (((Mine)g).ID == LANDMINE_ID)
+                    {
+                        ((Mine)g).Destroy();
+                    }
+                }
+            }
+        }
+
+        private void HandleLandMineMessage(long uid, float x, float y, int LANDMINE_ID)
         {
             if (dm.GetPlayerWithUID(uid) != null)
-                MainGame.dm.GameObjects.Add(new Mine(new Vector2f(x, y), dm.GetPlayerWithUID(uid)));
+            {
+                MainGame.dm.GameObjects.Add(new Mine(new Vector2f(x, y), dm.GetPlayerWithUID(uid), LANDMINE_ID));
+            }
         }
 
         private void HandleGeneratorMessage(float x, float y, int type)
@@ -272,7 +294,7 @@ namespace Iris
             }
 
         }
-        
+
 
         private void HandleNameMessage(long uid, string newName)
         {
@@ -392,6 +414,27 @@ namespace Iris
             client.SendMessage(outGoingMessage, NetDeliveryMethod.ReliableOrdered);
         }
 
+        public void SendLandMineCreate(int ID, Vector2f position, long UID_OWNER)
+        {
+            NetOutgoingMessage outGoingMessage = client.CreateMessage();
+            outGoingMessage.Write("LANDMINE");
+            outGoingMessage.Write(UID_OWNER);
+            outGoingMessage.Write(position.X);
+            outGoingMessage.Write(position.Y);
+            outGoingMessage.Write(ID);
+            client.SendMessage(outGoingMessage, NetDeliveryMethod.ReliableOrdered);
+        }
+
+        public void SendGeneratorCreate(int type, Vector2f position)
+        {
+            NetOutgoingMessage outGoingMessage = client.CreateMessage();
+            outGoingMessage.Write("GENERATOR");
+            outGoingMessage.Write(position.X);
+            outGoingMessage.Write(position.Y);
+            outGoingMessage.Write(type);
+            client.SendMessage(outGoingMessage, NetDeliveryMethod.ReliableOrdered);
+        }
+
         public void SendBulletCreate(Bullet b)
         {
             NetOutgoingMessage outGoingMessage = client.CreateMessage();
@@ -474,7 +517,7 @@ namespace Iris
 
         private void HandleModel(long uid, string modelName)
         {
-            NetPlayer a =  (NetPlayer)MainGame.dm.GetPlayerWithUID(uid);
+            NetPlayer a = (NetPlayer)MainGame.dm.GetPlayerWithUID(uid);
             Console.WriteLine(a.Name);
             Console.WriteLine(modelName);
             switch (modelName)

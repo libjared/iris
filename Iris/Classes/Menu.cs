@@ -337,9 +337,10 @@ namespace Iris
                     currentCursor = hoverCursor;
                     if (Input.isMouseButtonTap(Mouse.Button.Left))
                     {
-                        Submit();
+                        stage = 2;
                         MainGame.dm.player.model = MainGame.Char1Model;
                         MainGame.dm.player.UpdateToCurrentModel();
+                        return;
                     }
                 }
                 if (rightRect.Contains(MainGame.worldMousePos.X, MainGame.worldMousePos.Y))
@@ -347,15 +348,71 @@ namespace Iris
                     currentCursor = hoverCursor;
                     if (Input.isMouseButtonTap(Mouse.Button.Left))
                     {
-                        Submit();
+                        
                         MainGame.dm.player.model = MainGame.Char2Model;
                         MainGame.dm.player.UpdateToCurrentModel();
+                        return;
                     }
                 }
 
 
                 rectConnect.Draw(MainGame.window, RenderStates.Default);
                 Render.DrawString(Content.GetFont("OldNewspaperTypes.ttf"), "Select Character", new Vector2f(50, 77), Color.White, .4f, true, 1);
+            }
+            if (stage == 2)
+            {
+                RectangleShape rectBG = new RectangleShape(new Vector2f(200, 110));
+                rectBG.Position = new Vector2f(-50, 0);
+                rectBG.FillColor = new Color(10, 10, 10, 100);
+                rectBG.Draw(MainGame.window, RenderStates.Default);
+
+                Render.Draw(Content.GetTexture("generatorStand.png"), new Vector2f(-10, 5), Color.White, new Vector2f(0, 0), 1, 0f);
+                Render.Draw(Content.GetTexture("genBlue.png"), new Vector2f(-10, 5), Color.White, new Vector2f(0, 0), 1, 0f);
+                Render.DrawString(Content.GetFont("PixelSix.ttf"), "   Shield\nGenerator", new Vector2f(0, 45), Color.White, .3f, true, 1);
+
+                Render.Draw(Content.GetTexture("mine.png"), new Vector2f(40, 30), Color.White, new Vector2f(0, 0), 1, 0f);
+                Render.Draw(Content.GetTexture("mine.png"), new Vector2f(40, 30), Color.White, new Vector2f(0, 0), 1, 0f);
+                Render.DrawString(Content.GetFont("PixelSix.ttf"), "Land\nMine", new Vector2f(50, 45), Color.White, .3f, true, 1);
+
+
+                Render.Draw(Content.GetTexture("generatorStand.png"), new Vector2f(90, 5), Color.White, new Vector2f(0, 0), 1, 0f);
+                Render.Draw(Content.GetTexture("genGreen.png"), new Vector2f(90, 5), Color.White, new Vector2f(0, 0), 1, 0f);
+                Render.DrawString(Content.GetFont("PixelSix.ttf"), "   Shield\nGenerator", new Vector2f(100, 45), Color.White, .3f, true, 1);
+
+                FloatRect genShieldRect = new FloatRect(new Vector2f(-10, 5), new Vector2f(20, 55));
+                FloatRect genHealthRect = new FloatRect(new Vector2f(90, 5), new Vector2f(20, 55));
+                FloatRect MineRect = new FloatRect(new Vector2f(40, 5), new Vector2f(20, 55));
+
+                if (genShieldRect.Contains(MainGame.worldMousePos.X, MainGame.worldMousePos.Y))
+                {
+                    currentCursor = hoverCursor;
+                    if (Input.isMouseButtonTap(Mouse.Button.Left))
+                    {
+                        MainGame.dm.player.ItemType = 3; // Shield Generator
+                        Submit();
+                    }
+                }
+                if (genHealthRect.Contains(MainGame.worldMousePos.X, MainGame.worldMousePos.Y))
+                {
+                    currentCursor = hoverCursor;
+                    if (Input.isMouseButtonTap(Mouse.Button.Left))
+                    {
+                        MainGame.dm.player.ItemType = 2; // Health Generator 
+                        Submit();
+                    }
+                }
+                if (MineRect.Contains(MainGame.worldMousePos.X, MainGame.worldMousePos.Y))
+                {
+                    currentCursor = hoverCursor;
+                    if (Input.isMouseButtonTap(Mouse.Button.Left))
+                    {
+                        MainGame.dm.player.ItemType = 1; // Land Mines
+                        Submit();
+                    }
+                }
+
+                rectConnect.Draw(MainGame.window, RenderStates.Default);
+                Render.DrawString(Content.GetFont("OldNewspaperTypes.ttf"), "Select Item", new Vector2f(50, 77), Color.White, .4f, true, 1);
             }
             //cursor
             Render.Draw(currentCursor, MainGame.worldMousePos, Color.White, new Vector2f(0, 0), 1, 0f);
@@ -372,7 +429,7 @@ namespace Iris
         public void Submit()
         {
             ClientMailman.ip = ipField;
-            stage = 1;
+            stage = 0;
 
             if (MainGame.dm.Mailman.Connect())
             {
