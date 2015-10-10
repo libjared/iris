@@ -228,11 +228,12 @@ namespace Iris
                     HandleLandMineTriggerMessage(LANDMINEID);
                     break;
                 case "GENERATOR":
-                    //long UID_MINEOWNER = msg.ReadInt64();
+                    long UID_GENOWNER = msg.ReadInt64();
                     float xGEN = msg.ReadFloat();
                     float yGEN = msg.ReadFloat();
                     int type = msg.ReadInt32();
-                    HandleGeneratorMessage(xGEN, yGEN, type);
+                    DateTime when = new DateTime(msg.ReadInt64());
+                    HandleGeneratorMessage(xGEN, yGEN, type, when);
                     break;
                 default:
                     Console.WriteLine("Unrecognized Game Message Recieved: {0}\n{1}", msg.ToString(), messageType);
@@ -281,7 +282,7 @@ namespace Iris
             }
         }
 
-        private void HandleGeneratorMessage(float x, float y, int type)
+        private void HandleGeneratorMessage(float x, float y, int type, DateTime when)
         {
             switch (type)
             {

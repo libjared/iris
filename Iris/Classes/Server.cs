@@ -196,14 +196,16 @@ namespace Iris.Server
 
             float x = msg.ReadFloat();
             float y = msg.ReadFloat();
+            int type = msg.ReadInt32();
 
-            Console.WriteLine("GENERATOR: {0},{1}", x, y);
+            Console.WriteLine("GENERATOR: {0},{1} of type {2}", x, y, type);
 
             //save it
             dGens.Add(new Generator()
             {
                 AddedAt = DateTime.Now,
                 Owner = owner,
+                Type = type,
                 X = x,
                 Y = y
             });
@@ -213,6 +215,8 @@ namespace Iris.Server
             outMsg.Write(owner);
             outMsg.Write(x);
             outMsg.Write(y);
+            outMsg.Write(type);
+            outMsg.Write(DateTime.Now.Ticks);
             server.SendToAll(outMsg, null, NetDeliveryMethod.ReliableOrdered, 0);
         }
 
@@ -518,6 +522,7 @@ namespace Iris.Server
                 newbieState.Write(gen.Owner);
                 newbieState.Write(gen.X);
                 newbieState.Write(gen.Y);
+                newbieState.Write(gen.Type);
                 newbieState.Write(gen.AddedAt.Ticks);
             }
 
@@ -547,6 +552,7 @@ namespace Iris.Server
         public long Owner { get; set; }
         public float X { get; set; }
         public float Y { get; set; }
+        public int Type { get; set; }
         public DateTime AddedAt { get; set; }
     }
 
