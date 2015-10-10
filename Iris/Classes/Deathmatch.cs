@@ -45,6 +45,7 @@ namespace Iris
         public bool roundStarted = false;
 
         public Actor firstPlacePlayer;
+        public bool resetMatch = false;
 
         public SoundInstance trainSound, trainSoundExterior, trainSoundInterior;
 
@@ -90,8 +91,9 @@ namespace Iris
                 tunnelsTimer = 3;
             }
 
-            if (roundTimeLeft < 15)
+            if (roundTimeLeft < 15 && !resetMatch)
             {
+                resetMatch = true;
                 player.gold = 100;
                 player.weapons = new List<Weapon>()
             {
@@ -101,7 +103,7 @@ namespace Iris
                 null,
             };
                 player.weapon = player.weapons[0];
-
+                MainGame.dm.Mailman.sendWeaponSwitch(0);
                 for (int i = 0; i < GameObjects.Count; i++)
                 {
                     if (GameObjects[i] is Coin)
@@ -110,7 +112,10 @@ namespace Iris
             }
 
             if (roundTimeLeft > 15)
+            {
                 firstPlacePlayer = MainGame.dm.Players.OrderByDescending(x => x.gold).ThenBy(x => (int)x.UID).ToList()[0];
+                resetMatch = false;
+            }
 
             if (Input.isKeyDown(Keyboard.Key.F1))
             {

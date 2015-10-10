@@ -116,6 +116,8 @@ namespace Iris
 
         private static void UpdateDraw(RenderWindow window)
         {
+           
+
             //float ratio = 800 / 600;
             window.Size = new Vector2u(800u, 600u);
 
@@ -126,7 +128,6 @@ namespace Iris
             Input.Update();
             updateWorldMousePos();
             gamestate.Update();
-           
 
             gamestate.Draw();
             window.SetView(GuiCamera);
