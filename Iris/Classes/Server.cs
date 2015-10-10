@@ -10,15 +10,19 @@ namespace Iris.Server
     {
         const int LOOT_INTERVAL = 1000 * 30;
         const int TIME_INTERVAL = 1000;
+        const int FRAME_INTERVAL = 16;
         private NetServer server;
         private AutoResetEvent quitter = new AutoResetEvent(false);
         private Random rand = new Random();
         private DateTime gameStarted;
         private Timer lootTimer;
         private Timer timeTimer;
+        private Timer frameTimer;
 
         //local data
         List<Player> dActors = new List<Player>();
+        List<Generator> dGens = new List<Generator>();
+        List<Landmine> dLands = new List<Landmine>();
 
         public Server()
         {
@@ -29,6 +33,7 @@ namespace Iris.Server
             gameStarted = DateTime.Now;
             lootTimer = new Timer(o => PlaceLoot(), null, 0, LOOT_INTERVAL);
             timeTimer = new Timer(o => UpdateTime(), null, 0, TIME_INTERVAL);
+            frameTimer = new Timer(o => EveryFrame(), null, 0, FRAME_INTERVAL);
         }
 
         public void Start()
@@ -113,6 +118,20 @@ namespace Iris.Server
             }
         }
 
+        private void EveryFrame()
+        {
+            RemoveOldGenerators();
+        }
+
+        private void RemoveOldGenerators()
+        {
+            int killed = dGens.RemoveAll((o) =>
+            {
+                return DateTime.Now > o.AddedAt.AddMilliseconds(Generator.LifeInMS);
+            });
+            if (killed > 0) { Console.WriteLine("Killed {0} old generators from newbie info.", killed); }
+        }
+
         private void HandleGameMessage(NetIncomingMessage msg)
         {
             string type = msg.ReadString();
@@ -158,11 +177,71 @@ namespace Iris.Server
                 case "GOLDCOUNT":
                     HandleGOLDCOUNT(msg);
                     break;
+                case "LANDMINE":
+                    HandleLANDMINE(msg);
+                    break;
+                case "GENERATOR":
+                    HandleGENERATOR(msg);
+                    break;
                 default:
                     Console.WriteLine(string.Format("Bad message type {0} from player {1}",
                         type, msg.SenderConnection.RemoteUniqueIdentifier));
                     break;
             }
+        }
+
+        private void HandleGENERATOR(NetIncomingMessage msg)
+        {
+            long owner = msg.SenderConnection.RemoteUniqueIdentifier;
+
+            float x = msg.ReadFloat();
+            float y = msg.ReadFloat();
+
+            Console.WriteLine("GENERATOR: {0},{1}", x, y);
+
+            //save it
+            dGens.Add(new Generator()
+            {
+                AddedAt = DateTime.Now,
+                Owner = owner,
+                X = x,
+                Y = y
+            });
+
+            NetOutgoingMessage outMsg = server.CreateMessage();
+            outMsg.Write("GENERATOR");
+            outMsg.Write(owner);
+            outMsg.Write(x);
+            outMsg.Write(y);
+            server.SendToAll(outMsg, null, NetDeliveryMethod.ReliableOrdered, 0);
+        }
+
+        private void HandleLANDMINE(NetIncomingMessage msg)
+        {
+            long owner = msg.SenderConnection.RemoteUniqueIdentifier;
+
+            float x = msg.ReadFloat();
+            float y = msg.ReadFloat();
+            int lmid = msg.ReadInt32();
+
+            Console.WriteLine("LANDMINE: {0},{1} with id {2}", x, y, lmid);
+
+            //save it
+            dLands.Add(new Landmine()
+            {
+                Owner = owner,
+                X = x,
+                Y = y,
+                LMID = lmid
+            });
+
+            NetOutgoingMessage outMsg = server.CreateMessage();
+            outMsg.Write("LANDMINE");
+            outMsg.Write(owner);
+            outMsg.Write(x);
+            outMsg.Write(y);
+            outMsg.Write(lmid);
+            server.SendToAll(outMsg, null, NetDeliveryMethod.ReliableOrdered, 0);
         }
 
         private void HandleMODEL(NetIncomingMessage msg)
@@ -424,6 +503,24 @@ namespace Iris.Server
                 newbieState.Write(plr.ModelName);
             }
 
+            foreach (var lm in dLands)
+            {
+                newbieState.Write("LANDMINE");
+                newbieState.Write(lm.Owner);
+                newbieState.Write(lm.X);
+                newbieState.Write(lm.Y);
+                newbieState.Write(lm.LMID);
+            }
+
+            foreach (var gen in dGens)
+            {
+                newbieState.Write("GENERATOR");
+                newbieState.Write(gen.Owner);
+                newbieState.Write(gen.X);
+                newbieState.Write(gen.Y);
+                newbieState.Write(gen.AddedAt.Ticks);
+            }
+
             newbieState.Write("MULTI_OFF");
 
             server.SendMessage(newbieState, msg.SenderConnection, NetDeliveryMethod.ReliableOrdered);
@@ -442,5 +539,22 @@ namespace Iris.Server
             Name = "UNNAMED!";
             Life = 100;
         }
+    }
+
+    public class Generator
+    {
+        public const int LifeInMS = 23300;
+        public long Owner { get; set; }
+        public float X { get; set; }
+        public float Y { get; set; }
+        public DateTime AddedAt { get; set; }
+    }
+
+    public class Landmine
+    {
+        public long Owner { get; set; }
+        public float X { get; set; }
+        public float Y { get; set; }
+        public int LMID { get; set; }
     }
 }
