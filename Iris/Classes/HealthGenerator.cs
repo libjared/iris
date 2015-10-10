@@ -33,8 +33,8 @@ namespace Iris
             {
                 if (timer % 17 == 0)
                 {
-                    //if (MainGame.dm.player.Health < 100)
-                    MainGame.dm.player.Health += 1;
+                    if (MainGame.dm.player.Health < 100)
+                        MainGame.dm.player.Health += 1;
                 }
             }
 
@@ -62,7 +62,7 @@ namespace Iris
         {
             Render.Draw(tex, this.Pos, Color.White, new Vector2f(10, 31), 1, 0f);
             Render.Draw(col, this.Pos, Color.White, new Vector2f(10, 31), 1, 0f);
-            Render.Draw(shield, this.Pos, new Color(0,240,0), new Vector2f(400, 400), 1, 0, size);
+            Render.Draw(shield, this.Pos, new Color(0, 240, 0), new Vector2f(400, 400), 1, 0, size);
             base.Draw();
         }
 
