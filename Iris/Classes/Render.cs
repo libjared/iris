@@ -17,6 +17,24 @@ namespace Iris
             DrawGenericTexture(texture, position, color, origin, facing, rotation, null, scale, flipVert, flipHoriz);
         }
 
+        public static void DrawCircle(Vector2f pos, float radius)
+        {
+            var a = new CircleShape(radius)
+            {
+                Position = pos,
+                FillColor = Color.White
+            };
+            
+            if (renderStates.HasValue)
+            {
+                MainGame.window.Draw(a, renderStates.Value);
+            }
+            else
+            {
+                MainGame.window.Draw(a);
+            }
+        }
+
         public static void DrawString(Font font, String message, Vector2f position, Color color, float scale, bool centered, float layer = 0.0f, bool rightJust = false)
         {
             Text text = new Text(message, font);

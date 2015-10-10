@@ -14,12 +14,15 @@ namespace Iris
 
         Texture tex, col, shield;
         float size, radius;
+        private RenderStates shader;
 
         public ShieldGenerator(Vector2f position)
         {
             tex = Content.GetTexture("generatorStand.png");
             col = Content.GetTexture("genBlue.png");
             shield = Content.GetTexture("shield.png");
+            var sh = new Shader(null, "Content/shield.frag");
+            shader = new RenderStates(sh);
             this.Pos = position;
             size = .35f;
         }
@@ -51,7 +54,15 @@ namespace Iris
         {
             Render.Draw(tex, this.Pos, Color.White, new Vector2f(10, 31), 1, 0f);
             Render.Draw(col, this.Pos, Color.White, new Vector2f(10, 31), 1, 0f);
-            Render.Draw(shield, this.Pos, Color.Cyan, new Vector2f(400, 400), 1, 0, size);
+            
+            Render.renderStates = shader;
+            Vector2i center = MainGame.window.MapCoordsToPixel(Pos);
+            Vector2f centerf = new Vector2f(1f, 1f) - new Vector2f(center.X / (float)MainGame.WindowSize.X, center.Y / (float)MainGame.WindowSize.Y);
+            Console.WriteLine(centerf);
+            shader.Shader.SetParameter("center", centerf);
+            shader.Shader.SetParameter("seconds", (float)(DateTime.Now - MainGame.startTime).TotalMilliseconds/1000f);
+            Render.Draw(shield, this.Pos, Color.White, new Vector2f(400, 400), 1, 0, size);
+            Render.renderStates = null;
             base.Draw();
         }
 
