@@ -414,6 +414,14 @@ namespace Iris
             client.SendMessage(outGoingMessage, NetDeliveryMethod.ReliableOrdered);
         }
 
+        public void SendLandMineTrigger(int ID)
+        {
+            NetOutgoingMessage outGoingMessage = client.CreateMessage();
+            outGoingMessage.Write("LANDMINE_TRIGGER");
+            outGoingMessage.Write(ID);
+            client.SendMessage(outGoingMessage, NetDeliveryMethod.ReliableOrdered);
+        }
+
         public void SendLandMineCreate(int ID, Vector2f position, long UID_OWNER)
         {
             NetOutgoingMessage outGoingMessage = client.CreateMessage();

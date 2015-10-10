@@ -348,7 +348,7 @@ namespace Iris
                     currentCursor = hoverCursor;
                     if (Input.isMouseButtonTap(Mouse.Button.Left))
                     {
-                        
+                        stage = 2;
                         MainGame.dm.player.model = MainGame.Char2Model;
                         MainGame.dm.player.UpdateToCurrentModel();
                         return;
@@ -377,7 +377,7 @@ namespace Iris
 
                 Render.Draw(Content.GetTexture("generatorStand.png"), new Vector2f(90, 5), Color.White, new Vector2f(0, 0), 1, 0f);
                 Render.Draw(Content.GetTexture("genGreen.png"), new Vector2f(90, 5), Color.White, new Vector2f(0, 0), 1, 0f);
-                Render.DrawString(Content.GetFont("PixelSix.ttf"), "   Shield\nGenerator", new Vector2f(100, 45), Color.White, .3f, true, 1);
+                Render.DrawString(Content.GetFont("PixelSix.ttf"), "   Health\nGenerator", new Vector2f(100, 45), Color.White, .3f, true, 1);
 
                 FloatRect genShieldRect = new FloatRect(new Vector2f(-10, 5), new Vector2f(20, 55));
                 FloatRect genHealthRect = new FloatRect(new Vector2f(90, 5), new Vector2f(20, 55));

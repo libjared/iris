@@ -20,7 +20,6 @@ namespace Iris
 
         public Mine(Vector2f position, Actor owner, int ID)
         {
-            
             this.ID = ID;
             this.owner = owner;
             tex = Content.GetTexture("mine.png");
@@ -36,7 +35,8 @@ namespace Iris
             if (timer > 60)
                 if (Helper.Distance(MainGame.dm.player.Pos, this.Pos) < radius && MainGame.dm.player.AliveTimer > 120)
                 {
-                    Destroy();
+                    MainGame.dm.Mailman.SendLandMineTrigger(ID);
+                    //Destroy();
                 }
             base.Update();
         }
