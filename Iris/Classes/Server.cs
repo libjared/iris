@@ -183,11 +183,32 @@ namespace Iris.Server
                 case "GENERATOR":
                     HandleGENERATOR(msg);
                     break;
+                case "LANDMINE_TRIGGER":
+                    HandleLANDMINE_TRIGGER(msg);
+                    break;
                 default:
                     Console.WriteLine(string.Format("Bad message type {0} from player {1}",
                         type, msg.SenderConnection.RemoteUniqueIdentifier));
                     break;
             }
+        }
+
+        private void HandleLANDMINE_TRIGGER(NetIncomingMessage msg)
+        {
+            int lmid = msg.ReadInt32();
+
+            //kill object in list
+            int killed = dLands.RemoveAll((o) => { return o.LMID == lmid; });
+            Console.WriteLine("");
+            if (killed != 1)
+            {
+                Console.WriteLine("Removed ");
+            }
+
+            NetOutgoingMessage outMsg = server.CreateMessage();
+            outMsg.Write("LANDMINE_TRIGGER");
+            outMsg.Write(lmid);
+            server.SendToAll(outMsg, null, NetDeliveryMethod.ReliableOrdered, 0);
         }
 
         private void HandleGENERATOR(NetIncomingMessage msg)
