@@ -43,8 +43,19 @@ namespace Iris
                 a.Health = 0;
             }
 
-        
-
+            //search for dynamite and fling them left
+            MainGame.dm.Projectiles
+                .Where((o) => { return o is BombInstance; })
+                .Cast<BombInstance>()
+                .Where((o) => {
+                    return o.Pos.X > Pos.X + xKill &&
+                    o.Pos.Y < Pos.Y + yKill &&
+                    o.Pos.X < Pos.X + Texture.Size.X * 2 - xKill; })
+                .ToList()
+                .ForEach((o) =>
+                {
+                    o.Velocity = new Vector2f(-2f, 2f);
+                });
 
             base.Update();
     }
