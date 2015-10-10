@@ -199,11 +199,7 @@ namespace Iris.Server
 
             //kill object in list
             int killed = dLands.RemoveAll((o) => { return o.LMID == lmid; });
-            Console.WriteLine("");
-            if (killed != 1)
-            {
-                Console.WriteLine("Removed ");
-            }
+            Console.WriteLine("Killed {0} mines by blowing them up.");
 
             NetOutgoingMessage outMsg = server.CreateMessage();
             outMsg.Write("LANDMINE_TRIGGER");
