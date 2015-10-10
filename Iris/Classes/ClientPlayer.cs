@@ -366,10 +366,10 @@ namespace Iris
                             MainGame.dm.Mailman.SendLandMineCreate(MainGame.rand.Next(100000), this.Pos, this.UID);
                             break;
                         case 2:
-                            MainGame.dm.Mailman.SendGeneratorCreate(2, this.Pos);
+                            MainGame.dm.Mailman.SendGeneratorCreate(1, this.Pos);
                             break;
                         case 3:
-                            MainGame.dm.Mailman.SendGeneratorCreate(3, this.Pos);
+                            MainGame.dm.Mailman.SendGeneratorCreate(2, this.Pos);
                             break;
                     }
             }
