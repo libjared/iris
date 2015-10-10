@@ -281,6 +281,7 @@ namespace Iris
 
         private void HandleGeneratorMessage(float x, float y, int type, DateTime when)
         {
+            //TODO: datetime WHEN to place old
             switch (type)
             {
                 case 1:
