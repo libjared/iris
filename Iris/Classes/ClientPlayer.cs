@@ -363,7 +363,7 @@ namespace Iris
             {
                 if (OnGround && ItemTimer <= 0)
                 {
-                    ItemTimer = (30 * 60);
+                    ItemTimer = (40 * 60);
                     switch (ItemType)
                     {
                         case 1:
