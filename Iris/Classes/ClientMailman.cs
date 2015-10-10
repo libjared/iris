@@ -276,10 +276,7 @@ namespace Iris
 
         private void HandleLandMineMessage(long uid, float x, float y, int LANDMINE_ID)
         {
-            if (dm.GetPlayerWithUID(uid) != null)
-            {
-                MainGame.dm.GameObjects.Add(new Mine(new Vector2f(x, y), dm.GetPlayerWithUID(uid), LANDMINE_ID));
-            }
+            MainGame.dm.GameObjects.Add(new Mine(new Vector2f(x, y), dm.GetPlayerWithUID(uid), LANDMINE_ID));
         }
 
         private void HandleGeneratorMessage(float x, float y, int type, DateTime when)
