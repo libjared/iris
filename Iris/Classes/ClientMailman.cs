@@ -283,10 +283,10 @@ namespace Iris
         {
             switch (type)
             {
-                case 0:
+                case 1:
                     MainGame.dm.GameObjects.Add(new HealthGenerator(new Vector2f(x, y)));
                     break;
-                case 1:
+                case 2:
                     MainGame.dm.GameObjects.Add(new ShieldGenerator(new Vector2f(x, y)));
                     break;
             }
