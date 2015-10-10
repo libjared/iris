@@ -14,15 +14,11 @@ namespace Iris
         bool damaged = false;
         public Actor Owner;
 
-        //public Explosion(Vector2f center)
-        //{
-        //    this.Pos = center;
-        //    animation = new Animation(Content.GetTexture("explosion.png"), 6, 30, 0);
-        //}
-
-        public Explosion(Vector2f center, Actor Owner)
+        public Explosion(Vector2f center, Actor Owner, bool damaged = false)
         {
-            this.Owner = Owner;
+            if (Owner != null)
+                this.Owner = Owner;
+            this.damaged = damaged;
             this.Pos = center;
             animation = new Animation(Content.GetTexture("explosion.png"), 6, 30, 0);
         }

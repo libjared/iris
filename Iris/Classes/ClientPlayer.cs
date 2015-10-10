@@ -61,6 +61,10 @@ namespace Iris
             base.Update();
             Init();
 
+            if (Input.isKeyTap(Keyboard.Key.E))
+            {
+                dm.GameObjects.Add(new HealthGenerator(this.Pos));
+            }
 
 
             dm.Mailman.SendGoldCount(gold);

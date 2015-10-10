@@ -54,7 +54,7 @@ namespace Iris
         {
             MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("hit.wav"), 1,1,2));
             MainGame.dm.Projectiles.Remove(this);
-            MainGame.dm.GameObjects.Add(new BulletDestroy(this.Pos + new Vector2f(Texture.Size.X/2, Texture.Size.Y/2) - (Velocity * Speed)));
+            MainGame.dm.GameObjects.Add(new BulletDestroy(this.Pos + new Vector2f(Texture.Size.X/2, 0) - (Velocity * Speed/3)));
             //MainGame.dm.GameObjects.Add(new GunSmoke(this.Pos + new Vector2f(Texture.Size.X / 2, Texture.Size.Y / 2) - (Velocity * Speed), 0));
         }
     }

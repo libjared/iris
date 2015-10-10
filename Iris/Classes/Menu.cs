@@ -231,12 +231,12 @@ namespace Iris
                     }
                 }
 
-                if (Input.isKeyTap(Keyboard.Key.Q))
-                {
-                    ipField = "giga.krash.net";
-                    usernameField = "Quick Draw McGraw";
-                    Submit();
-                }
+                //if (Input.isKeyTap(Keyboard.Key.Q))
+                //{
+                //    ipField = "giga.krash.net";
+                //    usernameField = "Quick Draw McGraw";
+                //    Submit();
+                //}
             }
         }
 

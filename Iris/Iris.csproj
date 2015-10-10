@@ -63,11 +63,13 @@
     <Compile Include="Classes\Gib.cs" />
     <Compile Include="Classes\Gui.cs" />
     <Compile Include="Classes\GunFlash.cs" />
+    <Compile Include="Classes\HealthGenerator.cs" />
     <Compile Include="Classes\Helper.cs" />
     <Compile Include="Classes\Input.cs" />
     <Compile Include="Classes\MachineGun.cs" />
     <Compile Include="Classes\MainGame.cs" />
     <Compile Include="Classes\Menu.cs" />
+    <Compile Include="Classes\Mine.cs" />
     <Compile Include="Classes\Model.cs" />
     <Compile Include="Classes\NetPlayer.cs" />
     <Compile Include="Classes\Actor.cs" />
@@ -76,6 +78,7 @@
     <Compile Include="Classes\Render.cs" />
     <Compile Include="Classes\GunSmoke.cs" />
     <Compile Include="Classes\Revolver.cs" />
+    <Compile Include="Classes\ShieldGenerator.cs" />
     <Compile Include="Classes\Shotgun.cs" />
     <Compile Include="Classes\SoundInstance.cs" />
     <Compile Include="Classes\TrainDust.cs" />
@@ -238,6 +241,15 @@
     <Content Include="Content\footstep.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\genBlue.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\generatorStand.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\genGreen.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\gib1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -319,6 +331,9 @@
     <Content Include="Content\mapInterior.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\mine.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\pistolHand.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -341,6 +356,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\emote_shocked.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\shield.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\shotgun.png">

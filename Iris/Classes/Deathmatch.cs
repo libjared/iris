@@ -93,14 +93,21 @@ namespace Iris
             if (roundTimeLeft < 15)
             {
                 player.gold = 100;
-                for(int i =0; i< GameObjects.Count; i++)
+                player.weapons = new List<Weapon>()
+            {
+                new Revolver(player),
+                null,
+                null,
+                null,
+            };
+                player.weapon = player.weapons[0];
+
+                for (int i = 0; i < GameObjects.Count; i++)
                 {
                     if (GameObjects[i] is Coin)
                         GameObjects.RemoveAt(i);
                 }
-
             }
-            
 
             if (roundTimeLeft > 15)
                 firstPlacePlayer = MainGame.dm.Players.OrderByDescending(x => x.gold).ThenBy(x => (int)x.UID).ToList()[0];
