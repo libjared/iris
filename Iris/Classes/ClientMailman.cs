@@ -426,7 +426,6 @@ namespace Iris
         {
             NetOutgoingMessage outGoingMessage = client.CreateMessage();
             outGoingMessage.Write("LANDMINE");
-            outGoingMessage.Write(UID_OWNER);
             outGoingMessage.Write(position.X);
             outGoingMessage.Write(position.Y);
             outGoingMessage.Write(ID);
