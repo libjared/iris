@@ -233,7 +233,14 @@ namespace Iris
             {
                 if (Health <= 0)
                 {
-                    MainGame.dm.Mailman.SendKillerMessage(this.Killer.UID);
+                    if (Killer != null)
+                    {
+                        MainGame.dm.Mailman.SendKillerMessage(Killer.UID);
+                    }
+                    else
+                    {
+                        MainGame.dm.Mailman.SendKillerMessage(0);
+                    }
 
                     MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("splat.wav"), 1f, .1f, 3));
                     MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("SaD.wav"), 1f, .1f, 2));
