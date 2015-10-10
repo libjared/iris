@@ -216,6 +216,19 @@ namespace Iris
                     int goldCount = msg.ReadInt32();
                     HandleGoldCountMessage(UID_GOLDCOUNT, goldCount);
                     break;
+                case "LANDMINE":
+                    long UID_MINEOWNER = msg.ReadInt64();
+                    float xMINE = msg.ReadFloat();
+                    float yMINE = msg.ReadFloat();
+                    HandleLandMineMessage(UID_MINEOWNER, xMINE, yMINE);
+                    break;
+                case "GENERATOR":
+                    //long UID_MINEOWNER = msg.ReadInt64();
+                    float xGEN = msg.ReadFloat();
+                    float yGEN = msg.ReadFloat();
+                    int type = msg.ReadInt32();
+                    HandleGeneratorMessage(xGEN, yGEN, type);
+                    break;
                 default:
                     Console.WriteLine("Unrecognized Game Message Recieved: {0}\n{1}", msg.ToString(), messageType);
                     break;
@@ -239,6 +252,27 @@ namespace Iris
             if (dm.GetPlayerWithUID(uid) != null)
                 dm.GetPlayerWithUID(uid).gold = gold;
         }
+
+        private void HandleLandMineMessage(long uid, float x, float y)
+        {
+            if (dm.GetPlayerWithUID(uid) != null)
+                MainGame.dm.GameObjects.Add(new Mine(new Vector2f(x, y), dm.GetPlayerWithUID(uid)));
+        }
+
+        private void HandleGeneratorMessage(float x, float y, int type)
+        {
+            switch (type)
+            {
+                case 0:
+                    MainGame.dm.GameObjects.Add(new HealthGenerator(new Vector2f(x, y)));
+                    break;
+                case 1:
+                    MainGame.dm.GameObjects.Add(new ShieldGenerator(new Vector2f(x, y)));
+                    break;
+            }
+
+        }
+        
 
         private void HandleNameMessage(long uid, string newName)
         {
