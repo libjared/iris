@@ -33,7 +33,7 @@ namespace Iris
             {
                 if (timer % 17 == 0)
                 {
-                    if (MainGame.dm.player.Health < 100)
+                    if (MainGame.dm.player.Health < 100 && MainGame.dm.player.Alive)
                         MainGame.dm.player.Health += 1;
                 }
             }

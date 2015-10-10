@@ -21,6 +21,7 @@ namespace Iris
         public Animation idle, running, jumpUp, jumpDown, backpedal;
         public int AMMO_Bullet;
         public int ItemType;
+        public int ItemTimer;
 
         public ClientPlayer(Deathmatch dm)
             : base(dm)
@@ -357,9 +358,12 @@ namespace Iris
 
             }
 
+            ItemTimer--;
             if (Input.isKeyTap(Keyboard.Key.E))
             {
-                if (OnGround)
+                if (OnGround && ItemTimer <= 0)
+                {
+                    ItemTimer = (30 * 60);
                     switch (ItemType)
                     {
                         case 1:
@@ -372,6 +376,7 @@ namespace Iris
                             MainGame.dm.Mailman.SendGeneratorCreate(2, this.Pos);
                             break;
                     }
+                }
             }
 
             if (Mouse.IsButtonPressed(Mouse.Button.Right))

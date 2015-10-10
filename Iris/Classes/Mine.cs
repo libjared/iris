@@ -46,7 +46,7 @@ namespace Iris
             Render.Draw(tex, this.Pos, Color.White, new Vector2f(9, 6), 1, 0f);
             if (timer > 60)
                 Render.Draw(shield, this.Pos, Color.Red, new Vector2f(400, 400), 1, 0, size);
-            Render.DrawString(Content.GetFont("PixelSix.ttf"), ID + "", this.Pos - new Vector2f(0, 10), Color.White, .3f, true);
+            //Render.DrawString(Content.GetFont("PixelSix.ttf"), ID + "", this.Pos - new Vector2f(0, 10), Color.White, .3f, true);
             base.Draw();
         }
 
@@ -54,6 +54,7 @@ namespace Iris
         {
             MainGame.dm.GameObjects.Add(new Explosion(this.Pos - new Vector2f(20, 0), owner));
             MainGame.dm.GameObjects.Remove(this);
+            MainGame.soundInstances.Add(new SoundInstance(Content.GetSound("explosion.wav"), 1, 0));
         }
 
     }

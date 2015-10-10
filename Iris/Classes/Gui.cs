@@ -357,7 +357,7 @@ namespace Iris
             Render.DrawString(Content.GetFont("PixelSix.ttf"), MainGame.dm.player.Name, new Vector2f(2, 55), Color.White, .3f, false, 1);
             Render.DrawString(Content.GetFont("PixelSix.ttf"), "[C] Shop", new Vector2f(2, 65), Color.White, .25f, false, 1);
             Render.DrawString(Content.GetFont("PixelSix.ttf"), "[V] Emotes", new Vector2f(2, 75), Color.White, .25f, false, 1);
-            Render.DrawString(Content.GetFont("PixelSix.ttf"), "[E] Use Item", new Vector2f(2, 85), Color.White, .25f, false, 1);
+            Render.DrawString(Content.GetFont("PixelSix.ttf"), "[E] Use Item" + (MainGame.dm.player.ItemTimer <= 0? "" : ": " + MainGame.dm.player.ItemTimer / 60 ), new Vector2f(2, 85), Color.White, .25f, false, 1);
 
             if (!MainGame.dm.player.Alive)
             {
