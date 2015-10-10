@@ -13,6 +13,7 @@ namespace Iris
         public float Speed;
         public Actor Killer; // The person that kills them
         public bool Alive;
+        public int AliveTimer;
         public Texture Texture;
         public Vector2f Velocity;
         public Vector2f Pos;
@@ -64,7 +65,11 @@ namespace Iris
                 Alive = true;
             else
                 Alive = false;
-            
+
+            if (Alive)
+                AliveTimer++;
+            else
+                AliveTimer = 0;
 
             if (animation != null) 
                 animation.Update();

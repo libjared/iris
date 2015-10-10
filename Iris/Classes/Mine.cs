@@ -12,49 +12,38 @@ namespace Iris
     public class Mine : GameObject
     {
 
-        Texture tex, col, shield;
+        Actor owner;
+        Texture tex, shield;
         float size, radius;
         float timer;
 
-        public Mine(Vector2f position)
+        public Mine(Vector2f position, Actor owner)
         {
-            tex = Content.GetTexture("generatorStand.png");
-            col = Content.GetTexture("genGreen.png");
+            this.owner = owner;
+            tex = Content.GetTexture("mine.png");
             shield = Content.GetTexture("shield.png");
             this.Pos = position;
-            size = .35f;
+            size = .05f;
         }
 
         public override void Update()
         {
             timer++;
-            radius = size * .45f * shield.Size.X;
-            if (Helper.Distance(MainGame.dm.player.Pos, this.Pos) < radius)
-            {
-                MainGame.dm.GameObjects.Add(new Explosion(this.Pos - new Vector2f(20, 0), MainGame.dm.player));
-            }
-
-            //for (int i = 0; i < MainGame.dm.Projectiles.Count; i++)
-            //{
-            //    Projectile p = MainGame.dm.Projectiles[i];
-            //    if (Helper.Distance(p.Pos, this.Pos) < (radius))
-            //    {
-            //        MainGame.dm.Projectiles[i].Destroy();
-            //    }
-            //}
-
-            size -= .00025f;
-
-
-
+            radius = 20;
+            if (timer > 60)
+                if (Helper.Distance(MainGame.dm.player.Pos, this.Pos) < radius && MainGame.dm.player.AliveTimer > 120)
+                {
+                    MainGame.dm.GameObjects.Add(new Explosion(this.Pos - new Vector2f(20, 0), owner));
+                    MainGame.dm.GameObjects.Remove(this);
+                }
             base.Update();
         }
 
         public override void Draw()
         {
-            Render.Draw(tex, this.Pos, Color.White, new Vector2f(10, 31), 1, 0f);
-            Render.Draw(col, this.Pos, Color.White, new Vector2f(10, 31), 1, 0f);
-            Render.Draw(shield, this.Pos, new Color(0, 240, 0), new Vector2f(400, 400), 1, 0, size);
+            Render.Draw(tex, this.Pos, Color.White, new Vector2f(9, 6), 1, 0f);
+            if (timer > 60)
+                Render.Draw(shield, this.Pos, Color.Red, new Vector2f(400, 400), 1, 0, size);
             base.Draw();
         }
 

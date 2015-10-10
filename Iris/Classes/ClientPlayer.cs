@@ -63,7 +63,7 @@ namespace Iris
 
             if (Input.isKeyTap(Keyboard.Key.E))
             {
-                dm.GameObjects.Add(new HealthGenerator(this.Pos));
+                dm.GameObjects.Add(new Mine(this.Pos, this));
             }
 
 
@@ -129,10 +129,7 @@ namespace Iris
                 Health = 0;
                 Killer = this;
             }
-
-
             //frameDelta += (float)MainGame.deltaTime.TotalMilliseconds;
-
         }
 
         private void SendHealth()
