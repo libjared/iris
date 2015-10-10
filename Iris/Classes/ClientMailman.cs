@@ -262,7 +262,7 @@ namespace Iris
 
         private void HandleLandMineTriggerMessage(int LANDMINE_ID)
         {
-            foreach (GameObject g in MainGame.dm.GameObjects)
+            MainGame.dm.GameObjects.ForEach((g) =>
             {
                 if (g is Mine)
                 {
@@ -271,7 +271,7 @@ namespace Iris
                         ((Mine)g).Destroy();
                     }
                 }
-            }
+            });
         }
 
         private void HandleLandMineMessage(long uid, float x, float y, int LANDMINE_ID)
