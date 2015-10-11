@@ -12,21 +12,21 @@ void main()
 {
 	vec4 fragColor;
 	vec2 fragCoord = gl_FragCoord.xy;
+	vec2 iMouse = center;
+	float iGlobalTime = seconds;
+	vec2 iResolution = resolution;
 
-    vec2 uv = 2.* (fragCoord.xy / resolution.y - vec2(.8,.5));
-	uv -= center;
+    vec2 uv = 2.* (fragCoord.xy - iMouse.xy) / iResolution.y;
 
     float r = length(uv);
     float a = atan(uv.y,uv.x); // to polar
     float s2 = 3.*a + 2.*PI*log(r);
-    float c2 = smoothstep(-.01, .01, sin(s2-seconds*20.));
+    float c2 = smoothstep(-.01, .01, sin(s2-iGlobalTime*20.));
     
     vec3 col = mix(SPCOL1, SPCOL2, c2);
     fragColor = vec4(col,log(r*7.)*r);
     fragColor.a = clamp(fragColor.a, 0., 1.);
     fragColor.a -= 0.;
-    
-    //omit in sfml
-    //fragColor = fakeAlpha(fragColor);
+
 	gl_FragColor = fragColor;
 }

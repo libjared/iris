@@ -22,7 +22,9 @@ namespace Iris
             var a = new CircleShape(radius)
             {
                 Position = pos,
-                FillColor = Color.White
+                FillColor = Color.White,
+                Radius = radius,
+                Origin = new Vector2f(radius, radius),
             };
             
             if (renderStates.HasValue)

@@ -57,11 +57,11 @@ namespace Iris
             
             Render.renderStates = shader;
             Vector2i center = MainGame.window.MapCoordsToPixel(Pos);
-            Vector2f centerf = new Vector2f(1f, 1f) - new Vector2f(center.X / (float)MainGame.WindowSize.X, center.Y / (float)MainGame.WindowSize.Y);
-            Console.WriteLine(centerf);
+            Vector2f centerf = new Vector2f(center.X, MainGame.WindowSize.Y - center.Y);
+            float seconds = (float)(DateTime.Now - MainGame.startTime).TotalMilliseconds / 1000f;
             shader.Shader.SetParameter("center", centerf);
-            shader.Shader.SetParameter("seconds", (float)(DateTime.Now - MainGame.startTime).TotalMilliseconds/1000f);
-            Render.Draw(shield, this.Pos, Color.White, new Vector2f(400, 400), 1, 0, size);
+            shader.Shader.SetParameter("seconds", seconds);
+            Render.DrawCircle(Pos, radius);
             Render.renderStates = null;
             base.Draw();
         }
