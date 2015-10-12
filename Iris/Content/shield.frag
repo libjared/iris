@@ -21,12 +21,10 @@ void main()
     float r = length(uv);
     float a = atan(uv.y,uv.x); // to polar
     float s2 = 3.*a + 2.*PI*log(r);
-    float c2 = smoothstep(-.01, .01, sin(s2-iGlobalTime*20.));
+    float c2 = smoothstep(-1., 1., sin(s2-iGlobalTime*20.));
     
     vec3 col = mix(SPCOL1, SPCOL2, c2);
-    fragColor = vec4(col,log(r*7.)*r);
-    fragColor.a = clamp(fragColor.a, 0., 1.);
-    fragColor.a -= 0.;
+    fragColor = vec4(col,.5);
 
 	gl_FragColor = fragColor;
 }
