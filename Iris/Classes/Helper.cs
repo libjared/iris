@@ -15,7 +15,12 @@ namespace Iris
                                 radius * (float)Math.Sin(angle) * yPercent);
         }
 
-        public static Vector2f lerp(Vector2f value1, Vector2f value2, float amount)
+        public static Vector2f Lerp(Vector2f value1, Vector2f value2, float amount)
+        {
+            return value1 + (value2 - value1) * amount;
+        }
+
+        public static float Lerp(float value1, float value2, float amount)
         {
             return value1 + (value2 - value1) * amount;
         }

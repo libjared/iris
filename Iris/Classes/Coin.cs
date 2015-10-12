@@ -99,7 +99,7 @@ namespace Iris
                 Pos += velocity;
             if (pickedUp)
             {
-                this.Pos = Helper.lerp(this.Pos, pickerUpper.Core, pickupLerpPercent * 2);
+                this.Pos = Helper.Lerp(this.Pos, pickerUpper.Core, pickupLerpPercent * 2);
             }
 
             base.Update();
