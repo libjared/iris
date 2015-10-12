@@ -20,6 +20,11 @@ namespace Iris
             return value1 + (value2 - value1) * amount;
         }
 
+        public static float Lerp(float value1, float value2, float amount)
+        {
+            return value1 + (value2 - value1) * amount;
+        }
+
         public static float Distance(Vector2f vec1, Vector2f vec2)
         {
             return (float)Math.Sqrt(Math.Pow((vec2.X - vec1.X), 2) + Math.Pow((vec2.Y - vec1.Y), 2));
